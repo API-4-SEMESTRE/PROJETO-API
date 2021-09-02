@@ -1,5 +1,22 @@
-# PROJETO-API - NOME DO SISTEMA
-![](https://img.shields.io/badge/java-jdk11-green)
+<h1 align="center">NOME DO SISTEMA</h1>
+
+O projeto a ser desenvolvido vai ser um sistema para agendamentos de eventos na [Casa Oracle](https://blogs.oracle.com/oracle-brasil/casa-oracle-abre-as-portas-para-a-inovacao-em-sao-paulo) buscando solucionar os obstáculos da pandemia do [Covid-19](https://covid.saude.gov.br/).
+
+<h2 align="center">🚧  Sistema 🚀 Em construção...  🚧</h2>
+
+![Badge](https://img.shields.io/static/v1?label=Vue.js&message=Version&color=4FC08D&style=for-the-badge&logo=Vue.js)
+![Badge](https://img.shields.io/static/v1?label=Java&message=JDK11&color=007396&style=for-the-badge&logo=java)
+![Badge](https://img.shields.io/static/v1?label=Oracle-Cloud&message=Version&color=F80000&style=for-the-badge&logo=Oracle)
+![Badge](https://img.shields.io/static/v1?label=Jira-Software&message=Version&color=0052CC&style=for-the-badge&logo=jirasoftware)
+
+<h2 align="center">Conteúdos</h2>
+<p align="center">
+ <a href="#aprendizagem-por-projetos-integrados-do-4º-semestre-do-curso-superior-de-tecnologia-em-banco-de-dados">Projeto</a> •
+ <a href="#desafio-proposto-pela-oracle-corporation">Desafio</a> • 
+ <a href="#membros">Membros</a> • 
+</p>
+
+
 
 ## Aprendizagem por Projetos Integrados do 4º semestre do Curso Superior de Tecnologia em Banco de Dados
 Projeto realizado em parceria com a Oracle Corporation uma empresa que atua na área da Computação e Informática juntamente com a Faculdade de Tecnologia de São José dos Campos Professor Jessen Vidal.
@@ -127,3 +144,4 @@ Projeto realizado em parceria com a Oracle Corporation uma empresa que atua na �
 
 ## Organização de Sprints
 ### O planejamento e o progresso durante as Sprints do projeto poderá ser visto em [Entregas](https://github.com/API-4-SEMESTRE/PROJETO-API/wiki/Entregas).
+
