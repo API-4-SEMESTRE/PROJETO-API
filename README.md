@@ -126,4 +126,4 @@ Projeto realizado em parceria com a Oracle Corporation uma empresa que atua na �
 </table>
 
 ## Organização de Sprints
-### O planejamento e o progresso durante as Sprints do projeto poderá ser visto em [Entregas](#).
+### O planejamento e o progresso durante as Sprints do projeto poderá ser visto em [Entregas](https://github.com/API-4-SEMESTRE/PROJETO-API/wiki/Entregas).
