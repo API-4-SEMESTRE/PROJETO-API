@@ -4,10 +4,21 @@ O projeto a ser desenvolvido vai ser um sistema para agendamentos de eventos na 
 
 <h2 align="center">🚧  Sistema 🚀 Em construção...  🚧</h2>
 
-![Badge](https://img.shields.io/static/v1?label=Vue.js&message=Version&color=4FC08D&style=for-the-badge&logo=Vue.js)
-![Badge](https://img.shields.io/static/v1?label=Java&message=JDK11&color=007396&style=for-the-badge&logo=java)
-![Badge](https://img.shields.io/static/v1?label=Oracle-Cloud&message=Version&color=F80000&style=for-the-badge&logo=Oracle)
-![Badge](https://img.shields.io/static/v1?label=Jira-Software&message=Version&color=0052CC&style=for-the-badge&logo=jirasoftware)
+<p align="center">
+  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/API-4-SEMESTRE/PROJETO-API?color=%2304D361">
+
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/API-4-SEMESTRE/PROJETO-API">
+
+  <a href="https://github.com/tgmarinho/README-ecoleta/commits/master">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/API-4-SEMESTRE/PROJETO-API">
+  </a>
+    
+   <img alt="License" src="https://img.shields.io/badge/license-MIT-brightgreen">
+ 
+   <a href="https://github.com/API-4-SEMESTRE/PROJETO-API/stargazers">
+    <img alt="Stargazers" src="https://img.shields.io/github/stars/API-4-SEMESTRE/PROJETO-API?style=social">
+  </a>
+</p>
 
 <h2 align="center">Tópicos 🏁</h2>
 
