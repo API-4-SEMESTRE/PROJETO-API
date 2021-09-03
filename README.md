@@ -12,9 +12,12 @@ O projeto a ser desenvolvido vai ser um sistema para agendamentos de eventos na 
 <h2 align="center">Tópicos 🏁</h2>
 
 <p align="center">
- <a href="#aprendizagem-por-projetos-integrados-do-4º-semestre-do-curso-superior-de-tecnologia-em-banco-de-dados">Projeto</a> •
- <a href="#desafio-proposto-pela-oracle-corporation">Desafio</a> • 
- <a href="#membros">Membros</a> • 
+ <a href="#projeto-">Projeto</a> •
+ <a href="#desafio-">Desafio</a> • 
+ <a href="#entregas-">Entregas</a> •
+ <a href="#tecnologias-">Tecnologias</a> •
+ <a href="#membros-">Membros</a> • 
+ <a href="#licença-">Licença</a> • 
 </p>
 
 <h2 align="center">Projeto 🖥</h2>
