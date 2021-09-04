@@ -20,9 +20,9 @@ O projeto a ser desenvolvido vai ser um sistema para agendamentos de eventos na 
   </a>
 </p>
 
-<h2 align="center">Tópicos 🏁</h2>
+<h2>Tópicos 🏁</h2>
 
-<p align="center">
+<p>
  <a href="#projeto-">Projeto</a> •
  <a href="#desafio-">Desafio</a> • 
  <a href="#entregas-">Entregas</a> •
@@ -31,31 +31,38 @@ O projeto a ser desenvolvido vai ser um sistema para agendamentos de eventos na 
  <a href="#licença-">Licença</a> • 
 </p>
 
-<h2 align="center">Projeto 🖥</h2>
+<h2>Projeto 🖥</h2>
 
-<p align="center">Aprendizagem por Projetos Integrados do 4º semestre do Curso Superior de Tecnologia em Banco de Dados</p>
 Projeto realizado em parceria com a Oracle Corporation uma empresa que atua na área da Computação e Informática juntamente com a Faculdade de Tecnologia de São José dos Campos Professor Jessen Vidal.
 
-<h2 align="center">Desafio 📈</h2>
+<h2>Desafio 📈</h2>
 
 Desafio proposto pela Oracle Corporation - "No escritório de São Paulo, temos um espaço de inovação aberta chamado Casa Oracle, que é um local para realização de eventos internos/externos, workshops e palestras. Dentro do contexto das restrições sanitárias, nosso desafio é criar uma plataforma para o gerenciamento da utilização do espaço, onde nossos colaboradores poderão fazer a solicitação de agendamento, definindo os convidados e recursos necessários para o evento."
 
-<h2 align="center">Entregas 💎</h2>
+<h2>Entregas 💎</h2>
 
 O planejamento e o progresso durante as Sprints do projeto poderá ser visto em [Entregas](https://github.com/API-4-SEMESTRE/PROJETO-API/wiki/Entregas).
 
-<h2 align="center">Tecnologias 🛠</h2>
+<h2>Tecnologias 🛠</h2>
 
 As seguintes ferramentas foram usadas na construção do projeto:
 
-- ![Badge](https://img.shields.io/badge/Vue.js-%23696969?style=for-the-badge&logo=vue.js) - [Site oficial](https://vuejs.org/)
-- ![Badge](https://img.shields.io/badge/Java-%23696969?style=for-the-badge&logo=Java) - [Site oficial](https://www.java.com/pt-BR/)
-- ![Badge](https://img.shields.io/badge/Oracle_Cloud-%23696969?style=for-the-badge&logo=Oracle) - [Site oficial](https://www.oracle.com/br/cloud/)
-- ![Badge](https://img.shields.io/badge/Jira_Software-%23696969?style=for-the-badge&logo=jirasoftware) - [Site oficial](https://www.atlassian.com/br/software/jira)
+<a href="https://vuejs.org/">
+  <img alt="image" src="https://img.shields.io/badge/Vue.js-%23696969?style=for-the-badge&logo=vue.js">
+</a>
+<a href="https://www.java.com/pt-BR/">
+  <img alt="image" src="https://img.shields.io/badge/Java-%23696969?style=for-the-badge&logo=Java">
+</a>
+<a href="https://www.oracle.com/br/cloud/">
+  <img alt="image" src="https://img.shields.io/badge/Oracle_Cloud-%23696969?style=for-the-badge&logo=Oracle">
+</a>
+<a href="https://www.atlassian.com/br/software/jira)">
+  <img alt="image" src="https://img.shields.io/badge/Jira_Software-%23696969?style=for-the-badge&logo=jirasoftware">
+</a>
 
-<h2 align="center">Membros 👥</h2>
+<h2>Membros 👥</h2>
 
-<table align="center">
+<table>
     <tr>
         <td align="center">
             <a href="https://linkedin.com/in/tairik-nishimura/">
@@ -172,6 +179,6 @@ As seguintes ferramentas foram usadas na construção do projeto:
     </tr>
 </table>
 
-<h2 align="center">Licença 📝</h2>
+<h2>Licença 📝</h2>
 
 Este projeto esta sobe a licença [MIT](./LICENSE).
