@@ -71,7 +71,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
         </td>
         <td align="center">
             <a href="https://www.linkedin.com/in/rafaela-carnaval-70a506138/">
-                <img style="border-radius: 50%;" src="" width="200px;" height="150px;" alt="image" />
+                <img style="border-radius: 50%;" src="./Documentação/Fotos-Readme/rafaela.jpeg" width="200px;" height="150px;" alt="image" />
                 <br />
                 <sub>
                     <b>Rafaela Aparecida</b>
@@ -121,7 +121,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
         </td>
         <td align="center">
             <a href="https://www.linkedin.com/in/breno-m-52a300141">
-                <img style="border-radius: 50%;" src="" width="200px;" height="150px;" alt="image" />
+                <img style="border-radius: 50%;" src="./Documentação/Fotos-Readme/breno.jpeg" width="200px;" height="150px;" alt="image" />
                 <br />
                 <sub>
                     <b>Breno Gabriel</b>
