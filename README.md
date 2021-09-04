@@ -56,7 +56,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 <a href="https://www.oracle.com/br/cloud/">
   <img alt="image" src="https://img.shields.io/badge/Oracle_Cloud-%23696969?style=for-the-badge&logo=Oracle">
 </a>
-<a href="https://www.atlassian.com/br/software/jira)">
+<a href="https://www.atlassian.com/software/jira">
   <img alt="image" src="https://img.shields.io/badge/Jira_Software-%23696969?style=for-the-badge&logo=jirasoftware">
 </a>
 
