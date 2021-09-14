@@ -104,7 +104,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
     <tr>
         <td align="center">
             <a href="https://www.linkedin.com/in/fabricioadriel/">
-                <img style="border-radius: 50%;" src="" width="200px;" height="150px;" alt="image" />
+                <img style="border-radius: 50%;" src="./Documentação/Fotos-Readme/fabricio.jpeg" width="200px;" height="150px;" alt="image" />
                 <br />
                 <sub>
                     <b>Fabrício Adriel</b>
@@ -154,7 +154,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
         </td>
         <td align="center">
             <a href="https://www.linkedin.com/in/alan-bezerra/">
-                <img style="border-radius: 50%;" src="" width="200px;" height="150px;" alt="image" />
+                <img style="border-radius: 50%;" src="./Documentação/Fotos-Readme/alan.jpeg" width="200px;" height="150px;" alt="image" />
                 <br />
                 <sub>
                     <b>Alan Lucas</b>
