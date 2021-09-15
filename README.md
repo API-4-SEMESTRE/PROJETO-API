@@ -116,7 +116,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
         </td>
         <td align="center">
             <a href="https://linkedin.com/in/devanir-ramos-junior/">
-                <img style="border-radius: 50%;" src="" width="200px;" height="150px;" alt="image" />
+                <img style="border-radius: 50%;" src="./Documentação/Fotos-Readme/devanir.jpeg" width="200px;" height="150px;" alt="image" />
                 <br />
                 <sub>
                     <b>Devanir Ramos</b>
