@@ -69,56 +69,27 @@
           </v-container>
         </v-form>
       </v-main>
-      <v-simple-table>
-        <template v-slot:default>
-          <thead>
-            <tr>
-              <th>CODIGO</th>
-              <th>NOME</th>
-              <th>TIPO</th>
-              <th>EMAIL</th>
-              <th>DATA CRIAÇÃO</th>
-              <th>ATIVO</th>
-              <th>SENHA</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="lista_users of lista_de_usuarios" :key="lista_users.cod">
-              <td>{{ lista_users.cod }}</td>
-              <td>{{ lista_users.nome }}</td>
-              <td>{{ lista_users.tipo }}</td>
-              <td>{{ lista_users.email }}</td>
-              <td>{{ lista_users.date_create }}</td>
-              <td>{{ lista_users.active }}</td>
-              <td>{{ lista_users.senha }}</td>
-            </tr>
-          </tbody>
-        </template>
-      </v-simple-table>
-
-      <v-card class="pa-6" color="#0266B1">
-        <v-card class="pa-2" tile outlined color="white">
-          <v-card-text>
-            <v-card>
-              <v-card-title>
-                Nutrition
-                <v-spacer></v-spacer>
-                <v-text-field
-                  v-model="search"
-                  append-icon="mdi-magnify"
-                  label="Search"
-                  single-line
-                  hide-details
-                ></v-text-field>
-              </v-card-title>
-              <v-data-table
-                :headers="headers"
-                :items="desserts"
-                :search="search"
-              ></v-data-table>
-            </v-card>
-          </v-card-text>
-        </v-card>
+      <v-card class="pa-2" tile outlined color="#DCDCDC" style="margin-top: 30px">
+        <v-card-text>
+          <v-card>
+            <v-card-title>
+              Lista de Usuários
+              <v-spacer></v-spacer>
+              <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="Pesquisar"
+                single-line
+                hide-details
+              ></v-text-field>
+            </v-card-title>
+            <v-data-table
+              :headers="headers"
+              :items="lista_de_usuarios"
+              :search="search"
+            ></v-data-table>
+          </v-card>
+        </v-card-text>
       </v-card>
     </v-app>
   </div>
@@ -153,6 +124,24 @@ export default {
       active: "1",
       senha: "",
     },
+
+    // Variavel que vai ser usada pra pesquisa da tabela
+    search: "",
+
+    // Array que contem as colunas da tabela
+    headers: [
+      {
+        text: "CÓDIGO",
+        align: "start",
+        value: "cod",
+      },
+      { text: "NOME", value: "nome" },
+      { text: "TIPO", value: "tipo" },
+      { text: "EMAIL", value: "email" },
+      { text: "DATA DE CRIAÇÃO", value: "date_create" },
+      { text: "ATIVO", value: "active" },
+      { text: "SENHA", value: "senha" },
+    ],
   }),
 
   mounted() {
