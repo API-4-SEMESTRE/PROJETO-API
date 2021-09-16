@@ -74,14 +74,43 @@
           </v-container>
         </v-form>
       </v-main>
+      <v-simple-table>
+        <template v-slot:default>
+          <thead>
+            <tr>
+              <th>CODIGO</th>
+              <th>NOME</th>
+              <th>TIPO</th>
+              <th>EMAIL</th>
+              <th>DATA CRIAÇÃO</th>
+              <th>ATIVO</th>
+              <th>SENHA</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="lista_users of lista_de_usuarios" :key="lista_users.cod">
+              <td>{{ lista_users.cod }}</td>
+              <td>{{ lista_users.nome }}</td>
+              <td>{{ lista_users.tipo }}</td>
+              <td>{{ lista_users.email }}</td>
+              <td>{{ lista_users.date_create }}</td>
+              <td>{{ lista_users.active }}</td>
+              <td>{{ lista_users.senha }}</td>
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
     </v-app>
   </div>
 </template>
 
 
 <script>
+import Usuario from "../services/usuario";
+
 export default {
   data: () => ({
+    // Validando se os campos estão preenchidos e se são validos
     valid: true,
     nome_completo: "",
     regra_nome: [(v) => !!v || "O nome é obrigatório"],
@@ -92,7 +121,17 @@ export default {
     ],
     senha: "",
     regra_senha: [(v) => !!v || "A senha é obrigatória"],
+
+    // Array com a lista de usuarios
+    lista_de_usuarios: [],
   }),
+
+  mounted() {
+    Usuario.listar_usuarios().then((resposta) => {
+      console.log(resposta.data);
+      this.lista_de_usuarios = resposta.data;
+    });
+  },
 };
 </script>
 
