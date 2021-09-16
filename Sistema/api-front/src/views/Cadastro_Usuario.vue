@@ -110,6 +110,7 @@
 
 <script>
 import Usuario from "../services/usuario";
+import Swal from "sweetalert2";
 
 export default {
   data: () => ({
@@ -146,11 +147,18 @@ export default {
     cadastrar_usuario() {
       Usuario.salvar_usuario(this.usuario).then((resposta_cadastro_usuario) => {
         this.usuario = {};
-        alert(
+        Swal.fire(
+          "Sucesso",
+          "Usuario " +
+            resposta_cadastro_usuario.data.nome +
+            " cadastrado com sucesso!!!",
+          "success"
+        );
+        /*alert(
           "Usuario " +
             resposta_cadastro_usuario.data.nome +
             " cadastrado com sucesso!!!"
-        );
+        );*/
         this.exibir_usuario();
       });
     },
