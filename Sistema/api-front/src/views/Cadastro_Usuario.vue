@@ -60,17 +60,9 @@
             <v-btn
               class="mr-4"
               type="submit"
-              style="
-                display: flex;
-                justify-content: flex-end;
-                align-items: center;
-                margin: auto;
-                background-color: #c74634;
-                color: white;
-                border: solid 1px black;
-              "
               :disabled="!valid"
               @click="validate"
+              id="btn_cadastrar_usuario"
             >
               Cadastrar
             </v-btn>
@@ -174,7 +166,8 @@ export default {
         .catch((e) => {
           Swal.fire(
             "Oops...",
-            "Erro ao carregar a tabela de usuários! - Erro: " + e.response.data.error,
+            "Erro ao carregar a tabela de usuários! - Erro: " +
+              e.response.data.error,
             "error"
           );
         });
@@ -188,4 +181,13 @@ export default {
 </script>
 
 <style>
+#btn_cadastrar_usuario {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  background-color: #c74634;
+  color: white;
+  border: solid 1px black;
+}
 </style>
