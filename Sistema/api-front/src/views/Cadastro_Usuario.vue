@@ -17,13 +17,14 @@
           ref="form"
           v-model="valid"
           lazy-validation
+          @submit.prevent="cadastrar_usuario"
         >
           <v-container class="ma-70" style="width: 40%; border: solid 1px">
             <v-row justify="center" align="stretch">
               <v-col cols="24">
                 <span style="padding-top: 8px"> Nome Completo </span>
                 <v-text-field
-                  v-model="nome_completo"
+                  v-model="usuario.nome"
                   :rules="regra_nome"
                   outlined
                   required
@@ -35,7 +36,7 @@
               <v-col cols="24">
                 <span style="padding-top: 8px"> E-mail </span>
                 <v-text-field
-                  v-model="email"
+                  v-model="usuario.email"
                   :rules="regra_email"
                   outlined
                   required
@@ -47,7 +48,7 @@
               <v-col cols="24">
                 <span style="padding-top: 8px"> Senha </span>
                 <v-text-field
-                  v-model="senha"
+                  v-model="usuario.senha"
                   :rules="regra_senha"
                   outlined
                   required
@@ -112,25 +113,41 @@ export default {
   data: () => ({
     // Validando se os campos estão preenchidos e se são validos
     valid: true,
-    nome_completo: "",
     regra_nome: [(v) => !!v || "O nome é obrigatório"],
-    email: "",
     regra_email: [
       (v) => !!v || "O e-mail é obrigatório",
       (v) => /.+@.+\..+/.test(v) || "E-mail inválido",
     ],
-    senha: "",
     regra_senha: [(v) => !!v || "A senha é obrigatória"],
 
     // Array com a lista de usuarios
     lista_de_usuarios: [],
+
+    // Criando o objeto que vai ser feito o POST
+    usuario: {
+      cod: "4",
+      nome: "",
+      tipo: "ADMIN",
+      email: "",
+      date_create: "2021-09-15T00:00:00.000+00:00",
+      active: "1",
+      senha: "",
+    },
   }),
 
   mounted() {
     Usuario.listar_usuarios().then((resposta_lista_usuarios) => {
-      console.log(resposta_lista_usuarios.data);
       this.lista_de_usuarios = resposta_lista_usuarios.data;
     });
+  },
+
+  methods: {
+    cadastrar_usuario() {
+      Usuario.salvar_usuario(this.usuario).then(resposta_cadastro_usuario => {
+        console.log(resposta_cadastro_usuario.data);
+        alert('Usuario' + resposta_cadastro_usuario.data.nome + ' cadastrado com sucesso!!!');
+      })
+    },
   },
 };
 </script>
