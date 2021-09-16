@@ -145,30 +145,41 @@ export default {
   methods: {
     // Método de cadastro de usuario
     cadastrar_usuario() {
-      Usuario.salvar_usuario(this.usuario).then((resposta_cadastro_usuario) => {
-        this.usuario = {};
-        Swal.fire(
-          "Sucesso",
-          "Usuario " +
-            resposta_cadastro_usuario.data.nome +
-            " cadastrado com sucesso!!!",
-          "success"
-        );
-        /*alert(
-          "Usuario " +
-            resposta_cadastro_usuario.data.nome +
-            " cadastrado com sucesso!!!"
-        );*/
-        this.exibir_usuario();
-      });
+      Usuario.salvar_usuario(this.usuario)
+        .then((resposta_cadastro_usuario) => {
+          this.usuario = {};
+          Swal.fire(
+            "Sucesso",
+            "Usuário " +
+              resposta_cadastro_usuario.data.nome +
+              " cadastrado com sucesso!!!",
+            "success"
+          );
+          this.exibir_usuario();
+        })
+        .catch((e) => {
+          Swal.fire(
+            "Oops...",
+            "Erro ao cadastrar o usuário! - Erro: " + e.response.data.error,
+            "error"
+          );
+        });
     },
     // Método pra exibir os usuarios
     exibir_usuario() {
-      Usuario.listar_usuarios().then((resposta_lista_usuarios) => {
-        this.lista_de_usuarios = resposta_lista_usuarios.data;
-      });
+      Usuario.listar_usuarios()
+        .then((resposta_lista_usuarios) => {
+          this.lista_de_usuarios = resposta_lista_usuarios.data;
+        })
+        .catch((e) => {
+          Swal.fire(
+            "Oops...",
+            "Erro ao carregar a tabela de usuários! - Erro: " + e.response.data.error,
+            "error"
+          );
+        });
     },
-    //
+    // Método que valida se os campos estão preenchidos, se não estiverem ele bloqueia o botão CADASTRAR
     validate() {
       this.$refs.form.validate();
     },
