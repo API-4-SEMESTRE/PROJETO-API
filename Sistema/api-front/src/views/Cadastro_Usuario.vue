@@ -69,6 +69,8 @@
                 color: white;
                 border: solid 1px black;
               "
+              :disabled="!valid"
+              @click="validate"
             >
               Cadastrar
             </v-btn>
@@ -143,13 +145,13 @@ export default {
     // Método de cadastro de usuario
     cadastrar_usuario() {
       Usuario.salvar_usuario(this.usuario).then((resposta_cadastro_usuario) => {
-        this.usuario = {}
+        this.usuario = {};
         alert(
-          "Usuario" +
+          "Usuario " +
             resposta_cadastro_usuario.data.nome +
             " cadastrado com sucesso!!!"
         );
-        this.exibir_usuario()
+        this.exibir_usuario();
       });
     },
     // Método pra exibir os usuarios
@@ -157,6 +159,10 @@ export default {
       Usuario.listar_usuarios().then((resposta_lista_usuarios) => {
         this.lista_de_usuarios = resposta_lista_usuarios.data;
       });
+    },
+    //
+    validate() {
+      this.$refs.form.validate();
     },
   },
 };
