@@ -95,6 +95,31 @@
           </tbody>
         </template>
       </v-simple-table>
+
+      <v-card class="pa-6" color="#0266B1">
+        <v-card class="pa-2" tile outlined color="white">
+          <v-card-text>
+            <v-card>
+              <v-card-title>
+                Nutrition
+                <v-spacer></v-spacer>
+                <v-text-field
+                  v-model="search"
+                  append-icon="mdi-magnify"
+                  label="Search"
+                  single-line
+                  hide-details
+                ></v-text-field>
+              </v-card-title>
+              <v-data-table
+                :headers="headers"
+                :items="desserts"
+                :search="search"
+              ></v-data-table>
+            </v-card>
+          </v-card-text>
+        </v-card>
+      </v-card>
     </v-app>
   </div>
 </template>
