@@ -125,7 +125,7 @@ export default {
 
     // Criando o objeto que vai ser feito o POST
     usuario: {
-      cod: "4",
+      cod: "5",
       nome: "",
       tipo: "ADMIN",
       email: "",
@@ -136,17 +136,27 @@ export default {
   }),
 
   mounted() {
-    Usuario.listar_usuarios().then((resposta_lista_usuarios) => {
-      this.lista_de_usuarios = resposta_lista_usuarios.data;
-    });
+    this.exibir_usuario();
   },
 
   methods: {
+    // Método de cadastro de usuario
     cadastrar_usuario() {
-      Usuario.salvar_usuario(this.usuario).then(resposta_cadastro_usuario => {
-        console.log(resposta_cadastro_usuario.data);
-        alert('Usuario' + resposta_cadastro_usuario.data.nome + ' cadastrado com sucesso!!!');
-      })
+      Usuario.salvar_usuario(this.usuario).then((resposta_cadastro_usuario) => {
+        this.usuario = {}
+        alert(
+          "Usuario" +
+            resposta_cadastro_usuario.data.nome +
+            " cadastrado com sucesso!!!"
+        );
+        this.exibir_usuario()
+      });
+    },
+    // Método pra exibir os usuarios
+    exibir_usuario() {
+      Usuario.listar_usuarios().then((resposta_lista_usuarios) => {
+        this.lista_de_usuarios = resposta_lista_usuarios.data;
+      });
     },
   },
 };
