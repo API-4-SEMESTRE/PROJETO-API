@@ -127,9 +127,9 @@ export default {
   }),
 
   mounted() {
-    Usuario.listar_usuarios().then((resposta) => {
-      console.log(resposta.data);
-      this.lista_de_usuarios = resposta.data;
+    Usuario.listar_usuarios().then((resposta_lista_usuarios) => {
+      console.log(resposta_lista_usuarios.data);
+      this.lista_de_usuarios = resposta_lista_usuarios.data;
     });
   },
 };
