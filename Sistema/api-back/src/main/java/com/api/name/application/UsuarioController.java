@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioController {
@@ -23,7 +24,7 @@ public class UsuarioController {
     @PostMapping("/add")
     public ResponseEntity<Usuario> addUsuario (
             @RequestBody Usuario usuario) {
-        System.out.println(usuario.toString());
+
         usuarioService.add(usuario);
 
         return ResponseEntity.ok(usuario);
@@ -34,6 +35,14 @@ public class UsuarioController {
 
         var usuarios = usuarioService.findAll();
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(usuarios);
+    }
+
+    @GetMapping("/find")
+    public ResponseEntity<List<Usuario>> findByEmail(
+            @RequestParam String email) {
+
+        var usuario = usuarioService.findByEmail(email);
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(usuario);
     }
 
 }

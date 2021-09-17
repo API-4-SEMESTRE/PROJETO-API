@@ -1,6 +1,7 @@
 package com.api.name.domain.usuario;
 
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -13,7 +14,7 @@ public class Usuario {
 
     @Id
     @Column(name="USU_COD")
-    @GeneratedValue(generator = "USU_SQ", strategy = GenerationType.SEQUENCE)
+    //@GeneratedValue(generator = "USU_SQ", strategy = GenerationType.SEQUENCE)
     private long cod;
 
     @Column(name="USU_NOME")
@@ -30,7 +31,7 @@ public class Usuario {
     private Date date_create;
 
     @Column(name="USU_ACTIVE")
-    private int active;
+    private boolean active;
 
     @Column(name="USU_SENHA")
     private String senha;

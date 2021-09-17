@@ -13,7 +13,7 @@ public class Evento {
 
     @Id
     @Column(name="EVE_COD_EVEN")
-    @GeneratedValue(generator = "EVE_SQ", strategy = GenerationType.SEQUENCE)
+    //@GeneratedValue(generator = "EVE_SQ", strategy = GenerationType.SEQUENCE)
     private long cod_even;
 
     @Column(name="EVE_DATA_EVEN")
