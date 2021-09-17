@@ -123,12 +123,11 @@ export default {
 
     // Criando o objeto que vai ser feito o POST
     usuario: {
-      cod: "5",
+      cod: "12",
       nome: "",
       tipo: "FUNCIONARIO",
       email: "",
-      date_create: "2021-09-15T00:00:00.000+00:00",
-      active: "1",
+      active: "True",
       senha: "",
     },
 
