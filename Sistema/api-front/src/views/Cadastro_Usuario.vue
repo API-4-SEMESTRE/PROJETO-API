@@ -12,6 +12,7 @@
 
     <v-app>
       <v-main>
+        <h1 style="text-align: center; margin-top: 20px">Cadastro de Usuário</h1>
         <v-form
           style="padding-top: 30px"
           ref="form"
@@ -69,7 +70,13 @@
           </v-container>
         </v-form>
       </v-main>
-      <v-card class="pa-2" tile outlined color="#DCDCDC" style="margin-top: 30px">
+      <v-card
+        class="pa-2"
+        tile
+        outlined
+        color="#DCDCDC"
+        style="margin-top: 30px"
+      >
         <v-card-text>
           <v-card>
             <v-card-title>
@@ -118,7 +125,7 @@ export default {
     usuario: {
       cod: "5",
       nome: "",
-      tipo: "ADMIN",
+      tipo: "FUNCIONARIO",
       email: "",
       date_create: "2021-09-15T00:00:00.000+00:00",
       active: "1",
@@ -189,6 +196,17 @@ export default {
     // Método que valida se os campos estão preenchidos, se não estiverem ele bloqueia o botão CADASTRAR
     validate() {
       this.$refs.form.validate();
+    },
+
+    formatDate(date) {
+      let dia = date.getDate();
+      let mes = date.getMonth();
+      let ano = date.getFullYear();
+      var hora = date.getHours();
+      var min = date.getMinutes();
+      var seg = date.getSeconds();
+
+      return `${ano}${mes}${dia}T${hora}${min}${seg}`;
     },
   },
 };
