@@ -197,17 +197,6 @@ export default {
     validate() {
       this.$refs.form.validate();
     },
-
-    formatDate(date) {
-      let dia = date.getDate();
-      let mes = date.getMonth();
-      let ano = date.getFullYear();
-      var hora = date.getHours();
-      var min = date.getMinutes();
-      var seg = date.getSeconds();
-
-      return `${ano}${mes}${dia}T${hora}${min}${seg}`;
-    },
   },
 };
 </script>
