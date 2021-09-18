@@ -10,10 +10,12 @@ import java.util.List;
 @Service
 public class EnderecoService {
     private EnderecoRepository enderecoRepository;
+    private FornecedorRepository fornecedorRepository;
 
     @Autowired
-    public EnderecoService(EnderecoRepository enderecoRepository) {
+    public EnderecoService(EnderecoRepository enderecoRepository, FornecedorRepository fornecedorRepository) {
         this.enderecoRepository = enderecoRepository;
+        this.fornecedorRepository = fornecedorRepository;
     }
 
     @Transactional
@@ -24,5 +26,12 @@ public class EnderecoService {
 
     public List<Endereco> findAll() {
         return enderecoRepository.findAll();
+    }
+
+    public Endereco addFor(Long cnpj, Endereco endereco) {
+        var fornecedor = fornecedorRepository.findByCnpjforn(cnpj);
+        endereco.setForncod(fornecedor.getCod());
+        enderecoRepository.save(endereco);
+        return endereco;
     }
 }

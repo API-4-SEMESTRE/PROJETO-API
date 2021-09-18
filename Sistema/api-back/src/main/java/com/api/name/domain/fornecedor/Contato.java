@@ -16,7 +16,7 @@ public class Contato {
     private long concod;
 
     @Column(name = "CON_NOME")
-    private String nome_con;
+    private String nomecon;
 
     @Column(name = "CON_FUNCAO")
     private String func_con;

@@ -23,7 +23,7 @@ public class Fornecedor {
 
 
     @Column(name = "FOR_NOME_FORN")
-    private String nome_forn;
+    private String nomeforn;
 
 
     @Column(name = "FOR_RAMO_FORN")
@@ -31,7 +31,7 @@ public class Fornecedor {
 
 
     @Column(name = "FOR_CNPJ")
-    private long cnpj_forn;
+    private long cnpjforn;
 
     @Column(name = "CON_COD_CONT")
     private long con_cod;

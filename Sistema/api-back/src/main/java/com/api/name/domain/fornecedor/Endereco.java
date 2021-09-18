@@ -30,5 +30,5 @@ public class Endereco {
 
     @Id
     @Column(name = "FOR_COD_FORN")
-    private long con_cod;
+    private long forncod;
 }

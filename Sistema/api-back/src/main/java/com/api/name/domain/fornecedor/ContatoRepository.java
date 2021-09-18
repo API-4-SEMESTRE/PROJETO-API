@@ -9,4 +9,6 @@ import java.util.List;
 public interface ContatoRepository extends JpaRepository<Contato, Long> {
 
     List<Contato> findAllByOrderByConcodAsc();
+
+    Contato findByNomecon(String nome);
 }

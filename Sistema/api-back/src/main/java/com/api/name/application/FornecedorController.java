@@ -50,7 +50,7 @@ public class FornecedorController {
     }
 
     @GetMapping("/full")
-    public ResponseEntity<List> findFull(){
+    public ResponseEntity<List> findFull() {
 
         List lista = new ArrayList();
         lista.add(contatoService.findAll());
@@ -58,5 +58,16 @@ public class FornecedorController {
         lista.add(enderecoService.findAll());
 
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(lista);
+    }
+
+    @PostMapping("/addcon")
+    public ResponseEntity<Fornecedor> addCon(
+            @RequestParam String nome,
+            @RequestBody Fornecedor fornecedor) {
+
+        var newFornecedor = fornecedorService.addCon(nome, fornecedor);
+
+        return ResponseEntity.ok(newFornecedor);
+
     }
 }
