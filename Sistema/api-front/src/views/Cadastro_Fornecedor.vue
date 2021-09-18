@@ -15,189 +15,222 @@
         <h1 style="text-align: center; margin-top: 20px">
           Cadastro de Fornecedor
         </h1>
-        <v-form
-          style="padding-top: 30px"
-          ref="form"
-          v-model="valid"
-          lazy-validation
-          @submit.prevent="cadastrar_usuario"
-        >
-          <v-container class="ma-70" style="width: 40%; border: solid 1px">
-            <v-row justify="center" align="stretch">
-              <v-col cols="24">
-                <span style="padding-top: 8px"> Nome da Empresa </span>
-                <v-text-field
-                  v-model="nome_empresa"
-                  :rules="regra_nome_empresa"
-                  outlined
-                  required
-                  dense
-                ></v-text-field>
-              </v-col>
-            </v-row>
-
-            <v-row>
-              <v-col cols="6">
-                <span> CNPJ</span>
-                <v-text-field
-                  v-model="cnpj"
-                  :rules="regra_cnpj"
-                  outlined
-                  required
-                  dense
-                ></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <span> Ramo de Atividade </span>
-                <v-text-field
-                  v-model="ramo"
-                  :rules="regra_ramo"
-                  outlined
-                  required
-                  dense
-                ></v-text-field>
-              </v-col>
-            </v-row>
-
-            <v-row>
-              <v-col cols="6">
-                <span> CEP </span>
-                <v-text-field
-                  v-model="cep"
-                  :rules="regra_cep"
-                  outlined
-                  required
-                  dense
-                ></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <span> Rua </span>
-                <v-text-field
-                  v-model="rua"
-                  :rules="regra_rua"
-                  outlined
-                  required
-                  dense
-                ></v-text-field>
-              </v-col>
-            </v-row>
-
-            <v-row>
-              <v-col cols="6" md="4">
-                <span> Bairro</span>
-                <v-text-field
-                  v-model="bairro"
-                  :rules="regra_bairro"
-                  outlined
-                  required
-                  dense
-                ></v-text-field>
-              </v-col>
-              <v-col cols="6" md="4">
-                <span> Cidade </span>
-                <v-text-field
-                  v-model="cidade"
-                  :rules="regra_cidade"
-                  outlined
-                  required
-                  dense
-                ></v-text-field>
-              </v-col>
-              <v-col cols="6" md="4">
-                <span> Estado </span>
-                <v-text-field
-                  v-model="estado"
-                  :rules="regra_estado"
-                  outlined
-                  required
-                  dense
-                ></v-text-field>
-              </v-col>
-            </v-row>
-
-            <v-row>
-              <v-col cols="6">
-                <span> Número </span>
-                <v-text-field
-                  v-model="numero"
-                  :rules="regra_numero"
-                  outlined
-                  required
-                  dense
-                ></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <span> Complemento </span>
-                <v-text-field
-                  v-model="complemento"
-                  outlined
-                  dense
-                ></v-text-field>
-              </v-col>
-            </v-row>
-
-            <p>Contato responsável</p>
-
-            <v-row justify="center" align="stretch">
-              <v-col cols="24">
-                <span> Nome Completo</span>
-                <v-text-field
-                  v-model="nome_completo"
-                  :rules="regra_nome_completo"
-                  outlined
-                  required
-                  dense
-                ></v-text-field>
-              </v-col>
-            </v-row>
-
-            <v-row>
-              <v-col cols="6">
-                <span> Função </span>
-                <v-text-field
-                  v-model="funcao"
-                  :rules="regra_funcao"
-                  outlined
-                  required
-                  dense
-                ></v-text-field>
-              </v-col>
-              <v-col cols="6">
-                <span> Telefone </span>
-                <v-text-field
-                  v-model="telefone"
-                  :rules="regra_telefone"
-                  outlined
-                  required
-                  dense
-                ></v-text-field>
-              </v-col>
-            </v-row>
-
-            <v-row justify="center" align="stretch">
-              <v-col cols="24">
-                <span>E-mail</span>
-                <v-text-field
-                  v-model="email"
-                  :rules="regra_email"
-                  outlined
-                  required
-                  dense
-                ></v-text-field>
-              </v-col>
-            </v-row>
-
-            <v-btn
-              class="mr-4"
-              type="submit"
-              :disabled="!valid"
-              @click="validate"
-              id="btn_cadastrar_fornecedor"
+        <v-row>
+          <v-col>
+            <v-form
+              style="padding-top: 30px"
+              ref="form"
+              v-model="valid"
+              lazy-validation
+              @submit.prevent="cadastrar_usuario"
             >
-              Cadastrar
-            </v-btn>
-          </v-container>
-        </v-form>
+              <v-container class="ma-70" style="width: 80%; border: solid 1px">
+                <h2 style="text-align: center">Informações de Contato</h2>
+                <v-row
+                  justify="center"
+                  align="stretch"
+                  style="margin-top: 10px"
+                >
+                  <v-col cols="24">
+                    <span> Nome Completo</span>
+                    <v-text-field
+                      v-model="nome_completo"
+                      :rules="regra_nome_completo"
+                      outlined
+                      required
+                      dense
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+
+                <v-row>
+                  <v-col cols="6">
+                    <span> Função </span>
+                    <v-text-field
+                      v-model="funcao"
+                      :rules="regra_funcao"
+                      outlined
+                      required
+                      dense
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="6">
+                    <span> Telefone </span>
+                    <v-text-field
+                      v-model="telefone"
+                      :rules="regra_telefone"
+                      outlined
+                      required
+                      dense
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+
+                <v-row justify="center" align="stretch">
+                  <v-col cols="24">
+                    <span>E-mail</span>
+                    <v-text-field
+                      v-model="email"
+                      :rules="regra_email"
+                      outlined
+                      required
+                      dense
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+
+                <v-btn
+                  class="mr-4"
+                  type="submit"
+                  :disabled="!valid"
+                  @click="validate"
+                  id="btn_cadastrar_fornecedor"
+                >
+                  Cadastrar
+                </v-btn>
+              </v-container>
+            </v-form>
+          </v-col>
+          <v-col>
+            <v-form
+              style="padding-top: 30px"
+              ref="form"
+              v-model="valid"
+              lazy-validation
+              @submit.prevent="cadastrar_usuario"
+            >
+              <v-container class="ma-70" style="width: 90%; border: solid 1px">
+                <h2 style="text-align: center">Informações do Fornecedor</h2>
+                <v-row
+                  justify="center"
+                  align="stretch"
+                  style="margin-top: 10px"
+                >
+                  <v-col cols="24">
+                    <span style="padding-top: 8px"> Nome da Empresa </span>
+                    <v-text-field
+                      v-model="nome_empresa"
+                      :rules="regra_nome_empresa"
+                      outlined
+                      required
+                      dense
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+
+                <v-row>
+                  <v-col cols="6">
+                    <span> CNPJ</span>
+                    <v-text-field
+                      v-model="cnpj"
+                      :rules="regra_cnpj"
+                      outlined
+                      required
+                      dense
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="6">
+                    <span> Ramo de Atividade </span>
+                    <v-text-field
+                      v-model="ramo"
+                      :rules="regra_ramo"
+                      outlined
+                      required
+                      dense
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+
+                <v-row>
+                  <v-col cols="6">
+                    <span> CEP </span>
+                    <v-text-field
+                      v-model="cep"
+                      :rules="regra_cep"
+                      outlined
+                      required
+                      dense
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="6">
+                    <span> Rua </span>
+                    <v-text-field
+                      v-model="rua"
+                      :rules="regra_rua"
+                      outlined
+                      required
+                      dense
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+
+                <v-row>
+                  <v-col cols="6" md="4">
+                    <span> Bairro</span>
+                    <v-text-field
+                      v-model="bairro"
+                      :rules="regra_bairro"
+                      outlined
+                      required
+                      dense
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="6" md="4">
+                    <span> Cidade </span>
+                    <v-text-field
+                      v-model="cidade"
+                      :rules="regra_cidade"
+                      outlined
+                      required
+                      dense
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="6" md="4">
+                    <span> Estado </span>
+                    <v-text-field
+                      v-model="estado"
+                      :rules="regra_estado"
+                      outlined
+                      required
+                      dense
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+
+                <v-row>
+                  <v-col cols="6">
+                    <span> Número </span>
+                    <v-text-field
+                      v-model="numero"
+                      :rules="regra_numero"
+                      outlined
+                      required
+                      dense
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="6">
+                    <span> Complemento </span>
+                    <v-text-field
+                      v-model="complemento"
+                      outlined
+                      dense
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+
+                <v-btn
+                  class="mr-4"
+                  type="submit"
+                  :disabled="!valid"
+                  @click="validate"
+                  id="btn_cadastrar_fornecedor"
+                >
+                  Cadastrar
+                </v-btn>
+              </v-container>
+            </v-form>
+          </v-col>
+        </v-row>
       </v-main>
       <v-card
         class="pa-2"
