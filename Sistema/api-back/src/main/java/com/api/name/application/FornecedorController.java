@@ -1,5 +1,6 @@
 package com.api.name.application;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -14,11 +15,17 @@ import com.api.name.domain.fornecedor.*;
 @RequestMapping("/fornecedor")
 public class FornecedorController {
     private final FornecedorService fornecedorService;
+    private final ContatoService contatoService;
+    private final EnderecoService enderecoService;
 
     @Autowired
-    public FornecedorController(FornecedorService fornecedorService) {
+    public FornecedorController(FornecedorService fornecedorService,
+                                ContatoService contatoService,
+                                EnderecoService enderecoService) {
 
         this.fornecedorService = fornecedorService;
+        this.contatoService = contatoService;
+        this.enderecoService = enderecoService;
     }
 
     @PostMapping("/add")
@@ -40,5 +47,16 @@ public class FornecedorController {
 
         var fornecedores = fornecedorService.findAll();
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(fornecedores);
+    }
+
+    @GetMapping("/full")
+    public ResponseEntity<List> findFull(){
+
+        List lista = new ArrayList();
+        lista.add(contatoService.findAll());
+        lista.add(fornecedorService.findAll());
+        lista.add(enderecoService.findAll());
+
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(lista);
     }
 }

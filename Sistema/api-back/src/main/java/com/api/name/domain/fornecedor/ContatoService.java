@@ -22,7 +22,7 @@ public class ContatoService {
     }
 
     public List<Contato> findAll() {
-        return contatoRepository.findAll();
+        return contatoRepository.findAllByOrderByConcodAsc();
     }
 
 }
