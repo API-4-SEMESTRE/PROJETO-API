@@ -13,7 +13,7 @@ public class Contato {
     @Id
     @Column(name = "CON_COD_CONT")
     //@GeneratedValue(generator = "FOR_SQ", strategy =  GenerationType.SEQUENCE)
-    private long con_cod;
+    private long concod;
 
     @Column(name = "CON_NOME")
     private String nome_con;

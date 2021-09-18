@@ -26,7 +26,7 @@ public class UsuarioService {
 
     public List<Usuario> findAll() {
 
-        return usuarioRepository.findAll();
+        return usuarioRepository.findAllByOrderByCodAsc();
     }
 
     public List<Usuario> findByEmail(String email) {
