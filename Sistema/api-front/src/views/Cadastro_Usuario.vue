@@ -1,18 +1,10 @@
 <template>
   <div>
-    <v-app-bar color="#c74634" dense dark style="border: solid 1px black">
-      <v-avatar>
-        <img
-          src="https://cdn.vuetifyjs.com/images/john.jpg"
-          alt="John"
-          style="position: fixed; right: 0px; float: right; margin-bottom: 0"
-        />
-      </v-avatar>
-    </v-app-bar>
-
     <v-app>
       <v-main>
-        <h1 style="text-align: center; margin-top: 20px">Cadastro de Usuário</h1>
+        <h1 style="text-align: center; margin-top: 20px">
+          Cadastro de Usuário
+        </h1>
         <v-form
           style="padding-top: 30px"
           ref="form"
