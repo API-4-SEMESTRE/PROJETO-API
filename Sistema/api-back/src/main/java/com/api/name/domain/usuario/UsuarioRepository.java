@@ -10,6 +10,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     List<Usuario> findAllByOrderByCodAsc();
 
-    List<Usuario> findByEmail(String email);
+    Usuario findByEmail(String email);
 
 }

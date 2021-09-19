@@ -29,7 +29,21 @@ public class UsuarioService {
         return usuarioRepository.findAllByOrderByCodAsc();
     }
 
-    public List<Usuario> findByEmail(String email) {
+    public Usuario findByEmail(String email) {
         return usuarioRepository.findByEmail(email);
+    }
+
+    public void login(String email, String senha) {
+    }
+
+    public boolean login(Usuario usuario) {
+
+        var check = findByEmail(usuario.getEmail());
+
+        if (usuario.getSenha().equals(check.getSenha())) {
+            return true;
+        }
+
+        return false;
     }
 }

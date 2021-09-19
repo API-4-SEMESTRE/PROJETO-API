@@ -38,11 +38,19 @@ public class UsuarioController {
     }
 
     @GetMapping("/find")
-    public ResponseEntity<List<Usuario>> findByEmail(
+    public ResponseEntity<Usuario> findByEmail(
             @RequestParam String email) {
 
         var usuario = usuarioService.findByEmail(email);
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(usuario);
     }
 
+
+    @PostMapping("/login")
+    public ResponseEntity<Boolean> login(
+            @RequestBody Usuario usuario) {
+
+        var check = usuarioService.login(usuario);
+        return ResponseEntity.ok(check);
+    }
 }
