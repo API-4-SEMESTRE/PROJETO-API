@@ -1,15 +1,8 @@
 <template>
   <div>
-    <v-app-bar color="#c74634" dense dark style="border: solid 1px black">
-      <v-avatar>
-        <img
-          src="https://cdn.vuetifyjs.com/images/john.jpg"
-          alt="John"
-          style="position: fixed; right: 0px; float: right; margin-bottom: 0"
-        />
-      </v-avatar>
-    </v-app-bar>
-    <h1 style="text-align: center; margin-top: 20px; font-size: 45px">AgendHome</h1>
+    <h1 style="text-align: center; margin-top: 20px; font-size: 45px">
+      AgendHome
+    </h1>
     <div id="cards-home">
       <v-row>
         <v-col>
@@ -55,7 +48,9 @@
           </v-card>
         </v-col>
       </v-row>
-      <h2 style="text-align: center; margin-top: 20px; font-size: 30px">Integrantes</h2>
+      <h2 style="text-align: center; margin-top: 20px; font-size: 30px">
+        Integrantes
+      </h2>
       <v-row style="margin-top: 20px">
         <v-col>
           <v-card class="mx-auto" max-width="300" elevation="5">
