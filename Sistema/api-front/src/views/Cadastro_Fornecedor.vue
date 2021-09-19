@@ -153,6 +153,103 @@
               </v-container>
             </v-form>
           </v-col>
+          <!-- CADASTRO ENDEREÇO -->
+          <v-col>
+            <v-form
+              style="padding-top: 30px"
+              ref="form"
+              v-model="validFornecedor"
+              lazy-validation
+              @submit.prevent="cadastrar_fornecedor"
+            >
+              <v-container class="ma-70" style="width: 90%; border: solid 1px">
+                <h2 style="text-align: center">Informações do Endereço</h2>
+                <v-row>
+                  <v-col cols="6">
+                    <span> CEP </span>
+                    <v-text-field
+                      v-model="cep"
+                      :rules="regra_cep"
+                      outlined
+                      required
+                      dense
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="6">
+                    <span> Rua </span>
+                    <v-text-field
+                      v-model="rua"
+                      :rules="regra_rua"
+                      outlined
+                      required
+                      dense
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="6" md="4">
+                    <span> Bairro</span>
+                    <v-text-field
+                      v-model="bairro"
+                      :rules="regra_bairro"
+                      outlined
+                      required
+                      dense
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="6" md="4">
+                    <span> Cidade </span>
+                    <v-text-field
+                      v-model="cidade"
+                      :rules="regra_cidade"
+                      outlined
+                      required
+                      dense
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="6" md="4">
+                    <span> Estado </span>
+                    <v-text-field
+                      v-model="estado"
+                      :rules="regra_estado"
+                      outlined
+                      required
+                      dense
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="6">
+                    <span> Número </span>
+                    <v-text-field
+                      v-model="numero"
+                      :rules="regra_numero"
+                      outlined
+                      required
+                      dense
+                    ></v-text-field>
+                  </v-col>
+                  <v-col cols="6">
+                    <span> Complemento </span>
+                    <v-text-field
+                      v-model="complemento"
+                      outlined
+                      dense
+                    ></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-btn
+                  class="mr-4"
+                  type="submit"
+                  :disabled="!validFornecedor"
+                  @click="validateFornecedor"
+                  id="btn_cadastrar_contato"
+                >
+                  Cadastrar
+                </v-btn>
+              </v-container>
+            </v-form>
+          </v-col>
         </v-row>
       </v-main>
       <!-- TABELA CONTATO -->
