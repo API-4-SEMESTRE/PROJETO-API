@@ -1,55 +1,66 @@
 <template>
-  <v-app>
-    <!-- <v-app-bar
-      app
-      color="primary"
-      dark
-    >
-      <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
+  <div id="app">
+    <v-app>
+      <v-main>
+        <v-app-bar color="#c74634" dark>
+          <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+          <v-toolbar-title class="white--text">AgendHouse</v-toolbar-title>
+        </v-app-bar>
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
-      </div>
+        <v-navigation-drawer v-model="drawer" absolute temporary width="250px">
+          <v-list nav dense>
+            <v-list-item>
+              <v-list-item-title>Menu</v-list-item-title>
+            </v-list-item>
+            <v-list-item-group active-class="blue--text text--darken-1">
+              <v-list-item
+                v-for="(item, index) in menus"
+                :key="index"
+                :to="item.url"
+              >
+                <v-list-item-icon>
+                  <v-icon>{{ item.icon }}</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>{{ item.conteudo }}</v-list-item-title>
+              </v-list-item>
+            </v-list-item-group>
+          </v-list>
+        </v-navigation-drawer>
+        <router-view></router-view>
 
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
-    </v-app-bar> -->
-
-    <v-main>
-      <router-view/>
-    </v-main>
-  </v-app>
+        <v-footer id="core-footer" absolute height="42">
+          <v-row justify="center">
+            <span class="font-weight-light copyright">
+              &copy;
+              {{ new Date().getFullYear() }}
+              - MOM
+            </span>
+          </v-row>
+        </v-footer>
+      </v-main>
+    </v-app>
+  </div>
 </template>
 
 <script>
-
 export default {
-  name: 'App',
-
+  name: "App",
+  components: {},
   data: () => ({
-    //
+    drawer: false,
+    menus: [
+      { conteudo: "Home", url: "/", icon: "mdi-home-variant" },
+      {
+        conteudo: "Cadastro de Fornecedor",
+        url: "/Cadastro_fornecedor",
+        icon: "mdi-package-variant",
+      },
+      {
+        conteudo: "Cadastro de Usuário",
+        url: "/Cadastro_usuario",
+        icon: "mdi-account-plus",
+      },
+    ],
   }),
 };
 </script>
