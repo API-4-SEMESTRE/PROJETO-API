@@ -56,22 +56,14 @@
                   </v-col>
                   <v-col cols="6">
                     <span> Telefone </span>
-                    <v-text-field
-                      outlined
-                      required
-                      dense
-                    ></v-text-field>
+                    <v-text-field outlined required dense></v-text-field>
                   </v-col>
                 </v-row>
 
                 <v-row justify="center" align="stretch">
                   <v-col cols="24">
                     <span>E-mail</span>
-                    <v-text-field
-                      outlined
-                      required
-                      dense
-                    ></v-text-field>
+                    <v-text-field outlined required dense></v-text-field>
                   </v-col>
                 </v-row>
 
@@ -249,8 +241,36 @@
               ></v-text-field>
             </v-card-title>
             <v-data-table
-              :headers="headers"
+              :headers="headers_contato"
               :items="lista_de_contato"
+              :search="search"
+            ></v-data-table>
+          </v-card>
+        </v-card-text>
+      </v-card>
+      <v-card
+        class="pa-2"
+        tile
+        outlined
+        color="#DCDCDC"
+        style="margin-top: 30px"
+      >
+        <v-card-text>
+          <v-card>
+            <v-card-title>
+              Lista de Fornecedor
+              <v-spacer></v-spacer>
+              <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="Pesquisar"
+                single-line
+                hide-details
+              ></v-text-field>
+            </v-card-title>
+            <v-data-table
+              :headers="headers_fornecedor"
+              :items="lista_de_fornecedor"
               :search="search"
             ></v-data-table>
           </v-card>
@@ -263,6 +283,7 @@
 
 <script>
 import Contato from "../services/contato";
+import Fornecedor from "../services/fornecedor";
 import Swal from "sweetalert2";
 
 export default {
@@ -289,6 +310,8 @@ export default {
 
     // Array com a lista de usuarios
     lista_de_contato: [],
+    // Array com a lista de fornecedores
+    lista_de_fornecedor: [],
 
     // Criando o objeto que vai ser feito o POST
     contato: {
@@ -300,8 +323,8 @@ export default {
     // Variavel que vai ser usada pra pesquisa da tabela
     search: "",
 
-    // Array que contem as colunas da tabela
-    headers: [
+    // Array que contem as colunas da tabela de contato
+    headers_contato: [
       {
         text: "CÓDIGO",
         align: "start",
@@ -310,10 +333,23 @@ export default {
       { text: "NOME", value: "nomecon" },
       { text: "FUNÇÃO", value: "func_con" },
     ],
+    // Array que contem as colunas da fornecedor
+    headers_fornecedor: [
+      {
+        text: "CÓDIGO",
+        align: "start",
+        value: "cod",
+      },
+      { text: "NOME FORNECEDOR", value: "nomeforn" },
+      { text: "RAMO", value: "ramo_forn" },
+      { text: "CNPJ", value: "cnpjforn" },
+      { text: "CÓDIGO CONTATO", value: "con_cod" },
+    ],
   }),
 
   mounted() {
     this.exibir_contato();
+    this.exibir_fornecedor();
   },
 
   methods: {
@@ -348,6 +384,21 @@ export default {
           Swal.fire(
             "Oops...",
             "Erro ao carregar a tabela de contatos! - Erro: " +
+              e.response.data.error,
+            "error"
+          );
+        });
+    },
+        // Método pra exibir os fornecedores
+    exibir_fornecedor() {
+      Fornecedor.listar_fornecedor()
+        .then((resposta_lista_fornecedor) => {
+          this.lista_de_fornecedor = resposta_lista_fornecedor.data;
+        })
+        .catch((e) => {
+          Swal.fire(
+            "Oops...",
+            "Erro ao carregar a tabela de fornecedores! - Erro: " +
               e.response.data.error,
             "error"
           );
