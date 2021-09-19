@@ -321,7 +321,6 @@ export default {
     cadastrar_contato() {
       Contato.salvar_contato(this.contato)
         .then((resposta_cadastro_contato) => {
-          this.contato = {};
           Swal.fire(
             "Sucesso",
             "Contato " +
