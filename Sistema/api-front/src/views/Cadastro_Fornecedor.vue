@@ -17,6 +17,7 @@
         </h1>
         <v-row>
           <v-col>
+            <!-- CADASTRO CONTATO -->
             <v-form
               style="padding-top: 30px"
               ref="form"
@@ -79,13 +80,14 @@
               </v-container>
             </v-form>
           </v-col>
+          <!-- CADASTRO FORNECEDOR -->
           <v-col>
             <v-form
               style="padding-top: 30px"
               ref="form"
-              v-model="valid"
+              v-model="validFornecedor"
               lazy-validation
-              @submit.prevent=""
+              @submit.prevent="cadastrar_fornecedor"
             >
               <v-container class="ma-70" style="width: 90%; border: solid 1px">
                 <h2 style="text-align: center">Informações do Fornecedor</h2>
@@ -97,7 +99,7 @@
                   <v-col cols="24">
                     <span style="padding-top: 8px"> Nome da Empresa </span>
                     <v-text-field
-                      v-model="nome_empresa"
+                      v-model="fornecedor.nomeforn"
                       :rules="regra_nome_empresa"
                       outlined
                       required
@@ -105,12 +107,11 @@
                     ></v-text-field>
                   </v-col>
                 </v-row>
-
                 <v-row>
                   <v-col cols="6">
                     <span> CNPJ</span>
                     <v-text-field
-                      v-model="cnpj"
+                      v-model="fornecedor.cnpjforn"
                       :rules="regra_cnpj"
                       outlined
                       required
@@ -120,7 +121,7 @@
                   <v-col cols="6">
                     <span> Ramo de Atividade </span>
                     <v-text-field
-                      v-model="ramo"
+                      v-model="fornecedor.ramo_forn"
                       :rules="regra_ramo"
                       outlined
                       required
@@ -128,89 +129,23 @@
                     ></v-text-field>
                   </v-col>
                 </v-row>
-
                 <v-row>
                   <v-col cols="6">
-                    <span> CEP </span>
+                    <span> Código do Contato </span>
                     <v-text-field
-                      v-model="cep"
-                      :rules="regra_cep"
-                      outlined
-                      required
-                      dense
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="6">
-                    <span> Rua </span>
-                    <v-text-field
-                      v-model="rua"
-                      :rules="regra_rua"
+                      v-model="fornecedor.con_cod"
+                      :rules="regra_codigo_contato"
                       outlined
                       required
                       dense
                     ></v-text-field>
                   </v-col>
                 </v-row>
-
-                <v-row>
-                  <v-col cols="6" md="4">
-                    <span> Bairro</span>
-                    <v-text-field
-                      v-model="bairro"
-                      :rules="regra_bairro"
-                      outlined
-                      required
-                      dense
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="6" md="4">
-                    <span> Cidade </span>
-                    <v-text-field
-                      v-model="cidade"
-                      :rules="regra_cidade"
-                      outlined
-                      required
-                      dense
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="6" md="4">
-                    <span> Estado </span>
-                    <v-text-field
-                      v-model="estado"
-                      :rules="regra_estado"
-                      outlined
-                      required
-                      dense
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-
-                <v-row>
-                  <v-col cols="6">
-                    <span> Número </span>
-                    <v-text-field
-                      v-model="numero"
-                      :rules="regra_numero"
-                      outlined
-                      required
-                      dense
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="6">
-                    <span> Complemento </span>
-                    <v-text-field
-                      v-model="complemento"
-                      outlined
-                      dense
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-
                 <v-btn
                   class="mr-4"
                   type="submit"
-                  :disabled="!valid"
-                  @click="validate"
+                  :disabled="!validFornecedor"
+                  @click="validateFornecedor"
                   id="btn_cadastrar_contato"
                 >
                   Cadastrar
@@ -220,6 +155,7 @@
           </v-col>
         </v-row>
       </v-main>
+      <!-- TABELA CONTATO -->
       <v-card
         class="pa-2"
         tile
@@ -248,6 +184,7 @@
           </v-card>
         </v-card-text>
       </v-card>
+      <!-- TABELA FORNECEDOR -->
       <v-card
         class="pa-2"
         tile
@@ -291,9 +228,11 @@ export default {
     // Validando se os campos estão preenchidos e se são validos
     valid: true,
     validContato: true,
+    validFornecedor: true,
     regra_nome_empresa: [(v) => !!v || "O nome da empresa é obrigatório"],
     regra_cnpj: [(v) => !!v || "O CNPJ é obrigatório"],
     regra_ramo: [(v) => !!v || "O ramo de atividade é obrigatório"],
+    regra_codigo_contato: [(v) => !!v || "O código de contato é obrigatório"],
     regra_cep: [(v) => !!v || "O CEP é obrigatório"],
     regra_rua: [(v) => !!v || "A rua é obrigatória"],
     regra_bairro: [(v) => !!v || "O bairro é obrigatório"],
@@ -318,6 +257,14 @@ export default {
       concod: "6",
       nomecon: "",
       func_con: "",
+    },
+    // Criando o objeto que vai ser feito o POST
+    fornecedor: {
+      cod: "7",
+      nomeforn: "",
+      ramo_forn: "",
+      cnpjforn: "",
+      con_cod: "",
     },
 
     // Variavel que vai ser usada pra pesquisa da tabela
@@ -357,6 +304,7 @@ export default {
     cadastrar_contato() {
       Contato.salvar_contato(this.contato)
         .then((resposta_cadastro_contato) => {
+          this.contato = {};
           Swal.fire(
             "Sucesso",
             "Contato " +
@@ -364,12 +312,34 @@ export default {
               " cadastrado com sucesso!!!",
             "success"
           );
-          this.exibir_usuario();
+          this.exibir_contato();
         })
         .catch((e) => {
           Swal.fire(
             "Oops...",
             "Erro ao cadastrar o contato! - Erro: " + e.response.data.error,
+            "error"
+          );
+        });
+    },
+    // Método de cadastro de fornecedor
+    cadastrar_fornecedor() {
+      Fornecedor.salvar_fornecedor(this.fornecedor)
+        .then((resposta_cadastro_fornecedor) => {
+          this.fornecedor = {};
+          Swal.fire(
+            "Sucesso",
+            "Fornecedor " +
+              resposta_cadastro_fornecedor.data.nomeforn +
+              " cadastrado com sucesso!!!",
+            "success"
+          );
+          this.exibir_fornecedor();
+        })
+        .catch((e) => {
+          Swal.fire(
+            "Oops...",
+            "Erro ao cadastrar o fornecedor! - Erro: " + e.response.data.error,
             "error"
           );
         });
@@ -389,7 +359,7 @@ export default {
           );
         });
     },
-        // Método pra exibir os fornecedores
+    // Método pra exibir os fornecedores
     exibir_fornecedor() {
       Fornecedor.listar_fornecedor()
         .then((resposta_lista_fornecedor) => {
@@ -407,6 +377,10 @@ export default {
     // Método que valida se os campos estão preenchidos, se não estiverem ele bloqueia o botão CADASTRAR
     validateContato() {
       this.$refs.form.validateContato();
+    },
+    // Método que valida se os campos estão preenchidos, se não estiverem ele bloqueia o botão CADASTRAR
+    validateFornecedor() {
+      this.$refs.form.validateFornecedor();
     },
   },
 };
