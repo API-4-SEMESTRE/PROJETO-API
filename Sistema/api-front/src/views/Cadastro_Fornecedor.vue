@@ -158,9 +158,9 @@
             <v-form
               style="padding-top: 30px"
               ref="form"
-              v-model="validFornecedor"
+              v-model="validEndereco"
               lazy-validation
-              @submit.prevent="cadastrar_fornecedor"
+              @submit.prevent="cadastrar_endereco"
             >
               <v-container class="ma-70" style="width: 90%; border: solid 1px">
                 <h2 style="text-align: center">Informações do Endereço</h2>
@@ -168,7 +168,7 @@
                   <v-col cols="6">
                     <span> CEP </span>
                     <v-text-field
-                      v-model="cep"
+                      v-model="endereco.cep_end"
                       :rules="regra_cep"
                       outlined
                       required
@@ -178,7 +178,7 @@
                   <v-col cols="6">
                     <span> Rua </span>
                     <v-text-field
-                      v-model="rua"
+                      v-model="endereco.rua_end"
                       :rules="regra_rua"
                       outlined
                       required
@@ -187,31 +187,21 @@
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col cols="6" md="4">
+                  <v-col cols="6">
                     <span> Bairro</span>
                     <v-text-field
-                      v-model="bairro"
+                      v-model="endereco.bairro_end"
                       :rules="regra_bairro"
                       outlined
                       required
                       dense
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="6" md="4">
+                  <v-col cols="6">
                     <span> Cidade </span>
                     <v-text-field
-                      v-model="cidade"
+                      v-model="endereco.cidade_end"
                       :rules="regra_cidade"
-                      outlined
-                      required
-                      dense
-                    ></v-text-field>
-                  </v-col>
-                  <v-col cols="6" md="4">
-                    <span> Estado </span>
-                    <v-text-field
-                      v-model="estado"
-                      :rules="regra_estado"
                       outlined
                       required
                       dense
@@ -220,20 +210,32 @@
                 </v-row>
                 <v-row>
                   <v-col cols="6">
-                    <span> Número </span>
+                    <span> Estado </span>
                     <v-text-field
-                      v-model="numero"
-                      :rules="regra_numero"
+                      v-model="endereco.estado_end"
+                      :rules="regra_estado"
                       outlined
                       required
                       dense
                     ></v-text-field>
                   </v-col>
                   <v-col cols="6">
+                    <span> Número </span>
+                    <v-text-field outlined required dense></v-text-field>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="6">
                     <span> Complemento </span>
+                    <v-text-field outlined dense></v-text-field>
+                  </v-col>
+                  <v-col cols="6">
+                    <span> Código Fornecedor </span>
                     <v-text-field
-                      v-model="complemento"
+                      v-model="endereco.forncod"
+                      :rules="regra_codigo_fornecedor"
                       outlined
+                      required
                       dense
                     ></v-text-field>
                   </v-col>
@@ -241,8 +243,8 @@
                 <v-btn
                   class="mr-4"
                   type="submit"
-                  :disabled="!validFornecedor"
-                  @click="validateFornecedor"
+                  :disabled="!validEndereco"
+                  @click="validateEndereco"
                   id="btn_cadastrar_contato"
                 >
                   Cadastrar
@@ -356,6 +358,7 @@ export default {
     valid: true,
     validContato: true,
     validFornecedor: true,
+    validEndereco: true,
     regra_nome_empresa: [(v) => !!v || "O nome da empresa é obrigatório"],
     regra_cnpj: [(v) => !!v || "O CNPJ é obrigatório"],
     regra_ramo: [(v) => !!v || "O ramo de atividade é obrigatório"],
@@ -366,6 +369,9 @@ export default {
     regra_cidade: [(v) => !!v || "A cidade é obrigatória"],
     regra_estado: [(v) => !!v || "O estado é obrigatório"],
     regra_numero: [(v) => !!v || "O número é obrigatório"],
+    regra_codigo_fornecedor: [
+      (v) => !!v || "O código de fornecedor é obrigatório",
+    ],
     regra_nome_completo: [(v) => !!v || "O nome é obrigatório"],
     regra_funcao: [(v) => !!v || "A função é obrigatória"],
     regra_telefone: [(v) => !!v || "O telefone é obrigatório"],
@@ -394,6 +400,15 @@ export default {
       ramo_forn: "",
       cnpjforn: "",
       con_cod: "",
+    },
+    // Criando o objeto que vai ser feito o POST
+    endereco: {
+      rua_end: "",
+      bairro_end: "",
+      cep_end: "",
+      cidade_end: "",
+      estado_end: "",
+      forncod: "",
     },
 
     // Variavel que vai ser usada pra pesquisa da tabela
@@ -487,6 +502,28 @@ export default {
           );
         });
     },
+    // Método de cadastro de endereço
+    cadastrar_endereco() {
+      Endereco.salvar_endereco(this.endereco)
+        .then((resposta_cadastro_endereco) => {
+          this.endereco = {};
+          Swal.fire(
+            "Sucesso",
+            "Endereço " +
+              resposta_cadastro_endereco.data.rua_end +
+              " cadastrado com sucesso!!!",
+            "success"
+          );
+          this.exibir_fornecedor();
+        })
+        .catch((e) => {
+          Swal.fire(
+            "Oops...",
+            "Erro ao cadastrar o endereço! - Erro: " + e.response.data.error,
+            "error"
+          );
+        });
+    },
     // Método pra exibir os contatos
     exibir_contato() {
       Contato.listar_contato()
@@ -517,7 +554,7 @@ export default {
           );
         });
     },
-        // Método pra exibir os endereços
+    // Método pra exibir os endereços
     exibir_endereco() {
       Endereco.listar_endereco()
         .then((resposta_lista_endereco) => {
@@ -539,6 +576,10 @@ export default {
     // Método que valida se os campos estão preenchidos, se não estiverem ele bloqueia o botão CADASTRAR
     validateFornecedor() {
       this.$refs.form.validateFornecedor();
+    },
+    // Método que valida se os campos estão preenchidos, se não estiverem ele bloqueia o botão CADASTRAR
+    validateEndereco() {
+      this.$refs.form.validateEndereco();
     },
   },
 };
