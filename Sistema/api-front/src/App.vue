@@ -51,6 +51,11 @@ export default {
     menus: [
       { conteudo: "Home", url: "/", icon: "mdi-home-variant" },
       {
+        conteudo: "Login",
+        url: "/Login",
+        icon: "mdi-login",
+      },
+      {
         conteudo: "Cadastro de Fornecedor",
         url: "/Cadastro_fornecedor",
         icon: "mdi-package-variant",
