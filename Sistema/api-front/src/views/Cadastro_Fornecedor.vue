@@ -20,9 +20,9 @@
             <v-form
               style="padding-top: 30px"
               ref="form"
-              v-model="valid"
+              v-model="validContato"
               lazy-validation
-              @submit.prevent="cadastrar_usuario"
+              @submit.prevent="cadastrar_contato"
             >
               <v-container class="ma-70" style="width: 80%; border: solid 1px">
                 <h2 style="text-align: center">Informações de Contato</h2>
@@ -34,7 +34,7 @@
                   <v-col cols="24">
                     <span> Nome Completo</span>
                     <v-text-field
-                      v-model="nome_completo"
+                      v-model="contato.nomecon"
                       :rules="regra_nome_completo"
                       outlined
                       required
@@ -47,7 +47,7 @@
                   <v-col cols="6">
                     <span> Função </span>
                     <v-text-field
-                      v-model="funcao"
+                      v-model="contato.func_con"
                       :rules="regra_funcao"
                       outlined
                       required
@@ -57,8 +57,6 @@
                   <v-col cols="6">
                     <span> Telefone </span>
                     <v-text-field
-                      v-model="telefone"
-                      :rules="regra_telefone"
                       outlined
                       required
                       dense
@@ -70,8 +68,6 @@
                   <v-col cols="24">
                     <span>E-mail</span>
                     <v-text-field
-                      v-model="email"
-                      :rules="regra_email"
                       outlined
                       required
                       dense
@@ -82,9 +78,9 @@
                 <v-btn
                   class="mr-4"
                   type="submit"
-                  :disabled="!valid"
-                  @click="validate"
-                  id="btn_cadastrar_fornecedor"
+                  :disabled="!validContato"
+                  @click="validateContato"
+                  id="btn_cadastrar_contato"
                 >
                   Cadastrar
                 </v-btn>
@@ -97,7 +93,7 @@
               ref="form"
               v-model="valid"
               lazy-validation
-              @submit.prevent="cadastrar_usuario"
+              @submit.prevent=""
             >
               <v-container class="ma-70" style="width: 90%; border: solid 1px">
                 <h2 style="text-align: center">Informações do Fornecedor</h2>
@@ -223,7 +219,7 @@
                   type="submit"
                   :disabled="!valid"
                   @click="validate"
-                  id="btn_cadastrar_fornecedor"
+                  id="btn_cadastrar_contato"
                 >
                   Cadastrar
                 </v-btn>
@@ -242,7 +238,7 @@
         <v-card-text>
           <v-card>
             <v-card-title>
-              Lista de Fornecedores
+              Lista de Contatos
               <v-spacer></v-spacer>
               <v-text-field
                 v-model="search"
@@ -254,7 +250,7 @@
             </v-card-title>
             <v-data-table
               :headers="headers"
-              :items="lista_de_usuarios"
+              :items="lista_de_contato"
               :search="search"
             ></v-data-table>
           </v-card>
@@ -266,13 +262,14 @@
 
 
 <script>
-import Usuario from "../services/usuario";
+import Contato from "../services/contato";
 import Swal from "sweetalert2";
 
 export default {
   data: () => ({
     // Validando se os campos estão preenchidos e se são validos
     valid: true,
+    validContato: true,
     regra_nome_empresa: [(v) => !!v || "O nome da empresa é obrigatório"],
     regra_cnpj: [(v) => !!v || "O CNPJ é obrigatório"],
     regra_ramo: [(v) => !!v || "O ramo de atividade é obrigatório"],
@@ -291,17 +288,13 @@ export default {
     ],
 
     // Array com a lista de usuarios
-    lista_de_usuarios: [],
+    lista_de_contato: [],
 
     // Criando o objeto que vai ser feito o POST
-    usuario: {
-      cod: "5",
-      nome: "",
-      tipo: "FUNCIONARIO",
-      email: "",
-      date_create: "2021-09-15T00:00:00.000+00:00",
-      active: "1",
-      senha: "",
+    contato: {
+      concod: "6",
+      nomecon: "",
+      func_con: "",
     },
 
     // Variavel que vai ser usada pra pesquisa da tabela
@@ -312,31 +305,27 @@ export default {
       {
         text: "CÓDIGO",
         align: "start",
-        value: "cod",
+        value: "concod",
       },
-      { text: "NOME", value: "nome" },
-      { text: "TIPO", value: "tipo" },
-      { text: "EMAIL", value: "email" },
-      { text: "DATA DE CRIAÇÃO", value: "date_create" },
-      { text: "ATIVO", value: "active" },
-      { text: "SENHA", value: "senha" },
+      { text: "NOME", value: "nomecon" },
+      { text: "FUNÇÃO", value: "func_con" },
     ],
   }),
 
   mounted() {
-    this.exibir_usuario();
+    this.exibir_contato();
   },
 
   methods: {
-    // Método de cadastro de usuario
-    cadastrar_usuario() {
-      Usuario.salvar_usuario(this.usuario)
-        .then((resposta_cadastro_usuario) => {
-          this.usuario = {};
+    // Método de cadastro de contato
+    cadastrar_contato() {
+      Contato.salvar_contato(this.contato)
+        .then((resposta_cadastro_contato) => {
+          this.contato = {};
           Swal.fire(
             "Sucesso",
-            "Usuário " +
-              resposta_cadastro_usuario.data.nome +
+            "Contato " +
+              resposta_cadastro_contato.data.nomecon +
               " cadastrado com sucesso!!!",
             "success"
           );
@@ -345,36 +334,36 @@ export default {
         .catch((e) => {
           Swal.fire(
             "Oops...",
-            "Erro ao cadastrar o usuário! - Erro: " + e.response.data.error,
+            "Erro ao cadastrar o contato! - Erro: " + e.response.data.error,
             "error"
           );
         });
     },
-    // Método pra exibir os usuarios
-    exibir_usuario() {
-      Usuario.listar_usuarios()
-        .then((resposta_lista_usuarios) => {
-          this.lista_de_usuarios = resposta_lista_usuarios.data;
+    // Método pra exibir os contatos
+    exibir_contato() {
+      Contato.listar_contato()
+        .then((resposta_lista_contato) => {
+          this.lista_de_contato = resposta_lista_contato.data;
         })
         .catch((e) => {
           Swal.fire(
             "Oops...",
-            "Erro ao carregar a tabela de usuários! - Erro: " +
+            "Erro ao carregar a tabela de contatos! - Erro: " +
               e.response.data.error,
             "error"
           );
         });
     },
     // Método que valida se os campos estão preenchidos, se não estiverem ele bloqueia o botão CADASTRAR
-    validate() {
-      this.$refs.form.validate();
+    validateContato() {
+      this.$refs.form.validateContato();
     },
   },
 };
 </script>
 
 <style>
-#btn_cadastrar_fornecedor {
+#btn_cadastrar_contato {
   display: flex;
   align-items: center;
   justify-content: center;
