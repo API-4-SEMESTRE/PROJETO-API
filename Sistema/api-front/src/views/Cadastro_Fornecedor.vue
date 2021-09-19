@@ -310,6 +310,35 @@
           </v-card>
         </v-card-text>
       </v-card>
+      <!-- TABELA ENDEREÇO -->
+      <v-card
+        class="pa-2"
+        tile
+        outlined
+        color="#DCDCDC"
+        style="margin-top: 30px"
+      >
+        <v-card-text>
+          <v-card>
+            <v-card-title>
+              Lista de Endereços
+              <v-spacer></v-spacer>
+              <v-text-field
+                v-model="search"
+                append-icon="mdi-magnify"
+                label="Pesquisar"
+                single-line
+                hide-details
+              ></v-text-field>
+            </v-card-title>
+            <v-data-table
+              :headers="headers_endereco"
+              :items="lista_de_endereco"
+              :search="search"
+            ></v-data-table>
+          </v-card>
+        </v-card-text>
+      </v-card>
     </v-app>
   </div>
 </template>
@@ -318,6 +347,7 @@
 <script>
 import Contato from "../services/contato";
 import Fornecedor from "../services/fornecedor";
+import Endereco from "../services/endereco";
 import Swal from "sweetalert2";
 
 export default {
@@ -348,6 +378,8 @@ export default {
     lista_de_contato: [],
     // Array com a lista de fornecedores
     lista_de_fornecedor: [],
+    // Array com a lista de endereços
+    lista_de_enderecos: [],
 
     // Criando o objeto que vai ser feito o POST
     contato: {
@@ -389,11 +421,25 @@ export default {
       { text: "CNPJ", value: "cnpjforn" },
       { text: "CÓDIGO CONTATO", value: "con_cod" },
     ],
+    // Array que contem as colunas do endereço
+    headers_endereco: [
+      {
+        text: "CEP",
+        align: "start",
+        value: "cep_end",
+      },
+      { text: "RUA", value: "rua_end" },
+      { text: "BAIRRO", value: "bairro_end" },
+      { text: "CIDADE", value: "cidade_end" },
+      { text: "ESTADO", value: "estado_end" },
+      { text: "CÓDIGO FORNECEDOR", value: "forncod" },
+    ],
   }),
 
   mounted() {
     this.exibir_contato();
     this.exibir_fornecedor();
+    this.exibir_endereco();
   },
 
   methods: {
@@ -466,6 +512,21 @@ export default {
           Swal.fire(
             "Oops...",
             "Erro ao carregar a tabela de fornecedores! - Erro: " +
+              e.response.data.error,
+            "error"
+          );
+        });
+    },
+        // Método pra exibir os endereços
+    exibir_endereco() {
+      Endereco.listar_endereco()
+        .then((resposta_lista_endereco) => {
+          this.lista_de_endereco = resposta_lista_endereco.data;
+        })
+        .catch((e) => {
+          Swal.fire(
+            "Oops...",
+            "Erro ao carregar a tabela de endereços! - Erro: " +
               e.response.data.error,
             "error"
           );
