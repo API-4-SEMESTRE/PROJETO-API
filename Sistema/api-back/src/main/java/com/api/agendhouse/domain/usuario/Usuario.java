@@ -14,7 +14,7 @@ public class Usuario {
 
     @Id
     @Column(name="USU_COD")
-    //@GeneratedValue(generator = "USU_SQ", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "USU_SQ", strategy = GenerationType.SEQUENCE)
     private long cod;
 
     @Column(name="USU_NOME")

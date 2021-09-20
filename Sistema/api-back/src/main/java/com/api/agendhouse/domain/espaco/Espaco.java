@@ -12,7 +12,7 @@ public class Espaco {
 
     @Id
     @Column(name="ESP_COD_ESPA")
-    //@GeneratedValue(generator = "ESP_SQ", strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "ESP_SQ", strategy = GenerationType.SEQUENCE)
     private long cod_esp;
 
     @Column(name="ESP_NOME_ESPA")

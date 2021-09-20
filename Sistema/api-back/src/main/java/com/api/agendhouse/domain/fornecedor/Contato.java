@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class Contato {
     @Id
     @Column(name = "CON_COD_CONT")
-    //@GeneratedValue(generator = "FOR_SQ", strategy =  GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "FOR_SQ", strategy =  GenerationType.SEQUENCE)
     private long concod;
 
     @Column(name = "CON_NOME")
