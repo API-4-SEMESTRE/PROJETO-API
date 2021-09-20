@@ -413,6 +413,8 @@ export default {
       },
       { text: "NOME", value: "nomecon" },
       { text: "FUNÇÃO", value: "func_con" },
+      { text: "TEL", value: "con_tel" },
+      { text: "EMAIL", value: "email_con" },
     ],
     // Array que contem as colunas da fornecedor
     headers_fornecedor: [
@@ -429,15 +431,17 @@ export default {
     // Array que contem as colunas do endereço
     headers_endereco: [
       {
-        text: "CEP",
-        align: "start",
-        value: "cep_end",
+      text: "CÓDIGO FORNECEDOR",
+      align: "start",
+      value: "forncod"
       },
+      { text: "CEP", value: "cep_end" },
       { text: "RUA", value: "rua_end" },
+      { text: "NUM", value: "num_end" },
+      { text: "COMPLEMENTO", value: "complemento_end" },
       { text: "BAIRRO", value: "bairro_end" },
       { text: "CIDADE", value: "cidade_end" },
       { text: "ESTADO", value: "estado_end" },
-      { text: "CÓDIGO FORNECEDOR", value: "forncod" },
     ],
   }),
 
