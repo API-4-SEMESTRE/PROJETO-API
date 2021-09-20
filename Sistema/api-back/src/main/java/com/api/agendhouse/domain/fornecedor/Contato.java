@@ -11,7 +11,7 @@ import javax.persistence.*;
 public class Contato {
     @Id
     @Column(name = "CON_COD_CONT")
-    @GeneratedValue(generator = "FOR_SQ", strategy =  GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "Con_SQ", strategy =  GenerationType.SEQUENCE)
     private long concod;
 
     @Column(name = "CON_NOME")
@@ -20,8 +20,8 @@ public class Contato {
     @Column(name = "CON_FUNCAO")
     private String func_con;
 
-    @Column(name = "CON_TEL")
-    private int tel_con;
+    @Column(name = "CON_TELEFONE")
+    private Integer tel_con;
 
     @Column(name = "CON_EMAIL")
     private String email_con;
