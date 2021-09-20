@@ -33,6 +33,6 @@ public class Endereco {
     @Column(name = "END_COMPLEMENTO")
     private String complemento_end;
 
-    @Column(name = "END_NUM")
-    private String num_end;
+    @Column(name = "END_NUMERO")
+    private Integer num_end;
 }
