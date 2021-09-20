@@ -26,7 +26,7 @@ O projeto a ser desenvolvido vai ser um sistema para agendamentos de eventos na 
  <a href="#projeto-">Projeto</a> •
  <a href="#desafio-">Desafio</a> • 
  <a href="#entregas-">Entregas</a> •
- <a href="#Rodando-o-Sistema-">Rodar Sistema</a> •
+ <a href="#Rodando-o-Sistema-">Rodar o sistema</a> •
  <a href="#tecnologias-">Tecnologias</a> •
  <a href="#membros-">Membros</a> • 
  <a href="#licença-">Licença</a> • 
