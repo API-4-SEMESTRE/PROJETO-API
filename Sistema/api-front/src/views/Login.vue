@@ -6,23 +6,26 @@
                <v-flex xs12 sm8 md4>
                   <v-card class="elevation-12">
                      <v-card-text>
-                        <v-form>
+                        <v-form
+                        ref="form"
+                        lazy-validation
+                        @submit.prevent="do_login">
                            <v-text-field
-                              name="login"
-                              label="Login"
+                              v-model="usuario.email"
+                              name="email"
+                              label="email"
                               type="text"
                            ></v-text-field>
                            <v-text-field
-                              id="password"
-                              name="password"
-                              label="Senha"
+                              v-model="usuario.senha"
+                              id="senha"
+                              name="senha"
+                              label="senha"
                               type="password"
                            ></v-text-field>
+                               <v-btn block color="#c74634" type="submit">Login</v-btn>
                         </v-form>
                      </v-card-text>
-                     <v-card-actions>           
-                        <v-btn block color="#c74634" to="/home">Login</v-btn>
-                     </v-card-actions>
                   </v-card>
                </v-flex>
             </v-layout>
@@ -31,12 +34,45 @@
    </v-app>
 </template>
 
+<script src="../router/index.js"></script>
 <script>
+import Usuario from "../services/login";
+import Swal from "sweetalert2";
+const { currentUser } = require("../router/index");
+
 export default {
     name: "login",
-    data() {
-        return {};
-    },
-    methods: {}
+    data: () => ({
+        usuario: {
+            email: "",
+            senha: ""
+        }
+    }),
+    methods: {
+      do_login() {
+        Usuario.login(this.usuario)
+            .then((res) => {
+                if (res.data.message === false) {
+                  Swal.fire(
+                      "Oops...",
+                      "Usuário ou senha invalidos",
+                      "error"
+                  );
+                }
+                else {
+                    localStorage.setItem("returnLogin", res.data.message);
+                    this.$router.replace('home');
+
+                }
+            })
+            .catch(() => {
+              Swal.fire(
+                  "Oops...",
+                  "Usuário ou senha invalidos",
+                  "error"
+              );
+            });
+      }
+    }
 }
 </script>

@@ -5,43 +5,53 @@ import Login from '../views/Login.vue'
 import Cadastro_Fornecedor from '../views/Cadastro_Fornecedor'
 import Cadastro_Usuario from '../views/Cadastro_Usuario'
 
-Vue.use(VueRouter)
-
-const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  },
-  {
-    path: '/Login',
-    name: 'Login',
-    component: Login
-  },
-  {
-    path: '/Cadastro_fornecedor',
-    name: 'Cadastro_Fornecedor',
-    component: Cadastro_Fornecedor
-  },
-  {
-    path: '/Cadastro_Usuario',
-    name: 'Cadastro_Usuario',
-    component: Cadastro_Usuario
-  }
-]
+Vue.use(VueRouter);
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes: [
+    {
+      path: '*',
+      redirect: '/login'
+    },
+    {
+      path: '/',
+      redirect: '/login'
+    },
+    {
+      path: '/Login',
+      name: 'Login',
+      component: Login,
+    },
+    {
+      path: '/home',
+      name: 'Home',
+      component: Home,
+      meta: {requiresAuth: true}
+    },
+    {
+      path: '/Cadastro_fornecedor',
+      name: 'Cadastro_Fornecedor',
+      component: Cadastro_Fornecedor,
+      meta: {requiresAuth: true}
+    },
+    {
+      path: '/Cadastro_Usuario',
+      name: 'Cadastro_Usuario',
+      component: Cadastro_Usuario,
+      meta: {requiresAuth: true}
+    }
+  ]
 })
 
-export default router
+router.beforeEach((to, from, next) =>{
+  var currentUser = localStorage.getItem("returnLogin");
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+
+  if (requiresAuth && !currentUser) next('login');
+  else if (!requiresAuth && currentUser) next('home')
+  else next();
+
+})
+export default router;

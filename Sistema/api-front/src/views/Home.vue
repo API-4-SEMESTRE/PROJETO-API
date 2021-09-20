@@ -115,7 +115,7 @@
             <v-img
               class="white--text align-end"
               height="300px"
-              src="../images/tairik.jpeg"
+              src="../images/wallace.jpeg"
             >
             </v-img>
             <v-card-text class="text--primary">
@@ -235,7 +235,7 @@
             <v-img
               class="white--text align-end"
               height="300px"
-              src="../images/tairik.jpeg"
+              src="../images/alex.jpeg"
             >
             </v-img>
             <v-card-text class="text--primary">

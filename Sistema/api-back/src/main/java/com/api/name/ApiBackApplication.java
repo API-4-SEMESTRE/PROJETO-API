@@ -10,4 +10,4 @@ public class ApiBackApplication {
 		SpringApplication.run(ApiBackApplication.class, args);
 	}
 
-}
+

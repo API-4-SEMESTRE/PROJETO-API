@@ -2,10 +2,14 @@
   <div id="app">
     <v-app>
       <v-main>
-        <v-app-bar color="#c74634" dark>
-          <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
-          <v-toolbar-title class="white--text">AgendHouse</v-toolbar-title>
-        </v-app-bar>
+            <v-app-bar color="#c74634" dark>
+              <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+              <v-toolbar-title class="white--text">AgendHouse</v-toolbar-title>
+              <v-spacer></v-spacer>
+              <v-btn icon v-on:click="cleanStorage()">
+                <v-icon>mdi-exit-run</v-icon>
+              </v-btn>
+            </v-app-bar>
 
         <v-navigation-drawer v-model="drawer" absolute temporary width="250px">
           <v-list nav dense>
@@ -21,22 +25,13 @@
                 <v-list-item-icon>
                   <v-icon>{{ item.icon }}</v-icon>
                 </v-list-item-icon>
+
                 <v-list-item-title>{{ item.conteudo }}</v-list-item-title>
               </v-list-item>
             </v-list-item-group>
           </v-list>
         </v-navigation-drawer>
         <router-view></router-view>
-
-        <v-footer id="core-footer" absolute height="42">
-          <v-row justify="center">
-            <span class="font-weight-light copyright">
-              &copy;
-              {{ new Date().getFullYear() }}
-              - MOM
-            </span>
-          </v-row>
-        </v-footer>
       </v-main>
     </v-app>
   </div>
@@ -51,11 +46,6 @@ export default {
     menus: [
       { conteudo: "Home", url: "/", icon: "mdi-home-variant" },
       {
-        conteudo: "Login",
-        url: "/Login",
-        icon: "mdi-login",
-      },
-      {
         conteudo: "Cadastro de Fornecedor",
         url: "/Cadastro_fornecedor",
         icon: "mdi-package-variant",
@@ -67,5 +57,13 @@ export default {
       },
     ],
   }),
+          methods: {
+              cleanStorage() {
+
+                      localStorage.clear();
+                      window.location.reload(true);
+
+              }
+          },
 };
 </script>
