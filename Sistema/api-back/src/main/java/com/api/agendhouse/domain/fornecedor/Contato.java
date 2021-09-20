@@ -20,11 +20,11 @@ public class Contato {
     @Column(name = "CON_FUNCAO")
     private String func_con;
 
-    //@Column(name = "CON_TEL")
-    //private int tel_con;
+    @Column(name = "CON_TEL")
+    private int tel_con;
 
-    //@Column(name = "CON_EMAIL")
-    //private String email_con;
+    @Column(name = "CON_EMAIL")
+    private String email_con;
 
     public Contato(){}
 }
