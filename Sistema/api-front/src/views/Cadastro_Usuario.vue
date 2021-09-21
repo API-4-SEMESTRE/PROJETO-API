@@ -56,6 +56,7 @@
               :disabled="!valid"
               @click="validate"
               id="btn_cadastrar_usuario"
+              color="primary"
             >
               Cadastrar
             </v-btn>
@@ -137,7 +138,7 @@ export default {
       { text: "EMAIL", value: "email" },
       { text: "DATA DE CRIAÇÃO", value: "date_create" },
       { text: "ATIVO", value: "active" },
-      { text: "SENHA", value: "senha" },
+      //{ text: "SENHA", value: "senha" },
     ],
   }),
 
@@ -197,8 +198,6 @@ export default {
   align-items: center;
   justify-content: center;
   margin: auto;
-  background-color: #c74634;
-  color: white;
   border: solid 1px black;
 }
 </style>
