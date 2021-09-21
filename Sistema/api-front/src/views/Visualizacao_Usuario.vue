@@ -3,7 +3,7 @@
     <v-app>
       <v-main>
         <h1 style="text-align: center; margin-top: 20px">
-          Visualização de Usuário
+          Visualização dos Usuários
         </h1>
       </v-main>
       <v-card
