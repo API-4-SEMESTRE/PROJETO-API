@@ -56,40 +56,13 @@
               :disabled="!valid"
               @click="validate"
               id="btn_cadastrar_usuario"
+              color="primary"
             >
               Cadastrar
             </v-btn>
           </v-container>
         </v-form>
       </v-main>
-      <v-card
-        class="pa-2"
-        tile
-        outlined
-        color="#DCDCDC"
-        style="margin-top: 30px"
-      >
-        <v-card-text>
-          <v-card>
-            <v-card-title>
-              Lista de Usuários
-              <v-spacer></v-spacer>
-              <v-text-field
-                v-model="search"
-                append-icon="mdi-magnify"
-                label="Pesquisar"
-                single-line
-                hide-details
-              ></v-text-field>
-            </v-card-title>
-            <v-data-table
-              :headers="headers"
-              :items="lista_de_usuarios"
-              :search="search"
-            ></v-data-table>
-          </v-card>
-        </v-card-text>
-      </v-card>
     </v-app>
   </div>
 </template>
@@ -110,41 +83,15 @@ export default {
     ],
     regra_senha: [(v) => !!v || "A senha é obrigatória"],
 
-    // Array com a lista de usuarios
-    lista_de_usuarios: [],
-
     // Criando o objeto que vai ser feito o POST
     usuario: {
-      cod: "12",
       nome: "",
-      tipo: "FUNCIONARIO",
+      tipo: "COLABORADOR",
       email: "",
       active: "True",
       senha: "",
     },
-
-    // Variavel que vai ser usada pra pesquisa da tabela
-    search: "",
-
-    // Array que contem as colunas da tabela
-    headers: [
-      {
-        text: "CÓDIGO",
-        align: "start",
-        value: "cod",
-      },
-      { text: "NOME", value: "nome" },
-      { text: "TIPO", value: "tipo" },
-      { text: "EMAIL", value: "email" },
-      { text: "DATA DE CRIAÇÃO", value: "date_create" },
-      { text: "ATIVO", value: "active" },
-      { text: "SENHA", value: "senha" },
-    ],
   }),
-
-  mounted() {
-    this.exibir_usuario();
-  },
 
   methods: {
     // Método de cadastro de usuario
@@ -169,21 +116,6 @@ export default {
           );
         });
     },
-    // Método pra exibir os usuarios
-    exibir_usuario() {
-      Usuario.listar_usuarios()
-        .then((resposta_lista_usuarios) => {
-          this.lista_de_usuarios = resposta_lista_usuarios.data;
-        })
-        .catch((e) => {
-          Swal.fire(
-            "Oops...",
-            "Erro ao carregar a tabela de usuários! - Erro: " +
-              e.response.data.error,
-            "error"
-          );
-        });
-    },
     // Método que valida se os campos estão preenchidos, se não estiverem ele bloqueia o botão CADASTRAR
     validate() {
       this.$refs.form.validate();
@@ -198,8 +130,6 @@ export default {
   align-items: center;
   justify-content: center;
   margin: auto;
-  background-color: #c74634;
-  color: white;
   border: solid 1px black;
 }
 </style>

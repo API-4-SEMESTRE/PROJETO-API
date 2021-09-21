@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Cadastro_Fornecedor from '../views/Cadastro_Fornecedor'
 import Cadastro_Usuario from '../views/Cadastro_Usuario'
+import Visualizacao_Usuario from '../views/Visualizacao_Usuario'
 
 Vue.use(VueRouter);
 
@@ -40,6 +41,12 @@ const router = new VueRouter({
       path: '/Cadastro_Usuario',
       name: 'Cadastro_Usuario',
       component: Cadastro_Usuario,
+      meta: {requiresAuth: true}
+    },
+    {
+      path: '/Visualizacao_Usuario',
+      name: 'Visualizacao_Usuario',
+      component: Visualizacao_Usuario,
       meta: {requiresAuth: true}
     }
   ]

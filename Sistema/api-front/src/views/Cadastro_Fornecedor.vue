@@ -47,14 +47,26 @@
                   </v-col>
                   <v-col cols="6">
                     <span> Telefone </span>
-                    <v-text-field outlined required dense></v-text-field>
+                    <v-text-field
+                      outlined
+                      required
+                      dense
+                      v-model="contato.tel_con"
+                      :rules="regra_telefone"
+                    ></v-text-field>
                   </v-col>
                 </v-row>
 
                 <v-row justify="center" align="stretch">
                   <v-col cols="24">
                     <span>E-mail</span>
-                    <v-text-field outlined required dense></v-text-field>
+                    <v-text-field
+                      outlined
+                      required
+                      dense
+                      v-model="contato.email_con"
+                      :rules="regra_email"
+                    ></v-text-field>
                   </v-col>
                 </v-row>
 
@@ -64,8 +76,9 @@
                   :disabled="!validContato"
                   @click="validateContato"
                   id="btn_cadastrar_contato"
+                  color="primary"
                 >
-                  Cadastrar
+                  Prosseguir
                 </v-btn>
               </v-container>
             </v-form>
@@ -137,8 +150,9 @@
                   :disabled="!validFornecedor"
                   @click="validateFornecedor"
                   id="btn_cadastrar_contato"
+                  color="primary"
                 >
-                  Cadastrar
+                  Prosseguir
                 </v-btn>
               </v-container>
             </v-form>
@@ -211,13 +225,23 @@
                   </v-col>
                   <v-col cols="6">
                     <span> Número </span>
-                    <v-text-field outlined required dense></v-text-field>
+                    <v-text-field
+                      outlined
+                      required
+                      dense
+                      v-model="endereco.num_end"
+                      :rules="regra_estado"
+                    ></v-text-field>
                   </v-col>
                 </v-row>
                 <v-row>
                   <v-col cols="6">
                     <span> Complemento </span>
-                    <v-text-field outlined dense></v-text-field>
+                    <v-text-field 
+                    outlined 
+                    dense
+                    v-model="endereco.complemento_end"
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="6">
                     <span> Código Fornecedor </span>
@@ -236,6 +260,7 @@
                   :disabled="!validEndereco"
                   @click="validateEndereco"
                   id="btn_cadastrar_contato"
+                  color="primary"
                 >
                   Cadastrar
                 </v-btn>
@@ -375,17 +400,15 @@ export default {
     // Array com a lista de fornecedores
     lista_de_fornecedor: [],
     // Array com a lista de endereços
-    lista_de_enderecos: [],
+    lista_de_endereco: [],
 
     // Criando o objeto que vai ser feito o POST
     contato: {
-      concod: "6",
       nomecon: "",
       func_con: "",
     },
     // Criando o objeto que vai ser feito o POST
     fornecedor: {
-      cod: "7",
       nomeforn: "",
       ramo_forn: "",
       cnpjforn: "",
@@ -413,6 +436,8 @@ export default {
       },
       { text: "NOME", value: "nomecon" },
       { text: "FUNÇÃO", value: "func_con" },
+      { text: "TEL", value: "tel_con" },
+      { text: "EMAIL", value: "email_con" },
     ],
     // Array que contem as colunas da fornecedor
     headers_fornecedor: [
@@ -429,15 +454,17 @@ export default {
     // Array que contem as colunas do endereço
     headers_endereco: [
       {
-        text: "CEP",
+        text: "CÓDIGO FORNECEDOR",
         align: "start",
-        value: "cep_end",
+        value: "forncod",
       },
+      { text: "CEP", value: "cep_end" },
       { text: "RUA", value: "rua_end" },
+      { text: "NUMERO", value: "num_end" },
+      { text: "COMPLEMENTO", value: "complemento_end" },
       { text: "BAIRRO", value: "bairro_end" },
       { text: "CIDADE", value: "cidade_end" },
       { text: "ESTADO", value: "estado_end" },
-      { text: "CÓDIGO FORNECEDOR", value: "forncod" },
     ],
   }),
 
@@ -504,7 +531,7 @@ export default {
               " cadastrado com sucesso!!!",
             "success"
           );
-          this.exibir_fornecedor();
+          this.exibir_endereco();
         })
         .catch((e) => {
           Swal.fire(
@@ -581,8 +608,6 @@ export default {
   align-items: center;
   justify-content: center;
   margin: auto;
-  background-color: #c74634;
-  color: white;
   border: solid 1px black;
 }
 </style>
