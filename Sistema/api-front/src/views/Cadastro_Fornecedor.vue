@@ -76,8 +76,9 @@
                   :disabled="!validContato"
                   @click="validateContato"
                   id="btn_cadastrar_contato"
+                  color="primary"
                 >
-                  Cadastrar
+                  Prosseguir
                 </v-btn>
               </v-container>
             </v-form>
@@ -149,8 +150,9 @@
                   :disabled="!validFornecedor"
                   @click="validateFornecedor"
                   id="btn_cadastrar_contato"
+                  color="primary"
                 >
-                  Cadastrar
+                  Prosseguir
                 </v-btn>
               </v-container>
             </v-form>
@@ -258,6 +260,7 @@
                   :disabled="!validEndereco"
                   @click="validateEndereco"
                   id="btn_cadastrar_contato"
+                  color="primary"
                 >
                   Cadastrar
                 </v-btn>
@@ -605,8 +608,6 @@ export default {
   align-items: center;
   justify-content: center;
   margin: auto;
-  background-color: #c74634;
-  color: white;
   border: solid 1px black;
 }
 </style>
