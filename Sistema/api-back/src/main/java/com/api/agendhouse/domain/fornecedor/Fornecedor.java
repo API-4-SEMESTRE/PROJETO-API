@@ -13,7 +13,7 @@ public class Fornecedor {
 
     @Id
     @Column(name = "FOR_COD_FORN")
-    //@GeneratedValue(generator = "FOR_SQ", strategy =  GenerationType.SEQUENCE)
+    @GeneratedValue(generator = "for_SQ", strategy =  GenerationType.SEQUENCE)
     private long cod;
 
 
