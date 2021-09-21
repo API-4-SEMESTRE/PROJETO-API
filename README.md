@@ -58,7 +58,7 @@ Além disto é bom ter um editor para trabalhar com o código como [VSCode](http
 # Clone este repositório
 $ git clone https://github.com/API-4-SEMESTRE/PROJETO-API
 
-# Descompactar o arquivo que chamado "wallet_API4SEMORACLE" que está dentro da pasta Documentação em alguma pasta da sua preferência. O caminho da pasta aonde foi descompactado o Wallet vai ser usado mais a frente.
+# Descompactar o arquivo chamado "wallet_API4SEMORACLE" em alguma pasta da sua preferência. O caminho da pasta aonde foi descompactado o Wallet vai ser usado mais a frente.
 
 # Acesse a pasta "PROJETO-API/Sistema/api-back" do projeto no terminal/cmd
 
@@ -143,6 +143,9 @@ As seguintes ferramentas foram usadas na construção do projeto:
 </a>
 <a href="https://maven.apache.org/">
   <img alt="image" src="https://img.shields.io/badge/Maven-%23696969?style=for-the-badge&logo=Apache Maven">
+</a>
+<a href="https://spring.io/projects/spring-boot">
+  <img alt="image" src="https://img.shields.io/badge/Spring_Boot-%23696969?style=for-the-badge&logo=Spring">
 </a>
 
 <h2>Membros 👥</h2>
