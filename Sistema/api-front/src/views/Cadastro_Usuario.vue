@@ -115,9 +115,8 @@ export default {
 
     // Criando o objeto que vai ser feito o POST
     usuario: {
-      cod: "12",
       nome: "",
-      tipo: "FUNCIONARIO",
+      tipo: "COLABORADOR",
       email: "",
       active: "True",
       senha: "",
