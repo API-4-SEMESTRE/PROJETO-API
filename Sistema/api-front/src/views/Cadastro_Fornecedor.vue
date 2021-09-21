@@ -401,13 +401,11 @@ export default {
 
     // Criando o objeto que vai ser feito o POST
     contato: {
-      concod: "6",
       nomecon: "",
       func_con: "",
     },
     // Criando o objeto que vai ser feito o POST
     fornecedor: {
-      cod: "7",
       nomeforn: "",
       ramo_forn: "",
       cnpjforn: "",
@@ -530,7 +528,7 @@ export default {
               " cadastrado com sucesso!!!",
             "success"
           );
-          this.exibir_fornecedor();
+          this.exibir_endereco();
         })
         .catch((e) => {
           Swal.fire(
