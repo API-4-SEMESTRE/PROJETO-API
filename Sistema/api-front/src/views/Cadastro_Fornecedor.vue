@@ -48,6 +48,7 @@
                   <v-col cols="6">
                     <span> Telefone </span>
                     <v-text-field
+                      v-mask="'(##) #####-####'"
                       outlined
                       required
                       dense
@@ -114,6 +115,7 @@
                   <v-col cols="6">
                     <span> CNPJ</span>
                     <v-text-field
+                      v-mask="'##.###.###/####-##'"
                       v-model="fornecedor.cnpjforn"
                       :rules="regra_cnpj"
                       outlined
@@ -172,6 +174,7 @@
                   <v-col cols="6">
                     <span> CEP </span>
                     <v-text-field
+                      v-mask="'#####-###'"
                       v-model="endereco.cep_end"
                       :rules="regra_cep"
                       outlined
