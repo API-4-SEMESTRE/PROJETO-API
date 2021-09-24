@@ -60,14 +60,13 @@ public class FornecedorController {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(lista);
     }
 
-    @PostMapping("/addcon")
-    public ResponseEntity<Fornecedor> addCon(
-            @RequestParam String nome,
-            @RequestBody Fornecedor fornecedor) {
-
-        var newFornecedor = fornecedorService.addCon(nome, fornecedor);
-
-        return ResponseEntity.ok(newFornecedor);
-
-    }
+//    @PostMapping("/addcon")
+//    public ResponseEntity<Fornecedor> addCon(
+//            @RequestParam String nome,
+//            @RequestBody Fornecedor fornecedor) {
+//
+//        var newFornecedor = fornecedorService.addCon(nome, fornecedor);
+//
+//        return ResponseEntity.ok(newFornecedor);
+//    }
 }

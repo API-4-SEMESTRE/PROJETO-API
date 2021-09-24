@@ -28,11 +28,11 @@ public class FornecedorService {
         return fornecedorRepository.findAllByOrderByCodAsc();
     }
 
-    @Transactional
-    public Fornecedor addCon(String nome, Fornecedor fornecedor) {
-        var contato = contatoRepository.findByNomecon(nome);
-        fornecedor.setCon_cod(contato.getConcod());
-        fornecedorRepository.save(fornecedor);
-        return fornecedor;
-    }
+//    @Transactional
+//    public Fornecedor addCon(String nome, Fornecedor fornecedor) {
+//        var contato = contatoRepository.findByNomecon(nome);
+//        fornecedor.setCon_cod(contato.getConcod());
+//        fornecedorRepository.save(fornecedor);
+//        return fornecedor;
+//    }
 }
