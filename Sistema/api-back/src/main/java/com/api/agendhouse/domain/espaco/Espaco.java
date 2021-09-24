@@ -16,7 +16,8 @@ public class Espaco {
     private long cod_esp;
 
     @Column(name="ESP_NOME_ESPA")
-    private String esp_nome;
+    @Enumerated(EnumType.STRING)
+    private EspacoNome esp_nome;
     
     @Column(name="ESP_CAPA_ESPA")
     private int esp_capa;
