@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -19,11 +20,15 @@ public class EventoService {
 
     @Transactional
     public Evento add(Evento evento) {
-        evento.setData_cria(new Date());
+        evento.setDatacria(LocalDateTime.now());
         return eventoRepository.save(evento);
     }
 
     public List<Evento> findAll() {
-        return eventoRepository.findAll();
+        return eventoRepository.findAllByOrderByCodevenAsc();
+    }
+
+    public List<Evento> findByUsu(Long usucod) {
+        return eventoRepository.findByUsucodcriaOrderByCodevenAsc(usucod);
     }
 }

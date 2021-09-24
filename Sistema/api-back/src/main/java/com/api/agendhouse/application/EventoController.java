@@ -37,4 +37,12 @@ public class EventoController {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(eventos);
     }
 
+    @GetMapping("/findByUsu")
+    public ResponseEntity<List<Evento>> findByUsu(
+            @RequestParam Long usucod) {
+
+        var eventos = eventoService.findByUsu(usucod);
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(eventos);
+    }
+
 }
