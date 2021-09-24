@@ -33,8 +33,6 @@ public class UsuarioService {
         return usuarioRepository.findByEmail(email);
     }
 
-    public void login(String email, String senha) {
-    }
 
     public boolean login(Usuario usuario) {
 
@@ -45,5 +43,17 @@ public class UsuarioService {
         }
 
         return false;
+    }
+
+    @Transactional
+    public Usuario updateActive(String email) {
+        var usuario = usuarioRepository.findByEmail(email);
+        if (usuario.isActive()) {
+            usuario.setActive(false);
+        } else {
+            usuario.setActive(true);
+        }
+        usuarioRepository.save(usuario);
+        return usuario;
     }
 }
