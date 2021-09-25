@@ -1,10 +1,12 @@
 package com.api.agendhouse.application;
 
+import com.api.agendhouse.domain.email.EmailService;
 import com.api.agendhouse.domain.usuario.Usuario;
 import com.api.agendhouse.domain.usuario.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,10 +16,17 @@ import java.util.List;
 @RequestMapping("/usuario")
 public class UsuarioController {
 
+    @Autowired
+    private JavaMailSender mailSender;
+
+    private final EmailService emailService;
+
     private final UsuarioService usuarioService;
 
+
     @Autowired
-    public UsuarioController(UsuarioService usuarioService) {
+    public UsuarioController(EmailService emailService, UsuarioService usuarioService) {
+        this.emailService = emailService;
         this.usuarioService = usuarioService;
     }
 
@@ -26,6 +35,8 @@ public class UsuarioController {
             @RequestBody Usuario usuario) {
 
         usuarioService.add(usuario);
+        var carta = emailService.registration(usuario);
+        mailSender.send(carta);
 
         return ResponseEntity.ok(usuario);
     }
