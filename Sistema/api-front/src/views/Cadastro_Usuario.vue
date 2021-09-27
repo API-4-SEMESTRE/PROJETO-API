@@ -81,7 +81,8 @@ export default {
     regra_nome: [(v) => !!v || "O nome é obrigatório"],
     regra_email: [
       (v) => !!v || "O e-mail é obrigatório",
-      (v) => /.+@.+\..+/.test(v) || "E-mail inválido",
+      //(v) => /.+@.+\..+/.test(v) || "E-mail inválido",
+      (v) => /^[a-z0-9.]+@oracle.com$/.test(v) || "E-mail inválido",
     ],
     regra_senha: [(v) => !!v || "A senha é obrigatória"],
 
