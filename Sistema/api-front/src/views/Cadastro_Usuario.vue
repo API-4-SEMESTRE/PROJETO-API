@@ -46,6 +46,8 @@
                   outlined
                   required
                   dense
+                  password
+                  type="password"
                 ></v-text-field>
               </v-col>
             </v-row>
