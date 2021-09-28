@@ -76,7 +76,11 @@
                                   required
                                   dense
                                   password
-                                  type="password"
+                                  :append-icon="
+                                    show1 ? 'mdi-eye' : 'mdi-eye-off'
+                                  "
+                                  :type="show1 ? 'text' : 'password'"
+                                  @click:append="show1 = !show1"
                                 ></v-text-field>
                               </v-col>
                             </v-row>
@@ -161,6 +165,9 @@ export default {
       (v) => /^[a-z0-9.]+@oracle.com$/.test(v) || "E-mail inválido",
     ],
     regra_senha: [(v) => !!v || "A senha é obrigatória"],
+
+    // Criando a variavel pro icone de mostrar a senha
+    show1: false,
 
     // Array com a lista de usuarios
     lista_de_usuarios: [],
