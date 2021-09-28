@@ -56,6 +56,19 @@
                             </v-row>
                             <v-row justify="center">
                               <v-col cols="24">
+                                <v-select
+                                  :items="tipo_usuario"
+                                  label="Tipo de Usuário"
+                                  v-model="usuario.tipo"
+                                  outlined
+                                  required
+                                  dense
+                                  :rules="[(v) => !!v || 'O tipo do usuário é obrigatório']"
+                                ></v-select>
+                              </v-col>
+                            </v-row>
+                            <v-row justify="center">
+                              <v-col cols="24">
                                 <v-text-field
                                   label="E-mail"
                                   v-model="usuario.email"
@@ -82,6 +95,19 @@
                                   :type="show1 ? 'text' : 'password'"
                                   @click:append="show1 = !show1"
                                 ></v-text-field>
+                              </v-col>
+                            </v-row>
+                            <v-row justify="center">
+                              <v-col cols="24">
+                                <v-select
+                                  :items="usuario_ativo"
+                                  label="Usuário Ativo"
+                                  v-model="usuario.active"
+                                  outlined
+                                  required
+                                  dense
+                                  :rules="[(v) => !!v || 'O status do usuário é obrigatório']"
+                                ></v-select>
                               </v-col>
                             </v-row>
                             <v-row>
@@ -169,15 +195,18 @@ export default {
     // Criando a variavel pro icone de mostrar a senha
     show1: false,
 
+    usuario_ativo: ["True", "False"],
+    tipo_usuario: ["ADMIN", "COLABORADOR"],
+
     // Array com a lista de usuarios
     lista_de_usuarios: [],
 
     // Criando o objeto que vai ser feito o POST
     usuario: {
       nome: "",
-      tipo: "COLABORADOR",
+      tipo: "",
       email: "",
-      active: "True",
+      active: "",
       senha: "",
     },
 
