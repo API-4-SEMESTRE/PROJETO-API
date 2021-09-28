@@ -1,207 +1,147 @@
 <template>
   <div>
-    <v-app>
-      <v-main>
-        <h1 style="text-align: center; margin-top: 20px">
-          Cadastro de Usuário
-        </h1>
-        <v-form
-          style="padding-top: 30px"
-          ref="form"
-          v-model="valid"
-          lazy-validation
-          @submit.prevent="cadastrar_usuario"
-        >
-          <v-container class="ma-70" style="width: 40%; border: solid 1px">
-            <v-row justify="center" align="stretch">
-              <v-col cols="24">
-                <span style="padding-top: 8px"> Nome Completo </span>
-                <v-text-field
-                  v-model="usuario.nome"
-                  :rules="regra_nome"
-                  outlined
-                  required
-                  dense
-                ></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row justify="center" align="stretch">
-              <v-col cols="24">
-                <span style="padding-top: 8px"> E-mail </span>
-                <v-text-field
-                  v-model="usuario.email"
-                  :rules="regra_email"
-                  outlined
-                  required
-                  dense
-                ></v-text-field>
-              </v-col>
-            </v-row>
-            <v-row justify="center" align="stretch">
-              <v-col cols="24">
-                <span style="padding-top: 8px"> Senha </span>
-                <v-text-field
-                  v-model="usuario.senha"
-                  :rules="regra_senha"
-                  outlined
-                  required
-                  dense
-                  password
-                  type="password"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-
-            <v-btn
-              class="mr-4"
-              type="submit"
-              :disabled="!valid"
-              @click="validate"
-              id="btn_cadastrar_usuario"
-              color="primary"
-            >
-              Cadastrar
-            </v-btn>
-          </v-container>
-        </v-form>
-      </v-main>
-    </v-app>
+    <h1 style="text-align: center; margin-top: 20px">Cadastro de Usuário</h1>
     <!--DATA TABLE-->
-    <v-card class="pa-2" tile outlined color="#DCDCDC" style="margin-top: 30px">
+    <v-card class="pa-2" tile outlined color="#DCDCDC" style="margin-top: 20px">
       <v-card-text>
-        <v-card>
-          <v-card-title>
-            Lista de Usuários
-            <v-spacer></v-spacer>
-            <v-text-field
-              v-model="search"
-              append-icon="mdi-magnify"
-              label="Pesquisar"
-              single-line
-              hide-details
-            ></v-text-field>
-          </v-card-title>
+        <template>
           <v-data-table
-            :headers="headers1"
+            :headers="headers"
             :items="lista_de_usuarios"
-            :search="search"
-          ></v-data-table>
-        </v-card>
+            sort-by="calories"
+            class="elevation-1"
+          >
+            <template v-slot:top>
+              <v-toolbar flat>
+                <v-toolbar-title>Lista de Usuários</v-toolbar-title>
+                <v-divider class="mx-4" inset vertical></v-divider>
+                <v-spacer></v-spacer>
+                <v-dialog v-model="dialog" max-width="500px">
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      color="primary"
+                      dark
+                      class="mb-2"
+                      v-bind="attrs"
+                      v-on="on"
+                    >
+                      Novo Usuário
+                    </v-btn>
+                  </template>
+                  <v-card>
+                    <v-card-title>
+                      <span class="text-h5">{{ formTitle }}</span>
+                    </v-card-title>
+
+                    <v-card-text>
+                      <v-container>
+                        <v-form
+                          ref="form"
+                          v-model="valid"
+                          lazy-validation
+                          @submit.prevent="cadastrar_usuario"
+                        >
+                          <v-container>
+                            <v-row justify="center">
+                              <v-col cols="24">
+                                <v-text-field
+                                  label="Nome Completo"
+                                  v-model="usuario.nome"
+                                  :rules="regra_nome"
+                                  outlined
+                                  required
+                                  dense
+                                ></v-text-field>
+                              </v-col>
+                            </v-row>
+                            <v-row justify="center">
+                              <v-col cols="24">
+                                <v-text-field
+                                  label="E-mail"
+                                  v-model="usuario.email"
+                                  :rules="regra_email"
+                                  outlined
+                                  required
+                                  dense
+                                ></v-text-field>
+                              </v-col>
+                            </v-row>
+                            <v-row justify="center">
+                              <v-col cols="24">
+                                <v-text-field
+                                  label="Senha"
+                                  v-model="usuario.senha"
+                                  :rules="regra_senha"
+                                  outlined
+                                  required
+                                  dense
+                                  password
+                                  type="password"
+                                ></v-text-field>
+                              </v-col>
+                            </v-row>
+                            <v-row>
+                              <v-col></v-col>
+                              <v-col>
+                                <v-btn color="error" @click="close">
+                                  Cancelar
+                                </v-btn>
+                              </v-col>
+                              <v-col>
+                                <v-btn
+                                  class="mr-4"
+                                  type="submit"
+                                  :disabled="!valid"
+                                  @click="validate"
+                                  id="btn_cadastrar_usuario"
+                                  color="primary"
+                                >
+                                  Cadastrar
+                                </v-btn>
+                              </v-col>
+                            </v-row>
+                          </v-container>
+                        </v-form>
+                      </v-container>
+                    </v-card-text>
+                  </v-card>
+                </v-dialog>
+                <v-dialog v-model="dialogDelete" max-width="540px">
+                  <v-card>
+                    <v-card-title class="text-h5"
+                      >Tem certeza de que deseja excluir este
+                      item?</v-card-title
+                    >
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="blue darken-1" text @click="closeDelete"
+                        >Cancelar</v-btn
+                      >
+                      <v-btn
+                        color="blue darken-1"
+                        text
+                        @click="deleteItemConfirm"
+                        >Sim</v-btn
+                      >
+                      <v-spacer></v-spacer>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-toolbar>
+            </template>
+            <template v-slot:item.actions="{ item }">
+              <v-icon small class="mr-2" @click="editItem(item)">
+                mdi-pencil
+              </v-icon>
+              <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+            </template>
+            <template v-slot:no-data>
+              <v-btn color="primary" @click="initialize"> Reset </v-btn>
+            </template>
+          </v-data-table>
+        </template>
       </v-card-text>
     </v-card>
-    <template>
-      <v-data-table
-        :headers="headers"
-        :items="lista_de_usuarios"
-        sort-by="calories"
-        class="elevation-1"
-      >
-        <template v-slot:top>
-          <v-toolbar flat>
-            <v-toolbar-title>Lista de Usuários</v-toolbar-title>
-            <v-divider class="mx-4" inset vertical></v-divider>
-            <v-spacer></v-spacer>
-            <v-dialog v-model="dialog" max-width="500px">
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  color="primary"
-                  dark
-                  class="mb-2"
-                  v-bind="attrs"
-                  v-on="on"
-                >
-                  Novo Usuário
-                </v-btn>
-              </template>
-              <v-card>
-                <v-card-title>
-                  <span class="text-h5">{{ formTitle }}</span>
-                </v-card-title>
-
-                <v-card-text>
-                  <v-container>
-                    <v-row justify="center">
-                      <v-col cols="24">
-                        <v-text-field
-                          label="Nome Completo"
-                          v-model="usuario.nome"
-                          :rules="regra_nome"
-                          outlined
-                          required
-                          dense
-                        ></v-text-field>
-                      </v-col>
-                    </v-row>
-                    <v-row justify="center">
-                      <v-col cols="24">
-                        <v-text-field
-                          label="E-mail"
-                          v-model="usuario.email"
-                          :rules="regra_email"
-                          outlined
-                          required
-                          dense
-                        ></v-text-field>
-                      </v-col>
-                    </v-row>
-                    <v-row justify="center">
-                      <v-col cols="24">
-                        <v-text-field
-                          label="Senha"
-                          v-model="usuario.senha"
-                          :rules="regra_senha"
-                          outlined
-                          required
-                          dense
-                          password
-                          type="password"
-                        ></v-text-field>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-card-text>
-
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="close">
-                    Cancelar
-                  </v-btn>
-                  <v-btn color="blue darken-1" text @click="save">
-                    Salvar
-                  </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-            <v-dialog v-model="dialogDelete" max-width="540px">
-              <v-card>
-                <v-card-title class="text-h5"
-                  >Tem certeza de que deseja excluir este item?</v-card-title
-                >
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="closeDelete"
-                    >Cancelar</v-btn
-                  >
-                  <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                    >Sim</v-btn
-                  >
-                  <v-spacer></v-spacer>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-          </v-toolbar>
-        </template>
-        <template v-slot:item.actions="{ item }">
-          <v-icon small class="mr-2" @click="editItem(item)">
-            mdi-pencil
-          </v-icon>
-          <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
-        </template>
-        <template v-slot:no-data>
-          <v-btn color="primary" @click="initialize"> Reset </v-btn>
-        </template>
-      </v-data-table>
-    </template>
   </div>
 </template>
 
@@ -285,7 +225,7 @@ export default {
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
+      return this.editedIndex === -1 ? "Novo Usuário" : "Editar Usuário";
     },
   },
 
@@ -328,6 +268,7 @@ export default {
             "error"
           );
         });
+      this.close();
     },
     // Método pra exibir os usuarios
     exibir_usuario() {
