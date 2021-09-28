@@ -1,5 +1,6 @@
 package com.api.agendhouse.domain.usuario;
 
+import com.api.agendhouse.domain.criptografia.Criptografar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,8 +21,8 @@ public class UsuarioService {
 
     @Transactional
     public Usuario add(Usuario usuario) {
-
         usuario.setDate_create(LocalDateTime.now());
+        usuario.setSenha(Criptografar.criptografar(usuario.getSenha()));
         return usuarioRepository.save(usuario);
     }
 
@@ -37,6 +38,8 @@ public class UsuarioService {
     public boolean login(Usuario usuario) {
 
         var check = findByEmail(usuario.getEmail());
+
+        usuario.setSenha(Criptografar.criptografar(usuario.getSenha()));
 
         if (usuario.getSenha().equals(check.getSenha())) {
             return true;
