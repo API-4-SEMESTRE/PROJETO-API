@@ -56,19 +56,6 @@
                             </v-row>
                             <v-row justify="center">
                               <v-col cols="24">
-                                <v-select
-                                  :items="tipo_usuario"
-                                  label="Tipo de Usuário"
-                                  v-model="usuario.tipo"
-                                  outlined
-                                  required
-                                  dense
-                                  :rules="[(v) => !!v || 'O tipo do usuário é obrigatório']"
-                                ></v-select>
-                              </v-col>
-                            </v-row>
-                            <v-row justify="center">
-                              <v-col cols="24">
                                 <v-text-field
                                   label="E-mail"
                                   v-model="usuario.email"
@@ -100,13 +87,31 @@
                             <v-row justify="center">
                               <v-col cols="24">
                                 <v-select
-                                  :items="usuario_ativo"
-                                  label="Usuário Ativo"
+                                  :items="tipo_usuario"
+                                  label="Tipo de Usuário"
+                                  v-model="usuario.tipo"
+                                  outlined
+                                  required
+                                  dense
+                                  :rules="[
+                                    (v) =>
+                                      !!v || 'O tipo do usuário é obrigatório',
+                                  ]"
+                                ></v-select>
+                              </v-col>
+                              <v-col cols="24">
+                                <v-select
+                                  :items="status_usuario"
+                                  label="Status Usuário"
                                   v-model="usuario.active"
                                   outlined
                                   required
                                   dense
-                                  :rules="[(v) => !!v || 'O status do usuário é obrigatório']"
+                                  :rules="[
+                                    (v) =>
+                                      !!v ||
+                                      'O status do usuário é obrigatório',
+                                  ]"
                                 ></v-select>
                               </v-col>
                             </v-row>
@@ -126,7 +131,7 @@
                                   id="btn_cadastrar_usuario"
                                   color="primary"
                                 >
-                                  Cadastrar
+                                  Salvar
                                 </v-btn>
                               </v-col>
                             </v-row>
@@ -195,7 +200,7 @@ export default {
     // Criando a variavel pro icone de mostrar a senha
     show1: false,
 
-    usuario_ativo: ["True", "False"],
+    status_usuario: ["true", "false"],
     tipo_usuario: ["ADMIN", "COLABORADOR"],
 
     // Array com a lista de usuarios
@@ -314,13 +319,8 @@ export default {
     },
 
     //DATA TABLE
-
-    editarUsuario(usuario) {
-      this.usuario = usuario;
-    },
-
     editItem(usuario) {
-      this.usuario = this.lista_de_usuarios.indexOf(usuario);
+      this.editedIndex = this.lista_de_usuarios.indexOf(usuario);
       this.usuario = Object.assign({}, usuario);
       this.dialog = true;
     },
@@ -350,18 +350,6 @@ export default {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
       });
-    },
-
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(
-          this.lista_de_usuarios[this.editedIndex],
-          this.editedItem
-        );
-      } else {
-        this.lista_de_usuarios.push(this.editedItem);
-      }
-      this.close();
     },
   },
 };
