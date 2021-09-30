@@ -24,6 +24,13 @@
                 </v-form>
               </v-card-text>
             </v-card>
+            <v-btn
+              block
+              color="primary"
+              style="margin-top: 20px"
+              :to="{ name: 'Criar_Conta' }"
+              >Criar Conta</v-btn
+            >
           </v-flex>
         </v-layout>
       </v-container>
