@@ -49,14 +49,11 @@ public class UsuarioService {
     }
 
     @Transactional
-    public Usuario updateActive(String email) {
-        var usuario = usuarioRepository.findByEmail(email);
-        if (usuario.isActive()) {
-            usuario.setActive(false);
-        } else {
-            usuario.setActive(true);
+    public Usuario update(Usuario usuario) {
+        if (usuario.getCod() == null) {
+            usuario.setDate_create(LocalDateTime.now());
+            usuario.setSenha(Criptografar.criptografar(usuario.getSenha()));
         }
-        usuarioRepository.save(usuario);
-        return usuario;
+        return usuarioRepository.save(usuario);
     }
 }

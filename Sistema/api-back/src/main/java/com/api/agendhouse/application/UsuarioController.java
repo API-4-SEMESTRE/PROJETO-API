@@ -65,11 +65,11 @@ public class UsuarioController {
         return ResponseEntity.ok(check);
     }
 
-    @PutMapping("/updateActive")
+    @PutMapping("/update")
     public ResponseEntity<Usuario> updateActive(
             @RequestBody Usuario usuario) {
 
-        var upadatedUsuario = usuarioService.updateActive(usuario.getEmail());
+        var upadatedUsuario = usuarioService.update(usuario);
         return ResponseEntity.ok(upadatedUsuario);
     }
 }

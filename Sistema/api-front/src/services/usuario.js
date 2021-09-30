@@ -7,6 +7,9 @@ export default {
     },
     salvar_usuario: (usuario) => {
         return http.post(`usuario/add`, usuario)
+    },
+    atualizar_usuario: (usuario) => {
+        return http.put('usuario/update', usuario)
     }
 
 }

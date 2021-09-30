@@ -277,7 +277,7 @@ export default {
   methods: {
     // Método de cadastro de usuario
     cadastrar_usuario() {
-      Usuario.salvar_usuario(this.usuario)
+      Usuario.atualizar_usuario(this.usuario)
         .then((resposta_cadastro_usuario) => {
           this.usuario = {};
           Swal.fire(
