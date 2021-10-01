@@ -132,7 +132,7 @@ export default {
               " criada com sucesso!!!",
             "success"
           );
-          this.exibir_usuario();
+          this.$router.push("Login");
         })
         .catch((e) => {
           Swal.fire(
