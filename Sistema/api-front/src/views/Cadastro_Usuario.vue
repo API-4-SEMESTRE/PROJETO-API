@@ -94,7 +94,7 @@
                                   required
                                   dense
                                   :rules="[
-                                    (v) =>
+                                    v =>
                                       !!v || 'O tipo do usuário é obrigatório',
                                   ]"
                                 ></v-select>

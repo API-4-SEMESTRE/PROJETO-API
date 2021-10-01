@@ -66,10 +66,19 @@ public class UsuarioController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<Usuario> updateActive(
+    public ResponseEntity<Usuario> update(
             @RequestBody Usuario usuario) {
 
-        var upadatedUsuario = usuarioService.update(usuario);
-        return ResponseEntity.ok(upadatedUsuario);
+        var updatedUsuario = usuarioService.update(usuario);
+        return ResponseEntity.ok(updatedUsuario);
     }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Boolean> delete(
+            @RequestBody Usuario usuario) {
+
+        var deletedusuario = usuarioService.delete(usuario);
+        return ResponseEntity.ok(deletedusuario);
+    }
+
 }
