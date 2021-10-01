@@ -200,7 +200,7 @@ export default {
     // Criando a variavel pro icone de mostrar a senha
     show1: false,
 
-    status_usuario: ["true", "false"],
+    status_usuario: [true, false],
     tipo_usuario: ["ADMIN", "COLABORADOR"],
 
     // Array com a lista de usuarios
