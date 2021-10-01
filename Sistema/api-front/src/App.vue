@@ -2,7 +2,7 @@
   <div id="app">
     <v-app>
       <v-main>
-        <v-app-bar color="#c74634" dark>
+        <v-app-bar color="#c74634" dark v-if="this.$route.path !== '/login'">
           <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
           <v-toolbar-title class="white--text">AgendHouse</v-toolbar-title>
           <v-spacer></v-spacer>
@@ -42,6 +42,7 @@ export default {
   name: "App",
   components: {},
   data: () => ({
+    //logado: true,
     drawer: false,
     menus: [
       { conteudo: "Home", url: "/", icon: "mdi-home-variant" },
