@@ -94,7 +94,7 @@
                                   required
                                   dense
                                   :rules="[
-                                    v =>
+                                    (v) =>
                                       !!v || 'O tipo do usuário é obrigatório',
                                   ]"
                                 ></v-select>
@@ -208,6 +208,7 @@ export default {
 
     // Criando o objeto que vai ser feito o POST
     usuario: {
+      cod: "",
       nome: "",
       tipo: "",
       email: "",
@@ -277,26 +278,50 @@ export default {
   methods: {
     // Método de cadastro de usuario
     cadastrar_usuario() {
-      Usuario.salvar_usuario(this.usuario)
-        .then((resposta_cadastro_usuario) => {
-          this.usuario = {};
-          Swal.fire(
-            "Sucesso",
-            "Usuário " +
-              resposta_cadastro_usuario.data.nome +
-              " cadastrado com sucesso!!!",
-            "success"
-          );
-          this.exibir_usuario();
-        })
-        .catch((e) => {
-          Swal.fire(
-            "Oops...",
-            "Erro ao cadastrar o usuário! - Erro: " + e.response.data.error,
-            "error"
-          );
-        });
-      this.close();
+      if (!this.usuario.cod) {
+        Usuario.salvar_usuario(this.usuario)
+          .then((resposta_cadastro_usuario) => {
+            this.usuario = {};
+            Swal.fire(
+              "Sucesso",
+              "Usuário " +
+                resposta_cadastro_usuario.data.nome +
+                " cadastrado com sucesso!!!",
+              "success"
+            );
+            this.exibir_usuario();
+          })
+          .catch((e) => {
+            Swal.fire(
+              "Oops...",
+              "Erro ao cadastrar o usuário! - Erro: " + e.response.data.error,
+              "error"
+            );
+          });
+        this.close();
+      } else {
+        // Método de atualizar usuario
+        Usuario.atualizar_usuario(this.usuario)
+          .then((resposta_cadastro_usuario) => {
+            this.usuario = {};
+            Swal.fire(
+              "Sucesso",
+              "Usuário " +
+                resposta_cadastro_usuario.data.nome +
+                " atualizado com sucesso!!!",
+              "success"
+            );
+            this.exibir_usuario();
+          })
+          .catch((e) => {
+            Swal.fire(
+              "Oops...",
+              "Erro ao atualizar o usuário! - Erro: " + e.response.data.error,
+              "error"
+            );
+          });
+        this.close();
+      }
     },
     // Método pra exibir os usuarios
     exibir_usuario() {
@@ -342,6 +367,7 @@ export default {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
       });
+      this.usuario = {};
     },
 
     closeDelete() {
