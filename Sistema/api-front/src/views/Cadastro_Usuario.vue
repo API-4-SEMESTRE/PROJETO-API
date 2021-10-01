@@ -94,7 +94,7 @@
                                   required
                                   dense
                                   :rules="[
-                                    (v) =>
+                                    v =>
                                       !!v || 'O tipo do usuário é obrigatório',
                                   ]"
                                 ></v-select>
@@ -109,7 +109,7 @@
                                   dense
                                   :rules="[
                                     (v) =>
-                                      !!v ||
+                                      !!v.toString() ||
                                       'O status do usuário é obrigatório',
                                   ]"
                                 ></v-select>
@@ -200,7 +200,7 @@ export default {
     // Criando a variavel pro icone de mostrar a senha
     show1: false,
 
-    status_usuario: ["true", "false"],
+    status_usuario: [true, false],
     tipo_usuario: ["ADMIN", "COLABORADOR"],
 
     // Array com a lista de usuarios
