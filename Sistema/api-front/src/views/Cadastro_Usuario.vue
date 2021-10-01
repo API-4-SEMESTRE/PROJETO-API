@@ -109,7 +109,7 @@
                                   dense
                                   :rules="[
                                     (v) =>
-                                      !!v ||
+                                      !!v.toString() ||
                                       'O status do usuário é obrigatório',
                                   ]"
                                 ></v-select>
@@ -277,7 +277,7 @@ export default {
   methods: {
     // Método de cadastro de usuario
     cadastrar_usuario() {
-      Usuario.atualizar_usuario(this.usuario)
+      Usuario.salvar_usuario(this.usuario)
         .then((resposta_cadastro_usuario) => {
           this.usuario = {};
           Swal.fire(
