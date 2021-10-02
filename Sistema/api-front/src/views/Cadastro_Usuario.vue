@@ -149,13 +149,10 @@
                     >
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="blue darken-1" text @click="closeDelete"
-                        >Cancelar</v-btn
-                      >
-                      <v-btn
-                        color="blue darken-1"
-                        text
-                        @click="deleteItemConfirm"
+                      <v-btn color="error" @click="closeDelete">
+                        Cancelar
+                      </v-btn>
+                      <v-btn color="primary" @click="deletar_usuario(usuario)"
                         >Sim</v-btn
                       >
                       <v-spacer></v-spacer>
@@ -165,13 +162,10 @@
               </v-toolbar>
             </template>
             <template v-slot:item.actions="{ item }">
-              <v-icon small class="mr-2" @click="editItem(item)">
+              <v-icon class="mr-2" @click="editar_usuario(item)">
                 mdi-pencil
               </v-icon>
-              <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
-            </template>
-            <template v-slot:no-data>
-              <v-btn color="primary" @click="initialize"> Reset </v-btn>
+              <v-icon @click="deleteItem(item)"> mdi-delete </v-icon>
             </template>
           </v-data-table>
         </template>
@@ -187,7 +181,7 @@ import Swal from "sweetalert2";
 
 export default {
   data: () => ({
-    // Validando se os campos estão preenchidos e se são validos
+    // Validando se os campos do formulario estão preenchidos e se são validos
     valid: true,
     regra_nome: [(v) => !!v || "O nome é obrigatório"],
     regra_email: [
@@ -200,10 +194,11 @@ export default {
     // Criando a variavel pro icone de mostrar a senha
     show1: false,
 
+    // Criando os arrays que vão armazenar os conteudos dos selects de Status do Usuario e Tipo de Usuario
     status_usuario: [true, false],
     tipo_usuario: ["ADMIN", "COLABORADOR"],
 
-    // Array com a lista de usuarios
+    // Array aonde vai ser armazenado a lista de usuarios
     lista_de_usuarios: [],
 
     // Criando o objeto que vai ser feito o POST
@@ -216,9 +211,11 @@ export default {
       senha: "",
     },
 
-    // DATA TABLE
+    // Variaveis referentes aos modais que abrem na tela, se for false ele não aparece na tela, se for true ele aparece na tela
     dialog: false,
     dialogDelete: false,
+
+    // Array que vai armazenar as colunas da tabela
     headers: [
       {
         text: "CÓDIGO",
@@ -232,33 +229,22 @@ export default {
       { text: "ATIVO", value: "active" },
       { text: "Actions", value: "actions", sortable: false },
     ],
-    desserts: [],
+
+    // Vairavel que é usada pra identificar se o modal é de cadastro de usuario ou de edição do usuario
     editedIndex: -1,
-    editedItem: {
-      cod: 0,
-      nome: "",
-      tipo: "",
-      email: "",
-      date_create: "",
-      active: "",
-    },
-    defaultItem: {
-      cod: 0,
-      nome: "",
-      tipo: "",
-      email: "",
-      date_create: "",
-      active: "",
-    },
   }),
 
   computed: {
+    // Retornando "Novo Usuário" ou "Editar Usuário" dependendo de qual modal estiver
+    // "Novo Usuário" = o usuario clicou no botão pra cadastrar um novo usuario
+    // "Editar Usuário" = o usuario clicou no botão pra editar um usuario
     formTitle() {
       return this.editedIndex === -1 ? "Novo Usuário" : "Editar Usuário";
     },
   },
 
   watch: {
+    // Fechando os modais
     dialog(val) {
       val || this.close();
     },
@@ -267,17 +253,16 @@ export default {
     },
   },
 
-  created() {
-    this.initialize();
-  },
-
   mounted() {
+    // Chamando o método exibir_usuario()
     this.exibir_usuario();
   },
 
   methods: {
+
     // Método de cadastro de usuario
     cadastrar_usuario() {
+      // Se o usuario não tiver um "cod" significa que esse usuario não existe então ele vai pra resquest de cadastro
       if (!this.usuario.cod) {
         Usuario.salvar_usuario(this.usuario)
           .then((resposta_cadastro_usuario) => {
@@ -301,13 +286,14 @@ export default {
         this.close();
       } else {
         // Método de atualizar usuario
+        // Se o usuario já tiver um "cod" ele já existe então ele vai pra request de atualizar
         Usuario.atualizar_usuario(this.usuario)
-          .then((resposta_cadastro_usuario) => {
+          .then((resposta_atualizar_usuario) => {
             this.usuario = {};
             Swal.fire(
               "Sucesso",
               "Usuário " +
-                resposta_cadastro_usuario.data.nome +
+                resposta_atualizar_usuario.data.nome +
                 " atualizado com sucesso!!!",
               "success"
             );
@@ -338,44 +324,54 @@ export default {
           );
         });
     },
+
     // Método que valida se os campos estão preenchidos, se não estiverem ele bloqueia o botão CADASTRAR
     validate() {
       this.$refs.form.validate();
     },
 
-    //DATA TABLE
-    editItem(usuario) {
+    // Método que vai recuparar os dados da tabela e armazenar no objeto usuario
+    editar_usuario(usuario) {
       this.editedIndex = this.lista_de_usuarios.indexOf(usuario);
       this.usuario = Object.assign({}, usuario);
       this.dialog = true;
     },
 
-    deleteItem(item) {
-      this.editedIndex = this.lista_de_usuarios.indexOf(item);
-      this.editedItem = Object.assign({}, item);
+    // Método que vai recuparar os dados da tabela e armazenar no objeto usuario
+    deleteItem(usuario) {
+      this.editedIndex = this.lista_de_usuarios.indexOf(usuario);
+      this.usuario = Object.assign({}, usuario);
       this.dialogDelete = true;
     },
 
-    deleteItemConfirm() {
-      this.lista_de_usuarios.splice(this.editedIndex, 1);
+    // Método pra excluir os usuarios
+    deletar_usuario(usuario) {
+      Usuario.excluir_usuario(usuario)
+        .then((resposta_excluir_usuario) => {
+          Swal.fire("Sucesso", "Usuário excluido com sucesso!!!", "success");
+          resposta_excluir_usuario;
+          this.exibir_usuario();
+        })
+        .catch((e) => {
+          Swal.fire(
+            "Oops...",
+            "Erro ao excluir o usuário! - Erro: " + e.response.data.error,
+            "error"
+          );
+        });
       this.closeDelete();
     },
 
+    // Método que vai fechar o modal "dialog"
     close() {
       this.dialog = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
       this.usuario = {};
     },
 
+    // Método que vai fechar o modal "dialogDelete"
     closeDelete() {
       this.dialogDelete = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
+      this.usuario = {};
     },
   },
 };
