@@ -29,17 +29,19 @@
           class="grey darken-3"
         >
           <v-list nav dense>
-            <v-list-item-group active-class="blue--text text--darken-1">
+            <v-list-item-group active-class="red darken-3">
               <v-list-item
                 v-for="(item, index) in menus"
                 :key="index"
                 :to="item.url"
               >
                 <v-list-item-icon>
-                  <v-icon>{{ item.icon }}</v-icon>
+                  <v-icon color="white">{{ item.icon }}</v-icon>
                 </v-list-item-icon>
 
-                <v-list-item-title>{{ item.conteudo }}</v-list-item-title>
+                <v-list-item-title class="white--text">{{
+                  item.conteudo
+                }}</v-list-item-title>
               </v-list-item>
             </v-list-item-group>
           </v-list>
