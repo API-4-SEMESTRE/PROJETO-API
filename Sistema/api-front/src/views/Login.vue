@@ -130,7 +130,6 @@ export default {
 <style>
 #login {
   background-color: #181820;
-  overflow: hidden;
 }
 #card-login {
   background-color: #272733;
