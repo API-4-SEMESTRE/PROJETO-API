@@ -91,4 +91,8 @@ export default {
 #app {
   background-color: #181820;
 }
+/* Largura da barra de rolagem */
+::-webkit-scrollbar {
+    width: 0px;
+}
 </style>
