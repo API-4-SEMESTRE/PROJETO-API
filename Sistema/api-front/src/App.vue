@@ -2,6 +2,7 @@
   <div id="app">
     <v-app>
       <v-main>
+        <!--
         <v-app-bar color="#c74634" dark v-if="this.$route.path !== '/login'">
           <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
           <v-toolbar-title class="white--text">AgendHouse</v-toolbar-title>
@@ -10,12 +11,24 @@
             <v-icon>mdi-exit-run</v-icon>
           </v-btn>
         </v-app-bar>
+        -->
 
-        <v-navigation-drawer v-model="drawer" absolute temporary width="250px">
+        <v-btn
+          style="margin-top: 20px; margin-left: 20px"
+          icon
+          @click="drawer = true"
+        >
+          <v-icon large color="white">mdi-menu</v-icon>
+        </v-btn>
+
+        <v-navigation-drawer
+          v-model="drawer"
+          absolute
+          temporary
+          width="250px"
+          class="grey darken-3"
+        >
           <v-list nav dense>
-            <v-list-item>
-              <v-list-item-title>Menu</v-list-item-title>
-            </v-list-item>
             <v-list-item-group active-class="blue--text text--darken-1">
               <v-list-item
                 v-for="(item, index) in menus"
@@ -73,8 +86,7 @@ export default {
 </script>
 
 <style>
-/* Retirar a barra de rolagem das telas */
-::-webkit-scrollbar {
-    width: 0px;
+#app {
+  background-color: #181820;
 }
 </style>
