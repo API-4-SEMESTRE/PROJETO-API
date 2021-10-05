@@ -1,333 +1,247 @@
 <template>
-  <div>
-    <h1 style="text-align: center; margin-top: 20px; font-size: 45px">
-      AgendHome
-    </h1>
-    <div id="cards-home">
-      <v-row>
-        <v-col>
-          <v-card class="mx-auto" max-width="344" elevation="5">
-            <v-card-text>
-              <p class="text-h4 text--primary">Resumo</p>
-              <div class="text--primary">
-                O projeto a ser desenvolvido vai ser um sistema para
-                agendamentos de eventos na Casa Oracle buscando solucionar os
-                obstáculos da pandemia do Covid-19.
+  <v-app id="login">
+    <v-content>
+      <v-container fluid fill-height>
+        <v-layout align-center justify-center>
+          <v-flex xs12 sm8 md8>
+            <h1 style="text-align: center; color: white; margin-top: 15px;">Home</h1>
+            <v-layout align-center justify-center>
+              <div id="calendario-home">
+                <v-row class="fill-height">
+                  <v-col>
+                    <v-sheet height="64">
+                      <v-toolbar flat>
+                        <v-btn
+                          outlined
+                          class="mr-4"
+                          color="grey darken-2"
+                          @click="setToday"
+                        >
+                          Today
+                        </v-btn>
+                        <v-btn
+                          fab
+                          text
+                          small
+                          color="grey darken-2"
+                          @click="prev"
+                        >
+                          <v-icon small> mdi-chevron-left </v-icon>
+                        </v-btn>
+                        <v-btn
+                          fab
+                          text
+                          small
+                          color="grey darken-2"
+                          @click="next"
+                        >
+                          <v-icon small> mdi-chevron-right </v-icon>
+                        </v-btn>
+                        <v-toolbar-title v-if="$refs.calendar">
+                          {{ $refs.calendar.title }}
+                        </v-toolbar-title>
+                        <v-spacer></v-spacer>
+                        <v-menu bottom right>
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-btn
+                              outlined
+                              color="grey darken-2"
+                              v-bind="attrs"
+                              v-on="on"
+                            >
+                              <span>{{ typeToLabel[type] }}</span>
+                              <v-icon right> mdi-menu-down </v-icon>
+                            </v-btn>
+                          </template>
+                          <v-list>
+                            <v-list-item @click="type = 'day'">
+                              <v-list-item-title>Day</v-list-item-title>
+                            </v-list-item>
+                            <v-list-item @click="type = 'week'">
+                              <v-list-item-title>Week</v-list-item-title>
+                            </v-list-item>
+                            <v-list-item @click="type = 'month'">
+                              <v-list-item-title>Month</v-list-item-title>
+                            </v-list-item>
+                            <v-list-item @click="type = '4day'">
+                              <v-list-item-title>4 days</v-list-item-title>
+                            </v-list-item>
+                          </v-list>
+                        </v-menu>
+                      </v-toolbar>
+                    </v-sheet>
+                    <v-sheet height="600">
+                      <v-calendar
+                        ref="calendar"
+                        v-model="focus"
+                        color="primary"
+                        :events="events"
+                        :event-color="getEventColor"
+                        :type="type"
+                        @click:event="showEvent"
+                        @click:more="viewDay"
+                        @click:date="viewDay"
+                        @change="updateRange"
+                      ></v-calendar>
+                      <v-menu
+                        v-model="selectedOpen"
+                        :close-on-content-click="false"
+                        :activator="selectedElement"
+                        offset-x
+                      >
+                        <v-card color="grey lighten-4" min-width="350px" flat>
+                          <v-toolbar :color="selectedEvent.color" dark>
+                            <v-btn icon>
+                              <v-icon>mdi-pencil</v-icon>
+                            </v-btn>
+                            <v-toolbar-title
+                              v-html="selectedEvent.name"
+                            ></v-toolbar-title>
+                            <v-spacer></v-spacer>
+                            <v-btn icon>
+                              <v-icon>mdi-heart</v-icon>
+                            </v-btn>
+                            <v-btn icon>
+                              <v-icon>mdi-dots-vertical</v-icon>
+                            </v-btn>
+                          </v-toolbar>
+                          <v-card-text>
+                            <span v-html="selectedEvent.details"></span>
+                          </v-card-text>
+                          <v-card-actions>
+                            <v-btn
+                              text
+                              color="secondary"
+                              @click="selectedOpen = false"
+                            >
+                              Cancel
+                            </v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-menu>
+                    </v-sheet>
+                  </v-col>
+                </v-row>
               </div>
-            </v-card-text>
-          </v-card>
-        </v-col>
-        <v-col>
-          <v-card class="mx-auto" max-width="344" elevation="5">
-            <v-card-text>
-              <p class="text-h4 text--primary">Projeto</p>
-              <div class="text--primary">
-                Projeto realizado em parceria com a Oracle Corporation uma
-                empresa que atua na área da Computação e Informática juntamente
-                com a Faculdade de Tecnologia de São José dos Campos Professor
-                Jessen Vidal.
-              </div>
-            </v-card-text>
-          </v-card>
-        </v-col>
-        <v-col>
-          <v-card class="mx-auto" max-width="344" elevation="5">
-            <v-card-text>
-              <p class="text-h4 text--primary">Desafio</p>
-              <div class="text--primary">
-                Desafio proposto pela Oracle Corporation - "No escritório de São
-                Paulo, temos um espaço de inovação aberta chamado Casa Oracle,
-                que é um local para realização de eventos internos/externos,
-                workshops e palestras. Dentro do contexto das restrições
-                sanitárias, nosso desafio é criar uma plataforma para o
-                gerenciamento da utilização do espaço, onde nossos colaboradores
-                poderão fazer a solicitação de agendamento, definindo os
-                convidados e recursos necessários para o evento."
-              </div>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
-      <h2 style="text-align: center; margin-top: 20px; font-size: 30px">
-        Integrantes
-      </h2>
-      <v-row style="margin-top: 20px">
-        <v-col>
-          <v-card class="mx-auto" max-width="300" elevation="5">
-            <v-img
-              class="white--text align-end"
-              height="300px"
-              src="../images/tairik.jpeg"
-            >
-            </v-img>
-            <v-card-text class="text--primary">
-              <h2 style="text-align: center">Tairik Johnny</h2>
-              <h3 style="text-align: center">Scrum Master</h3>
-            </v-card-text>
-
-            <v-card-actions>
-              <div class="text-center">
-                <v-btn
-                  color="blue"
-                  class="ma-2 white--text"
-                  aling="center"
-                  href="https://linkedin.com/in/tairik-nishimura/"
-                  target="_blank"
-                >
-                  LinkedIn
-                  <v-icon large> mdi-linkedin </v-icon>
-                </v-btn>
-              </div>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-        <v-col>
-          <v-card class="mx-auto" max-width="300" elevation="5">
-            <v-img
-              class="white--text align-end"
-              height="300px"
-              src="../images/rafaela.jpeg"
-            >
-            </v-img>
-            <v-card-text class="text--primary">
-              <h2 style="text-align: center">Rafaela Aparecida</h2>
-              <h3 style="text-align: center">Product Owner</h3>
-            </v-card-text>
-
-            <v-card-actions>
-              <div class="text-center">
-                <v-btn
-                  color="blue"
-                  class="ma-2 white--text"
-                  aling="center"
-                  href="https://www.linkedin.com/in/rafaela-carnaval-70a506138/"
-                  target="_blank"
-                >
-                  LinkedIn
-                  <v-icon large> mdi-linkedin </v-icon>
-                </v-btn>
-              </div>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-        <v-col>
-          <v-card class="mx-auto" max-width="300" elevation="5">
-            <v-img
-              class="white--text align-end"
-              height="300px"
-              src="../images/wallace.jpeg"
-            >
-            </v-img>
-            <v-card-text class="text--primary">
-              <h2 style="text-align: center">Wallace Caetano</h2>
-              <h3 style="text-align: center">Front-end Developer</h3>
-            </v-card-text>
-
-            <v-card-actions>
-              <div class="text-center">
-                <v-btn
-                  color="blue"
-                  class="ma-2 white--text"
-                  aling="center"
-                  href="https://linkedin.com/in/wallace-caetano/"
-                  target="_blank"
-                >
-                  LinkedIn
-                  <v-icon large> mdi-linkedin </v-icon>
-                </v-btn>
-              </div>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
-          <v-card class="mx-auto" max-width="300" elevation="5">
-            <v-img
-              class="white--text align-end"
-              height="300px"
-              src="../images/fabricio.jpeg"
-            >
-            </v-img>
-            <v-card-text class="text--primary">
-              <h2 style="text-align: center">Fabrício Adriel</h2>
-              <h3 style="text-align: center">Front-end Developer</h3>
-            </v-card-text>
-
-            <v-card-actions>
-              <div class="text-center">
-                <v-btn
-                  color="blue"
-                  class="ma-2 white--text"
-                  aling="center"
-                  href="https://www.linkedin.com/in/fabricioadriel/"
-                  target="_blank"
-                >
-                  LinkedIn
-                  <v-icon large> mdi-linkedin </v-icon>
-                </v-btn>
-              </div>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-        <v-col>
-          <v-card class="mx-auto" max-width="300" elevation="5">
-            <v-img
-              class="white--text align-end"
-              height="300px"
-              src="../images/devanir.jpeg"
-            >
-            </v-img>
-            <v-card-text class="text--primary">
-              <h2 style="text-align: center">Devanir Ramos</h2>
-              <h3 style="text-align: center">Back-end Developer</h3>
-            </v-card-text>
-
-            <v-card-actions>
-              <div class="text-center">
-                <v-btn
-                  color="blue"
-                  class="ma-2 white--text"
-                  aling="center"
-                  href="https://linkedin.com/in/devanir-ramos-junior/"
-                  target="_blank"
-                >
-                  LinkedIn
-                  <v-icon large> mdi-linkedin </v-icon>
-                </v-btn>
-              </div>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-        <v-col>
-          <v-card class="mx-auto" max-width="300" elevation="5">
-            <v-img
-              class="white--text align-end"
-              height="300px"
-              src="../images/breno.jpeg"
-            >
-            </v-img>
-            <v-card-text class="text--primary">
-              <h2 style="text-align: center">Breno Gabriel</h2>
-              <h3 style="text-align: center">Back-end Developer</h3>
-            </v-card-text>
-
-            <v-card-actions>
-              <div class="text-center">
-                <v-btn
-                  color="blue"
-                  class="ma-2 white--text"
-                  aling="center"
-                  href="https://www.linkedin.com/in/breno-m-52a300141"
-                  target="_blank"
-                >
-                  LinkedIn
-                  <v-icon large> mdi-linkedin </v-icon>
-                </v-btn>
-              </div>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
-          <v-card class="mx-auto" max-width="300" elevation="5">
-            <v-img
-              class="white--text align-end"
-              height="300px"
-              src="../images/alex.jpeg"
-            >
-            </v-img>
-            <v-card-text class="text--primary">
-              <h2 style="text-align: center">Alex Costa</h2>
-              <h3 style="text-align: center">Back-end Developer</h3>
-            </v-card-text>
-
-            <v-card-actions>
-              <div class="text-center">
-                <v-btn
-                  color="blue"
-                  class="ma-2 white--text"
-                  aling="center"
-                  href="linkedin.com/in/alex-costa-ba3439187"
-                  target="_blank"
-                >
-                  LinkedIn
-                  <v-icon large> mdi-linkedin </v-icon>
-                </v-btn>
-              </div>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-        <v-col>
-          <v-card class="mx-auto" max-width="300" elevation="5">
-            <v-img
-              class="white--text align-end"
-              height="300px"
-              src="../images/alan.jpeg"
-            >
-            </v-img>
-            <v-card-text class="text--primary">
-              <h2 style="text-align: center">Alan Lucas</h2>
-              <h3 style="text-align: center">Database Developer</h3>
-            </v-card-text>
-
-            <v-card-actions>
-              <div class="text-center">
-                <v-btn
-                  color="blue"
-                  class="ma-2 white--text"
-                  aling="center"
-                  href="https://www.linkedin.com/in/alan-bezerra/"
-                  target="_blank"
-                >
-                  LinkedIn
-                  <v-icon large> mdi-linkedin </v-icon>
-                </v-btn>
-              </div>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-        <v-col>
-          <v-card class="mx-auto" max-width="300" elevation="5">
-            <v-img
-              class="white--text align-end"
-              height="300px"
-              src="../images/gabriel.jpeg"
-            >
-            </v-img>
-            <v-card-text class="text--primary">
-              <h2 style="text-align: center">Gabriel Timoteo</h2>
-              <h3 style="text-align: center">Database Developer</h3>
-            </v-card-text>
-
-            <v-card-actions>
-              <div class="text-center">
-                <v-btn
-                  color="blue"
-                  class="ma-2 white--text"
-                  aling="center"
-                  href="www.linkedin.com/in/gabriel-timoteo-santos"
-                  target="_blank"
-                >
-                  LinkedIn
-                  <v-icon large> mdi-linkedin </v-icon>
-                </v-btn>
-              </div>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-    </div>
-  </div>
+            </v-layout>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
 
-
 <script>
+export default {
+  data: () => ({
+    focus: "",
+    type: "month",
+    typeToLabel: {
+      month: "Month",
+      week: "Week",
+      day: "Day",
+      "4day": "4 Days",
+    },
+    selectedEvent: {},
+    selectedElement: null,
+    selectedOpen: false,
+    events: [],
+    colors: [
+      "blue",
+      "indigo",
+      "deep-purple",
+      "cyan",
+      "green",
+      "orange",
+      "grey darken-1",
+    ],
+    names: [
+      "Meeting",
+      "Holiday",
+      "PTO",
+      "Travel",
+      "Event",
+      "Birthday",
+      "Conference",
+      "Party",
+    ],
+  }),
+  mounted() {
+    this.$refs.calendar.checkChange();
+  },
+  methods: {
+    viewDay({ date }) {
+      this.focus = date;
+      this.type = "day";
+    },
+    getEventColor(event) {
+      return event.color;
+    },
+    setToday() {
+      this.focus = "";
+    },
+    prev() {
+      this.$refs.calendar.prev();
+    },
+    next() {
+      this.$refs.calendar.next();
+    },
+    showEvent({ nativeEvent, event }) {
+      const open = () => {
+        this.selectedEvent = event;
+        this.selectedElement = nativeEvent.target;
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => (this.selectedOpen = true))
+        );
+      };
+
+      if (this.selectedOpen) {
+        this.selectedOpen = false;
+        requestAnimationFrame(() => requestAnimationFrame(() => open()));
+      } else {
+        open();
+      }
+
+      nativeEvent.stopPropagation();
+    },
+    updateRange({ start, end }) {
+      const events = [];
+
+      const min = new Date(`${start.date}T00:00:00`);
+      const max = new Date(`${end.date}T23:59:59`);
+      const days = (max.getTime() - min.getTime()) / 86400000;
+      const eventCount = this.rnd(days, days + 20);
+
+      for (let i = 0; i < eventCount; i++) {
+        const allDay = this.rnd(0, 3) === 0;
+        const firstTimestamp = this.rnd(min.getTime(), max.getTime());
+        const first = new Date(firstTimestamp - (firstTimestamp % 900000));
+        const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000;
+        const second = new Date(first.getTime() + secondTimestamp);
+
+        events.push({
+          name: this.names[this.rnd(0, this.names.length - 1)],
+          start: first,
+          end: second,
+          color: this.colors[this.rnd(0, this.colors.length - 1)],
+          timed: !allDay,
+        });
+      }
+
+      this.events = events;
+    },
+    rnd(a, b) {
+      return Math.floor((b - a + 1) * Math.random()) + a;
+    },
+  },
+};
 </script>
 
 <style>
-#cards-home {
-  margin-top: 20px;
+#home {
+  background-color: #181820;
+}
+#calendario-home {
+  width: 1000px;
 }
 </style>
