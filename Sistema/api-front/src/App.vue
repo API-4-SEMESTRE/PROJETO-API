@@ -71,3 +71,10 @@ export default {
   },
 };
 </script>
+
+<style>
+/* Retirar a barra de rolagem das telas */
+::-webkit-scrollbar {
+    width: 0px;
+}
+</style>
