@@ -13,14 +13,19 @@
         </v-app-bar>
         -->
 
-        <v-btn
-          style="margin-top: 20px; margin-left: 20px"
-          icon
-          @click="drawer = true"
-          v-if="this.$route.path !== '/login'"
-        >
-          <v-icon large color="white">mdi-menu</v-icon>
-        </v-btn>
+        <div v-if="this.$route.path !== '/login'">
+          <div v-if="this.$route.path !== '/Login'">
+            <div v-if="this.$route.path !== '/Criar_Conta'">
+              <v-btn
+                style="margin-top: 20px; margin-left: 20px"
+                icon
+                @click="drawer = true"
+              >
+                <v-icon large color="white">mdi-menu</v-icon>
+              </v-btn>
+            </div>
+          </div>
+        </div>
 
         <v-navigation-drawer
           v-model="drawer"
