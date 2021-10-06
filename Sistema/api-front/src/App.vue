@@ -17,6 +17,7 @@
           style="margin-top: 20px; margin-left: 20px"
           icon
           @click="drawer = true"
+          v-if="this.$route.path !== '/login'"
         >
           <v-icon large color="white">mdi-menu</v-icon>
         </v-btn>
