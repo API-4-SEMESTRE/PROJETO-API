@@ -423,9 +423,9 @@ import axios from "axios";
 
 export default {
   data: () => ({
-    cep : null,
+    cep : "",
     data : {
-      logradouro: null,
+      logradouro: "",
       bairro: null,
       localidade: null,
       uf: null
@@ -542,7 +542,7 @@ export default {
 
   methods: {
     searchCep () {
-      if(this.cep.length == 9) {
+      if(this.cep.length === 9) {
         axios.get(`https://viacep.com.br/ws/${ this.cep }/json/`)
             .then( response => this.data = response.data )
             .catch( error => console.log(error) )
@@ -594,6 +594,11 @@ export default {
     },
     // Método de cadastro de endereço
     cadastrar_endereco() {
+      this.endereco.cep_end = this.cep
+      this.endereco.rua_end = this.data.logradouro
+      this.endereco.bairro_end = this.data.bairro
+      this.endereco.cidade_end = this.data.localidade
+      this.endereco.estado_end = this.data.uf
       Endereco.salvar_endereco(this.endereco)
         .then((resposta_cadastro_endereco) => {
           this.endereco = {};
