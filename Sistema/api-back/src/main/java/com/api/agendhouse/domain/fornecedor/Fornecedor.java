@@ -23,7 +23,7 @@ public class Fornecedor {
     private String ramo_forn;
 
     @Column(name = "FOR_CNPJ")
-    private long cnpjforn;
+    private String cnpjforn;
 
     @Column(name = "FOR_SITE")
     private String siteforn;

@@ -17,12 +17,24 @@ public class ContatoService {
 
     @Transactional
     public Contato add(Contato contato) {
-
+        var rawTel = contato.getTel_con();
+        contato.setTel_con(rawTel.replaceAll("[\\s()-]", ""));
         return contatoRepository.save(contato);
     }
 
     public List<Contato> findAll() {
-        return contatoRepository.findAllByOrderByConcodAsc();
+        var contatos = contatoRepository.findAllByOrderByConcodAsc();
+        System.out.println(contatos.toString());
+        for (Contato contato : contatos) {
+            if (contato.getTel_con().length() > 9) {
+                var rawTel = contato.getTel_con();
+                var ddd = "(" + rawTel.substring(0, 2) + ") ";
+                var number = rawTel.substring(2, 7) + "-" + rawTel.substring(7);
+                contato.setTel_con(ddd + number);
+                System.out.println(contato);
+            }
+        }
+        return contatos;
     }
 
 }

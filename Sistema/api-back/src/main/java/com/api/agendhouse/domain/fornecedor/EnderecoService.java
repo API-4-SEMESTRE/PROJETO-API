@@ -28,7 +28,7 @@ public class EnderecoService {
         return enderecoRepository.findAllByOrderByForncodAsc();
     }
 
-    public Endereco addFor(Long cnpj, Endereco endereco) {
+    public Endereco addFor(String cnpj, Endereco endereco) {
         var fornecedor = fornecedorRepository.findByCnpjforn(cnpj);
         endereco.setForncod(fornecedor.getCod());
         enderecoRepository.save(endereco);

@@ -56,7 +56,6 @@
                         </v-col>
                         <v-col cols="6">
                           <span> Telefone </span>
-                          <!--
                           <v-text-field
                             v-mask="'(##) #####-####'"
                             outlined
@@ -65,17 +64,8 @@
                             v-model="contato.tel_con"
                             :rules="regra_telefone"
                           ></v-text-field>
-                          -->
-                          <v-text-field
-                            outlined
-                            required
-                            dense
-                            v-model="contato.tel_con"
-                            :rules="regra_telefone"
-                          ></v-text-field>
                         </v-col>
                       </v-row>
-
                       <v-row justify="center" align="stretch">
                         <v-col cols="24">
                           <span>E-mail</span>
@@ -143,17 +133,8 @@
                       <v-row>
                         <v-col cols="6">
                           <span> CNPJ</span>
-                          <!--
                           <v-text-field
                             v-mask="'##.###.###/####-##'"
-                            v-model="fornecedor.cnpjforn"
-                            :rules="regra_cnpj"
-                            outlined
-                            required
-                            dense
-                          ></v-text-field>
-                          -->
-                          <v-text-field
                             v-model="fornecedor.cnpjforn"
                             :rules="regra_cnpj"
                             outlined
