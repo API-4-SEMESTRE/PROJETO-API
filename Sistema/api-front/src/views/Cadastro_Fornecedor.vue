@@ -56,8 +56,17 @@
                         </v-col>
                         <v-col cols="6">
                           <span> Telefone </span>
+                          <!--
                           <v-text-field
                             v-mask="'(##) #####-####'"
+                            outlined
+                            required
+                            dense
+                            v-model="contato.tel_con"
+                            :rules="regra_telefone"
+                          ></v-text-field>
+                          -->
+                          <v-text-field
                             outlined
                             required
                             dense
@@ -441,6 +450,8 @@ export default {
     contato: {
       nomecon: "",
       func_con: "",
+      tel_con: "",
+      email_con: "",
     },
     // Criando o objeto que vai ser feito o POST
     fornecedor: {
