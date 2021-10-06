@@ -43,6 +43,18 @@
                   item.conteudo
                 }}</v-list-item-title>
               </v-list-item>
+
+              <v-list-item>
+                <v-list-item-icon>
+                  <v-icon color="white" v-on:click="cleanStorage()"
+                    >mdi-exit-run</v-icon
+                  >
+                </v-list-item-icon>
+
+                <v-list-item-title class="white--text" v-on:click="cleanStorage()">
+                  Sair
+                </v-list-item-title>
+              </v-list-item>
             </v-list-item-group>
           </v-list>
         </v-navigation-drawer>
@@ -93,6 +105,6 @@ export default {
 }
 /* Largura da barra de rolagem */
 ::-webkit-scrollbar {
-    width: 0px;
+  width: 0px;
 }
 </style>
