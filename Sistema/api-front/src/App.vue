@@ -51,7 +51,10 @@
                   >
                 </v-list-item-icon>
 
-                <v-list-item-title class="white--text" v-on:click="cleanStorage()">
+                <v-list-item-title
+                  class="white--text"
+                  v-on:click="cleanStorage()"
+                >
                   Sair
                 </v-list-item-title>
               </v-list-item>
@@ -82,11 +85,6 @@ export default {
         conteudo: "Cadastro de Usuário",
         url: "/Cadastro_usuario",
         icon: "mdi-account-plus",
-      },
-      {
-        conteudo: "Visualização dos Usuários",
-        url: "/Visualizacao_Usuario",
-        icon: "mdi-account-group",
       },
     ],
   }),
