@@ -1,5 +1,5 @@
 <template>
-  <v-app id="login">
+  <v-app id="cadastro-usuario">
     <v-content>
       <v-container fluid fill-height>
         <v-layout align-center justify-center>
@@ -197,7 +197,6 @@
                                               type="submit"
                                               :disabled="!valid"
                                               @click="validate"
-                                              id="btn_cadastrar_usuario"
                                             >
                                               Salvar
                                             </v-btn>
@@ -460,11 +459,7 @@ export default {
 </script>
 
 <style>
-#btn_cadastrar_usuario {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: auto;
-  border: solid 1px black;
+#cadastro-usuario {
+  background-color: #181820;
 }
 </style>
