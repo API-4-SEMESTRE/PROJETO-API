@@ -212,8 +212,9 @@
                           <span> CEP </span>
                           <v-text-field
                             v-mask="'#####-###'"
-                            v-model="endereco.cep_end"
+                            v-model="cep"
                             :rules="regra_cep"
+                            @keyup="searchCep()"
                             outlined
                             required
                             dense
@@ -222,7 +223,7 @@
                         <v-col cols="6">
                           <span> Rua </span>
                           <v-text-field
-                            v-model="endereco.rua_end"
+                            v-model="data.logradouro"
                             :rules="regra_rua"
                             outlined
                             required
@@ -234,7 +235,7 @@
                         <v-col cols="6">
                           <span> Bairro</span>
                           <v-text-field
-                            v-model="endereco.bairro_end"
+                            v-model="data.bairro"
                             :rules="regra_bairro"
                             outlined
                             required
@@ -244,7 +245,7 @@
                         <v-col cols="6">
                           <span> Cidade </span>
                           <v-text-field
-                            v-model="endereco.cidade_end"
+                            v-model="data.localidade"
                             :rules="regra_cidade"
                             outlined
                             required
@@ -256,7 +257,7 @@
                         <v-col cols="6">
                           <span> Estado </span>
                           <v-text-field
-                            v-model="endereco.estado_end"
+                            v-model="data.uf"
                             :rules="regra_estado"
                             outlined
                             required
@@ -409,9 +410,18 @@ import Contato from "../services/contato";
 import Fornecedor from "../services/fornecedor";
 import Endereco from "../services/endereco";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 export default {
   data: () => ({
+    cep : null,
+    data : {
+      logradouro: null,
+      bairro: null,
+      localidade: null,
+      uf: null
+    },
+    messageCep: null,
     tabs: null,
     // Validando se os campos estão preenchidos e se são validos
     valid: true,
@@ -462,12 +472,13 @@ export default {
     },
     // Criando o objeto que vai ser feito o POST
     endereco: {
-      rua_end: "",
-      bairro_end: "",
-      cep_end: "",
-      cidade_end: "",
-      estado_end: "",
+      // rua_end: "",
+      // bairro_end: "",
+      // cep_end: "",
+      // cidade_end: "",
+      // estado_end: "",
       forncod: "",
+      num_end: ""
     },
 
     // Variavel que vai ser usada pra pesquisa da tabela
@@ -504,13 +515,13 @@ export default {
         align: "start",
         value: "forncod",
       },
-      { text: "CEP", value: "cep_end" },
-      { text: "RUA", value: "rua_end" },
+      { text: "CEP", value: "cep" },
+      { text: "RUA", value: "logradouro" },
       { text: "NUMERO", value: "num_end" },
       { text: "COMPLEMENTO", value: "complemento_end" },
-      { text: "BAIRRO", value: "bairro_end" },
-      { text: "CIDADE", value: "cidade_end" },
-      { text: "ESTADO", value: "estado_end" },
+      { text: "BAIRRO", value: "bairro" },
+      { text: "CIDADE", value: "locallidade" },
+      { text: "ESTADO", value: "uf" },
     ],
   }),
 
@@ -521,6 +532,13 @@ export default {
   },
 
   methods: {
+    searchCep () {
+      if(this.cep.length == 9) {
+        axios.get(`https://viacep.com.br/ws/${ this.cep }/json/`)
+            .then( response => this.data = response.data )
+            .catch( error => console.log(error) )
+      }
+    },
     // Método de cadastro de contato
     cadastrar_contato() {
       Contato.salvar_contato(this.contato)

@@ -59,11 +59,12 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) =>{
-  var currentUser = localStorage.getItem("returnLogin");
+  let currentUser = localStorage.getItem("returnLogin");
+  let check = currentUser
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
-  if (requiresAuth && !currentUser) next('login');
-  else if (!requiresAuth && currentUser) next('home')
+  if (requiresAuth && (!check == undefined)) next('login');
+  else if (!requiresAuth && check) next('home')
   else next();
 
 })
