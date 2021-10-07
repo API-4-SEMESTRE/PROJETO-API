@@ -92,6 +92,11 @@ export default {
         url: "/Cadastro_fornecedor",
         icon: "mdi-package-variant",
       },
+      {
+        conteudo: "Agendar Evento",
+        url: "/Agendar_Evento",
+        icon: "mdi-calendar-multiselect",
+      },
     ],
   }),
   methods: {
