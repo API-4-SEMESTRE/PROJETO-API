@@ -37,7 +37,7 @@ public class EnderecoController {
 
     @PostMapping("/addforn")
     public ResponseEntity<Endereco> addFor(
-            @RequestParam Long cnpj,
+            @RequestParam String cnpj,
             @RequestBody Endereco endereco) {
 
         var newEndereco = enderecoService.addFor(cnpj, endereco);

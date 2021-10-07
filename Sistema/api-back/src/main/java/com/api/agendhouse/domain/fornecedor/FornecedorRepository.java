@@ -10,5 +10,5 @@ public interface FornecedorRepository extends JpaRepository<Fornecedor, Long> {
 
     List<Fornecedor> findAllByOrderByCodAsc();
 
-    Fornecedor findByCnpjforn(Long cnpj);
+    Fornecedor findByCnpjforn(String cnpj);
 }

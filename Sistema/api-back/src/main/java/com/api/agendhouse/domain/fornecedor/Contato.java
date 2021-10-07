@@ -21,7 +21,7 @@ public class Contato {
     private String func_con;
 
     @Column(name = "CON_TELEFONE")
-    private Integer tel_con;
+    private String tel_con;
 
     @Column(name = "CON_EMAIL")
     private String email_con;
