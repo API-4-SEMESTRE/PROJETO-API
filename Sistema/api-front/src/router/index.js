@@ -5,6 +5,7 @@ import Login from '../views/Login.vue'
 import Cadastro_Fornecedor from '../views/Cadastro_Fornecedor'
 import Cadastro_Usuario from '../views/Cadastro_Usuario'
 import Criar_Conta from '../views/Criar_Conta'
+import Agendar_Evento from '../views/Agendar_Evento'
 
 Vue.use(VueRouter);
 
@@ -29,29 +30,35 @@ const router = new VueRouter({
       path: '/home',
       name: 'Home',
       component: Home,
-      meta: {requiresAuth: true}
+      meta: { requiresAuth: true }
     },
     {
       path: '/Cadastro_fornecedor',
       name: 'Cadastro_Fornecedor',
       component: Cadastro_Fornecedor,
-      meta: {requiresAuth: true}
+      meta: { requiresAuth: true }
     },
     {
       path: '/Cadastro_Usuario',
       name: 'Cadastro_Usuario',
       component: Cadastro_Usuario,
-      meta: {requiresAuth: true}
+      meta: { requiresAuth: true }
     },
     {
       path: '/Criar_Conta',
       name: 'Criar_Conta',
       component: Criar_Conta,
+    },
+    {
+      path: '/Agendar_Evento',
+      name: 'Agendar_Evento',
+      component: Agendar_Evento,
+      meta: { requiresAuth: true }
     }
   ]
 })
 
-router.beforeEach((to, from, next) =>{
+router.beforeEach((to, from, next) => {
   var currentUser = localStorage.getItem("returnLogin");
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
