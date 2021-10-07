@@ -3,6 +3,7 @@ package com.api.agendhouse.domain.evento;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.sql.Time;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -39,5 +40,11 @@ public class Evento {
 
     @Column(name="USU_COD_APROVA")
     private long usucodaprova;
+
+    @Column (name="EVE_HORA_INICIO")
+    private Time horainicio;
+
+    @Column (name="EVE_HORA_FIM")
+    private Time horafim;
 
 }

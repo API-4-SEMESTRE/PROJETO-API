@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -30,5 +29,9 @@ public class EventoService {
 
     public List<Evento> findByUsu(Long usucod) {
         return eventoRepository.findByUsucodcriaOrderByCodevenAsc(usucod);
+    }
+
+    public Evento disponivel(String datahorainicio, String datahorafim) {
+        return eventoRepository.findEventoByHorainicioAndHorafimNamedParams(datahorainicio, datahorafim);
     }
 }
