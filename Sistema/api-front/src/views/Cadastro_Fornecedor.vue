@@ -66,7 +66,6 @@
                           ></v-text-field>
                         </v-col>
                       </v-row>
-
                       <v-row justify="center" align="stretch">
                         <v-col cols="24">
                           <span>E-mail</span>
@@ -441,6 +440,8 @@ export default {
     contato: {
       nomecon: "",
       func_con: "",
+      tel_con: "",
+      email_con: "",
     },
     // Criando o objeto que vai ser feito o POST
     fornecedor: {
