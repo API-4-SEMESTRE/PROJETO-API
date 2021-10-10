@@ -2,23 +2,19 @@ package com.api.agendhouse.application;
 
 import com.api.agendhouse.domain.evento.Evento;
 import com.api.agendhouse.domain.evento.EventoService;
-import com.api.agendhouse.domain.evento.EventoStatus;
-import com.api.agendhouse.domain.evento.EventoTipo;
-import jdk.jfr.Event;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @CrossOrigin("*")
 @RestController
+@Api("Eventos")
 @RequestMapping("/evento")
 public class EventoController {
 
@@ -29,6 +25,7 @@ public class EventoController {
         this.eventoService = eventoService;
     }
 
+    @ApiOperation("Adiciona um evento na plataforma.")
     @PostMapping("/add")
     public ResponseEntity<Evento> addEvento (
             @RequestBody Evento evento) throws ParseException {
@@ -38,6 +35,7 @@ public class EventoController {
         return ResponseEntity.ok(evento);
     }
 
+    @ApiOperation("Busca todos os eventos na plataforma.")
     @GetMapping("/all")
     public ResponseEntity<List<Evento>> findAll() {
 
@@ -45,6 +43,7 @@ public class EventoController {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(eventos);
     }
 
+    @ApiOperation("Busca os eventos cadastrados por um usuário.")
     @GetMapping("/findByUsu")
     public ResponseEntity<List<Evento>> findByUsu(
             @RequestParam Long usucod) {
@@ -53,6 +52,7 @@ public class EventoController {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(eventos);
     }
 
+    @ApiOperation("Mostra se o horário selecionado está disponível.")
     @GetMapping("/disponiveis")
     public ResponseEntity<Boolean> disponiveis(
             @RequestParam String datahorainicio, String datahorafim) {
@@ -65,4 +65,23 @@ public class EventoController {
             return ResponseEntity.ok(false);
         }
     }
+
+    @ApiOperation("Atualiza um registro de evento")
+    @PutMapping("/update")
+    public ResponseEntity<Evento> update(
+            @RequestBody Evento evento) {
+
+        var updatedEvento = eventoService.update(evento);
+        return ResponseEntity.ok(updatedEvento);
+    }
+
+    @ApiOperation("Remove um evento")
+    @DeleteMapping("/delete")
+    public ResponseEntity<Boolean> delete(
+            @RequestBody Evento evento) {
+
+        var deletedEvento = eventoService.delete(evento);
+        return ResponseEntity.ok(deletedEvento);
+    }
 }
+
