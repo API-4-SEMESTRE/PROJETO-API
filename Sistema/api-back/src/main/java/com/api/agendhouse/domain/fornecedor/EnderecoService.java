@@ -28,10 +28,26 @@ public class EnderecoService {
         return enderecoRepository.findAllByOrderByForncodAsc();
     }
 
+    @Transactional
     public Endereco addFor(String cnpj, Endereco endereco) {
         var fornecedor = fornecedorRepository.findByCnpjforn(cnpj);
         endereco.setForncod(fornecedor.getCod());
         enderecoRepository.save(endereco);
         return endereco;
+    }
+
+    @Transactional
+    public Endereco update(Endereco endereco) {
+        return enderecoRepository.save(endereco);
+    }
+
+    @Transactional
+    public boolean delete(Endereco endereco) {
+        try {
+            enderecoRepository.delete(endereco);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import com.api.agendhouse.domain.fornecedor.*;
 
 @CrossOrigin("*")
 @RestController
+@Api("Fornecedor")
 @RequestMapping("/fornecedor")
 public class FornecedorController {
     private final FornecedorService fornecedorService;
@@ -28,6 +31,7 @@ public class FornecedorController {
         this.enderecoService = enderecoService;
     }
 
+    @ApiOperation("Adiciona um fornecedor na plataforma.")
     @PostMapping("/add")
     public ResponseEntity<Fornecedor> addFornecedor (
             @RequestBody Fornecedor fornecedor) {
@@ -42,6 +46,7 @@ public class FornecedorController {
         }
     }
 
+    @ApiOperation("Busca todos os fornecedores cadastrados na plataforma.")
     @GetMapping("/all")
     public ResponseEntity<List<Fornecedor>> findAll() {
 
@@ -49,6 +54,7 @@ public class FornecedorController {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(fornecedores);
     }
 
+    @ApiOperation("Busca todos os fornecedores, contatos e endereços cadastrados na plataforma.")
     @GetMapping("/full")
     public ResponseEntity<List> findFull() {
 
@@ -58,6 +64,24 @@ public class FornecedorController {
         lista.add(enderecoService.findAll());
 
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(lista);
+    }
+
+    @ApiOperation("Atualiza um registro de fornecedor")
+    @PutMapping("/update")
+    public ResponseEntity<Fornecedor> update(
+            @RequestBody Fornecedor fornecedor) {
+
+        var updatedFornecedor = fornecedorService.update(fornecedor);
+        return ResponseEntity.ok(updatedFornecedor);
+    }
+
+    @ApiOperation("Remove um fornecedor")
+    @DeleteMapping("/delete")
+    public ResponseEntity<Boolean> delete(
+            @RequestBody Fornecedor fornecedor) {
+
+        var deletedFornecedor = fornecedorService.delete(fornecedor);
+        return ResponseEntity.ok(deletedFornecedor);
     }
 
 //    @PostMapping("/addcon")

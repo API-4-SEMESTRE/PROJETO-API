@@ -37,4 +37,18 @@ public class ContatoService {
         return contatos;
     }
 
+    @Transactional
+    public Contato update(Contato contato) {
+        return contatoRepository.save(contato);
+    }
+
+    @Transactional
+    public boolean delete(Contato contato) {
+        try {
+            contatoRepository.delete(contato);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
 }
