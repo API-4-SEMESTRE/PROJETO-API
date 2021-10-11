@@ -73,6 +73,7 @@ public class UsuarioService implements UserDetailsService {
         return usuarioRepository.save(usuario);
     }
 
+    @Transactional
     public boolean delete(Usuario usuario) {
         try {
             usuarioRepository.delete(usuario);

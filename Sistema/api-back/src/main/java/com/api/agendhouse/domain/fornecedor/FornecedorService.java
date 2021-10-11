@@ -42,6 +42,21 @@ public class FornecedorService {
         return fornecedores;
     }
 
+    @Transactional
+    public Fornecedor update(Fornecedor fornecedor) {
+        return fornecedorRepository.save(fornecedor);
+    }
+
+    @Transactional
+    public boolean delete(Fornecedor fornecedor) {
+        try {
+            fornecedorRepository.delete(fornecedor);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
+
 //    @Transactional
 //    public Fornecedor addCon(String nome, Fornecedor fornecedor) {
 //        var contato = contatoRepository.findByNomecon(nome);

@@ -34,4 +34,19 @@ public class EventoService {
     public Evento disponivel(String datahorainicio, String datahorafim) {
         return eventoRepository.findEventoByHorainicioAndHorafimNamedParams(datahorainicio, datahorafim);
     }
+
+    @Transactional
+    public Evento update(Evento evento) {
+        return eventoRepository.save(evento);
+    }
+
+    @Transactional
+    public boolean delete(Evento evento) {
+        try {
+            eventoRepository.delete(evento);
+        } catch (Exception e) {
+            return false;
+        }
+        return true;
+    }
 }
