@@ -16,19 +16,16 @@ public class Fornecedor {
     @GeneratedValue(generator = "for_SQ", strategy =  GenerationType.SEQUENCE)
     private long cod;
 
-
     @Column(name = "FOR_NOME_FORN")
     private String nomeforn;
-
 
     @Column(name = "FOR_RAMO_FORN")
     private String ramo_forn;
 
-
     @Column(name = "FOR_CNPJ")
-    private long cnpjforn;
+    private String cnpjforn;
 
-    @Column(name = "CON_COD_CONT")
-    private long con_cod;
+    @Column(name = "FOR_SITE")
+    private String siteforn;
 
 }

@@ -1,11 +1,11 @@
 <template>
-  <v-app id="cadastro-usuario">
+  <v-app id="agendar-evento">
     <v-content>
       <v-container fluid fill-height>
         <v-layout align-center justify-center>
           <v-flex xs12 sm8 md12>
             <h1 style="text-align: center; color: white; margin-top: 15px">
-              Cadastro de Usuário
+              Agendar Evento
             </h1>
             <v-layout align-center justify-center>
               <div>
@@ -20,16 +20,16 @@
                     <template>
                       <v-data-table
                         :headers="headers"
-                        :items="lista_de_usuarios"
+                        :items="lista_de_eventos"
                         sort-by="calories"
                         class="elevation-1"
                       >
                         <template v-slot:top>
                           <v-toolbar flat>
-                            <v-toolbar-title>Lista de Usuários</v-toolbar-title>
+                            <v-toolbar-title>Lista de Eventos</v-toolbar-title>
                             <v-divider class="mx-4" inset vertical></v-divider>
                             <v-spacer></v-spacer>
-                            <v-dialog v-model="dialog" max-width="500px">
+                            <v-dialog v-model="dialog" max-width="700px">
                               <template v-slot:activator="{ on, attrs }">
                                 <v-btn
                                   color="#C84634"
@@ -38,7 +38,7 @@
                                   v-bind="attrs"
                                   v-on="on"
                                 >
-                                  Novo Usuário
+                                  Novo Evento
                                 </v-btn>
                               </template>
                               <v-card style="background-color: #272733">
@@ -62,19 +62,75 @@
                                               style="
                                                 color: white;
                                                 font-size: 18px;
+                                                display: flex;
+                                                flex-direction: row;
+                                                justify-content: center;
+                                                align-items: center;
                                               "
-                                              >Nome</span
+                                              >Data do Evento</span
                                             >
-                                            <v-text-field
-                                              label="Nome"
-                                              v-model="usuario.nome"
-                                              :rules="regra_nome"
-                                              single-line
-                                              solo
-                                              required
-                                              dense
-                                              background-color="#A9A9A9"
-                                            ></v-text-field>
+                                            <div
+                                              style="
+                                                display: flex;
+                                                flex-direction: row;
+                                                justify-content: center;
+                                                align-items: center;
+                                                margin-top: 5px;
+                                              "
+                                            >
+                                              <v-date-picker
+                                                locale="Brazil"
+                                                v-model="picker"
+                                              ></v-date-picker>
+                                            </div>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                                display: flex;
+                                                flex-direction: row;
+                                                justify-content: center;
+                                                align-items: center;
+                                              "
+                                              >Hora Inicio</span
+                                            >
+                                            <v-time-picker
+                                              v-model="time"
+                                              :allowed-hours="allowedHours"
+                                              :allowed-minutes="allowedMinutes"
+                                              class="mt-4"
+                                              format="24hr"
+                                              scrollable
+                                              min="9:30"
+                                              max="22:15"
+                                            ></v-time-picker>
+                                          </v-col>
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                                display: flex;
+                                                flex-direction: row;
+                                                justify-content: center;
+                                                align-items: center;
+                                              "
+                                              >Hora Fim</span
+                                            >
+                                            <v-time-picker
+                                              v-model="time"
+                                              :allowed-hours="allowedHours"
+                                              :allowed-minutes="allowedMinutes"
+                                              class="mt-4"
+                                              format="24hr"
+                                              scrollable
+                                              min="9:30"
+                                              max="22:15"
+                                            ></v-time-picker>
                                           </v-col>
                                         </v-row>
                                         <v-row justify="center">
@@ -84,63 +140,11 @@
                                                 color: white;
                                                 font-size: 18px;
                                               "
-                                              >E-mail</span
-                                            >
-                                            <v-text-field
-                                              label="E-mail"
-                                              v-model="usuario.email"
-                                              :rules="regra_email"
-                                              single-line
-                                              solo
-                                              required
-                                              dense
-                                              background-color="#A9A9A9"
-                                            ></v-text-field>
-                                          </v-col>
-                                        </v-row>
-                                        <v-row justify="center">
-                                          <v-col cols="24">
-                                            <span
-                                              style="
-                                                color: white;
-                                                font-size: 18px;
-                                              "
-                                              >Senha</span
-                                            >
-                                            <v-text-field
-                                              label="Senha"
-                                              v-model="usuario.senha"
-                                              :rules="regra_senha"
-                                              background-color="#A9A9A9"
-                                              single-line
-                                              solo
-                                              required
-                                              dense
-                                              password
-                                              :append-icon="
-                                                show1
-                                                  ? 'mdi-eye'
-                                                  : 'mdi-eye-off'
-                                              "
-                                              :type="
-                                                show1 ? 'text' : 'password'
-                                              "
-                                              @click:append="show1 = !show1"
-                                            ></v-text-field>
-                                          </v-col>
-                                        </v-row>
-                                        <v-row justify="center">
-                                          <v-col cols="24">
-                                            <span
-                                              style="
-                                                color: white;
-                                                font-size: 18px;
-                                              "
-                                              >Tipo de Usuário</span
+                                              >Espaço</span
                                             >
                                             <v-select
-                                              :items="tipo_usuario"
-                                              label="Tipo de Usuário"
+                                              :items="espaco"
+                                              label="Espaço"
                                               v-model="usuario.tipo"
                                               single-line
                                               solo
@@ -150,7 +154,7 @@
                                               :rules="[
                                                 (v) =>
                                                   !!v ||
-                                                  'O tipo do usuário é obrigatório',
+                                                  'O espaço é obrigatório',
                                               ]"
                                             ></v-select>
                                           </v-col>
@@ -160,11 +164,11 @@
                                                 color: white;
                                                 font-size: 18px;
                                               "
-                                              >Tipo de Usuário</span
+                                              >Tipo de Evento</span
                                             >
                                             <v-select
-                                              :items="status_usuario"
-                                              label="Status Usuário"
+                                              :items="tipo_evento"
+                                              label="Tipo de Evento"
                                               v-model="usuario.active"
                                               single-line
                                               solo
@@ -174,7 +178,7 @@
                                               ::rules="[
                                                 (v) =>
                                                   !!v.toString() ||
-                                                  'O status do usuário é obrigatório',
+                                                  'O tipo de evento é obrigatório',
                                               ]"
                                             ></v-select>
                                           </v-col>
@@ -258,11 +262,15 @@
 
 
 <script>
-import Usuario from "../services/usuario";
+import Evento from "../services/evento";
 import Swal from "sweetalert2";
 
 export default {
   data: () => ({
+    picker: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+      .toISOString()
+      .substr(0, 10),
+
     // Validando se os campos do formulario estão preenchidos e se são validos
     valid: true,
     regra_nome: [(v) => !!v || "O nome é obrigatório"],
@@ -277,11 +285,11 @@ export default {
     show1: false,
 
     // Criando os arrays que vão armazenar os conteudos dos selects de Status do Usuario e Tipo de Usuario
-    status_usuario: [true, false],
-    tipo_usuario: ["ADMIN", "COLABORADOR"],
+    tipo_evento: ["1 - SMB", "2 - Enterprise", "3 - Workshop", "4 - Palestra"],
+    espaco: ["Openspace", "Lounge"],
 
     // Array aonde vai ser armazenado a lista de usuarios
-    lista_de_usuarios: [],
+    lista_de_eventos: [],
 
     // Criando o objeto que vai ser feito o POST
     usuario: {
@@ -302,13 +310,17 @@ export default {
       {
         text: "CÓDIGO",
         align: "start",
-        value: "cod",
+        value: "codeven",
       },
-      { text: "NOME", value: "nome" },
+      { text: "DATA EVENTO", value: "dataeven" },
+      { text: "FORMATO", value: "formato" },
       { text: "TIPO", value: "tipo" },
-      { text: "EMAIL", value: "email" },
-      { text: "DATA DE CRIAÇÃO", value: "date_create" },
-      { text: "ATIVO", value: "active" },
+      { text: "STATUS", value: "status" },
+      { text: "DATA CRIAÇÃO", value: "datacria" },
+      { text: "USUÁRIO CRIAÇÃO", value: "usucodcria" },
+      { text: "USUÁRIO APROVAÇÃO", value: "usucodaprova" },
+      { text: "HORA INICIO", value: "horainicio" },
+      { text: "HORA FIM", value: "horafim" },
       { text: "Actions", value: "actions", sortable: false },
     ],
 
@@ -321,7 +333,7 @@ export default {
     // "Novo Usuário" = o usuario clicou no botão pra cadastrar um novo usuario
     // "Editar Usuário" = o usuario clicou no botão pra editar um usuario
     formTitle() {
-      return this.editedIndex === -1 ? "Novo Usuário" : "Editar Usuário";
+      return this.editedIndex === -1 ? "Novo Evento" : "Editar Evento";
     },
   },
 
@@ -336,8 +348,8 @@ export default {
   },
 
   mounted() {
-    // Chamando o método exibir_usuario()
-    this.exibir_usuario();
+    // Chamando o método exibir_evento()
+    this.exibir_evento();
   },
 
   methods: {
@@ -345,7 +357,7 @@ export default {
     cadastrar_usuario() {
       // Se o usuario não tiver um "cod" significa que esse usuario não existe então ele vai pra resquest de cadastro
       if (!this.usuario.cod) {
-        Usuario.salvar_usuario(this.usuario)
+        Evento.salvar_usuario(this.usuario)
           .then((resposta_cadastro_usuario) => {
             this.usuario = {};
             Swal.fire(
@@ -355,7 +367,7 @@ export default {
                 " cadastrado com sucesso!!!",
               "success"
             );
-            this.exibir_usuario();
+            this.exibir_evento();
           })
           .catch((e) => {
             Swal.fire(
@@ -368,7 +380,7 @@ export default {
       } else {
         // Método de atualizar usuario
         // Se o usuario já tiver um "cod" ele já existe então ele vai pra request de atualizar
-        Usuario.atualizar_usuario(this.usuario)
+        Evento.atualizar_usuario(this.usuario)
           .then((resposta_atualizar_usuario) => {
             this.usuario = {};
             Swal.fire(
@@ -378,7 +390,7 @@ export default {
                 " atualizado com sucesso!!!",
               "success"
             );
-            this.exibir_usuario();
+            this.exibir_evento();
           })
           .catch((e) => {
             Swal.fire(
@@ -390,16 +402,16 @@ export default {
         this.close();
       }
     },
-    // Método pra exibir os usuarios
-    exibir_usuario() {
-      Usuario.listar_usuarios()
-        .then((resposta_lista_usuarios) => {
-          this.lista_de_usuarios = resposta_lista_usuarios.data;
+    // Método pra exibir os eventos
+    exibir_evento() {
+      Evento.listar_eventos()
+        .then((resposta_lista_evento) => {
+          this.lista_de_eventos = resposta_lista_evento.data;
         })
         .catch((e) => {
           Swal.fire(
             "Oops...",
-            "Erro ao carregar a tabela de usuários! - Erro: " +
+            "Erro ao carregar a tabela de eventos! - Erro: " +
               e.response.data.error,
             "error"
           );
@@ -413,25 +425,25 @@ export default {
 
     // Método que vai recuparar os dados da tabela e armazenar no objeto usuario
     editar_usuario(usuario) {
-      this.editedIndex = this.lista_de_usuarios.indexOf(usuario);
+      this.editedIndex = this.lista_de_eventos.indexOf(usuario);
       this.usuario = Object.assign({}, usuario);
       this.dialog = true;
     },
 
     // Método que vai recuparar os dados da tabela e armazenar no objeto usuario
     deleteItem(usuario) {
-      this.editedIndex = this.lista_de_usuarios.indexOf(usuario);
+      this.editedIndex = this.lista_de_eventos.indexOf(usuario);
       this.usuario = Object.assign({}, usuario);
       this.dialogDelete = true;
     },
 
     // Método pra excluir os usuarios
     deletar_usuario(usuario) {
-      Usuario.excluir_usuario(usuario)
+      Evento.excluir_usuario(usuario)
         .then((resposta_excluir_usuario) => {
           Swal.fire("Sucesso", "Usuário excluido com sucesso!!!", "success");
           resposta_excluir_usuario;
-          this.exibir_usuario();
+          this.exibir_evento();
         })
         .catch((e) => {
           Swal.fire(
@@ -459,7 +471,7 @@ export default {
 </script>
 
 <style>
-#cadastro-usuario {
+#agendar-evento {
   background-color: #181820;
 }
 </style>
