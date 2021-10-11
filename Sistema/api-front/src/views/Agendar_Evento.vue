@@ -20,7 +20,7 @@
                     <template>
                       <v-data-table
                         :headers="headers"
-                        :items="lista_de_usuarios"
+                        :items="lista_de_eventos"
                         sort-by="calories"
                         class="elevation-1"
                       >
@@ -262,7 +262,7 @@
 
 
 <script>
-import Usuario from "../services/usuario";
+import Evento from "../services/evento";
 import Swal from "sweetalert2";
 
 export default {
@@ -289,7 +289,7 @@ export default {
     espaco: ["Openspace", "Lounge"],
 
     // Array aonde vai ser armazenado a lista de usuarios
-    lista_de_usuarios: [],
+    lista_de_eventos: [],
 
     // Criando o objeto que vai ser feito o POST
     usuario: {
@@ -310,13 +310,17 @@ export default {
       {
         text: "CÓDIGO",
         align: "start",
-        value: "cod",
+        value: "codeven",
       },
-      { text: "NOME", value: "nome" },
+      { text: "DATA EVENTO", value: "dataeven" },
+      { text: "FORMATO", value: "formato" },
       { text: "TIPO", value: "tipo" },
-      { text: "EMAIL", value: "email" },
-      { text: "DATA DE CRIAÇÃO", value: "date_create" },
-      { text: "ATIVO", value: "active" },
+      { text: "STATUS", value: "status" },
+      { text: "DATA CRIAÇÃO", value: "datacria" },
+      { text: "USUÁRIO CRIAÇÃO", value: "usucodcria" },
+      { text: "USUÁRIO APROVAÇÃO", value: "usucodaprova" },
+      { text: "HORA INICIO", value: "horainicio" },
+      { text: "HORA FIM", value: "horafim" },
       { text: "Actions", value: "actions", sortable: false },
     ],
 
@@ -344,8 +348,8 @@ export default {
   },
 
   mounted() {
-    // Chamando o método exibir_usuario()
-    this.exibir_usuario();
+    // Chamando o método exibir_evento()
+    this.exibir_evento();
   },
 
   methods: {
@@ -353,7 +357,7 @@ export default {
     cadastrar_usuario() {
       // Se o usuario não tiver um "cod" significa que esse usuario não existe então ele vai pra resquest de cadastro
       if (!this.usuario.cod) {
-        Usuario.salvar_usuario(this.usuario)
+        Evento.salvar_usuario(this.usuario)
           .then((resposta_cadastro_usuario) => {
             this.usuario = {};
             Swal.fire(
@@ -363,7 +367,7 @@ export default {
                 " cadastrado com sucesso!!!",
               "success"
             );
-            this.exibir_usuario();
+            this.exibir_evento();
           })
           .catch((e) => {
             Swal.fire(
@@ -376,7 +380,7 @@ export default {
       } else {
         // Método de atualizar usuario
         // Se o usuario já tiver um "cod" ele já existe então ele vai pra request de atualizar
-        Usuario.atualizar_usuario(this.usuario)
+        Evento.atualizar_usuario(this.usuario)
           .then((resposta_atualizar_usuario) => {
             this.usuario = {};
             Swal.fire(
@@ -386,7 +390,7 @@ export default {
                 " atualizado com sucesso!!!",
               "success"
             );
-            this.exibir_usuario();
+            this.exibir_evento();
           })
           .catch((e) => {
             Swal.fire(
@@ -398,16 +402,16 @@ export default {
         this.close();
       }
     },
-    // Método pra exibir os usuarios
-    exibir_usuario() {
-      Usuario.listar_usuarios()
-        .then((resposta_lista_usuarios) => {
-          this.lista_de_usuarios = resposta_lista_usuarios.data;
+    // Método pra exibir os eventos
+    exibir_evento() {
+      Evento.listar_eventos()
+        .then((resposta_lista_evento) => {
+          this.lista_de_eventos = resposta_lista_evento.data;
         })
         .catch((e) => {
           Swal.fire(
             "Oops...",
-            "Erro ao carregar a tabela de usuários! - Erro: " +
+            "Erro ao carregar a tabela de eventos! - Erro: " +
               e.response.data.error,
             "error"
           );
@@ -421,25 +425,25 @@ export default {
 
     // Método que vai recuparar os dados da tabela e armazenar no objeto usuario
     editar_usuario(usuario) {
-      this.editedIndex = this.lista_de_usuarios.indexOf(usuario);
+      this.editedIndex = this.lista_de_eventos.indexOf(usuario);
       this.usuario = Object.assign({}, usuario);
       this.dialog = true;
     },
 
     // Método que vai recuparar os dados da tabela e armazenar no objeto usuario
     deleteItem(usuario) {
-      this.editedIndex = this.lista_de_usuarios.indexOf(usuario);
+      this.editedIndex = this.lista_de_eventos.indexOf(usuario);
       this.usuario = Object.assign({}, usuario);
       this.dialogDelete = true;
     },
 
     // Método pra excluir os usuarios
     deletar_usuario(usuario) {
-      Usuario.excluir_usuario(usuario)
+      Evento.excluir_usuario(usuario)
         .then((resposta_excluir_usuario) => {
           Swal.fire("Sucesso", "Usuário excluido com sucesso!!!", "success");
           resposta_excluir_usuario;
-          this.exibir_usuario();
+          this.exibir_evento();
         })
         .catch((e) => {
           Swal.fire(
