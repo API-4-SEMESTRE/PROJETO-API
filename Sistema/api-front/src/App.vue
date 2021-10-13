@@ -36,6 +36,8 @@
         >
           <v-list nav dense>
             <v-list-item-group active-class="red darken-3">
+              <v-img src="./images/Logo_AgendHouse.png"></v-img>
+              <v-divider></v-divider>
               <v-list-item
                 v-for="(item, index) in menus"
                 :key="index"
