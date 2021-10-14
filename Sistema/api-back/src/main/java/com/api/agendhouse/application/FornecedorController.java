@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import com.api.agendhouse.domain.DTO.FornecedorDTOFilter;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +84,15 @@ public class FornecedorController {
         var deletedFornecedor = fornecedorService.delete(fornecedor);
         return ResponseEntity.ok(deletedFornecedor);
     }
+
+    @ApiOperation("Lista os fornecedores com dados de cadastro")
+    @GetMapping("/listaFornecedores")
+    public ResponseEntity<List<FornecedorDTOFilter>> GetFornecedores(){
+        var fornecedoresApresentar = fornecedorService.listFornecedores();
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(fornecedoresApresentar);
+    }
+
+
 
 //    @PostMapping("/addcon")
 //    public ResponseEntity<Fornecedor> addCon(

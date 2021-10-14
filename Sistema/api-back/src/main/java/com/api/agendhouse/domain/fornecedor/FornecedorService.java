@@ -1,9 +1,11 @@
 package com.api.agendhouse.domain.fornecedor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.api.agendhouse.domain.DTO.FornecedorDTOFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,11 +13,13 @@ import org.springframework.stereotype.Service;
 public class FornecedorService {
     private FornecedorRepository fornecedorRepository;
     private ContatoRepository contatoRepository;
+    private EnderecoRepository enderecoRepository;
 
     @Autowired
-    public FornecedorService(FornecedorRepository fornecedorRepository, ContatoRepository contatoRepository) {
+    public FornecedorService(FornecedorRepository fornecedorRepository, ContatoRepository contatoRepository, EnderecoRepository enderecoRepository) {
         this.fornecedorRepository = fornecedorRepository;
         this.contatoRepository = contatoRepository;
+        this.enderecoRepository = enderecoRepository;
     }
 
     @Transactional
@@ -55,6 +59,37 @@ public class FornecedorService {
             return false;
         }
         return true;
+    }
+
+
+    public List<FornecedorDTOFilter> listFornecedores() {
+        var listaFornecedores = new ArrayList<FornecedorDTOFilter>();
+        FornecedorDTOFilter listaRetorno = new FornecedorDTOFilter();
+        var fornecedores = fornecedorRepository.findAllByOrderByCodAsc();
+        for (Fornecedor fornecedor : fornecedores) {
+            listaRetorno.setNome(fornecedor.getNomeforn());
+            listaRetorno.setRamo(fornecedor.getRamo_forn());
+            listaRetorno.setCnpj(fornecedor.getCnpjforn());
+
+            var endereco = enderecoRepository.getByForncod(fornecedor.getCod());
+            if (endereco != null){
+                listaRetorno.setRua(endereco.getRua_end());
+                listaRetorno.setNumero(endereco.getNum_end().toString());
+                listaRetorno.setBairro(endereco.getBairro_end());
+                listaRetorno.setCidade(endereco.getCidade_end());
+                listaRetorno.setUf(endereco.getEstado_end());
+                listaRetorno.setComplemento(endereco.getComplemento_end());
+            }
+
+            var contato = contatoRepository.getByFornecod(fornecedor.getCod());
+            if (contato != null){
+                listaRetorno.setContato_nome(contato.getNomecon());
+                listaRetorno.setContato_email(contato.getEmail_con());
+                listaRetorno.setContato_fone(contato.getTel_con());
+            }
+            listaFornecedores.add(listaRetorno);
+        }
+        return listaFornecedores;
     }
 
 //    @Transactional
