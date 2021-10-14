@@ -1,396 +1,555 @@
 <template>
-  <div>
-    <v-app>
-      <v-main>
-        <h1 style="text-align: center; margin-top: 20px">
-          Cadastro de Fornecedor
-        </h1>
-        <v-card>
-          <v-tabs v-model="tabs" centered>
-            <v-tab v-for="n in 3" :key="n"> Item {{ n }} </v-tab>
-          </v-tabs>
-          <v-tabs-items v-model="tabs">
-            <v-tab-item>
-              <v-card flat>
-                <v-card-text>
-                  <!-- CADASTRO CONTATO -->
-                  <v-form
-                    style="padding-top: 30px"
-                    ref="form"
-                    v-model="validContato"
-                    lazy-validation
-                    @submit.prevent="cadastrar_contato"
-                  >
-                    <v-container
-                      class="ma-70"
-                      style="width: 80%; border: solid 1px"
-                    >
-                      <h2 style="text-align: center">Informações de Contato</h2>
-                      <v-row
-                        justify="center"
-                        align="stretch"
-                        style="margin-top: 10px"
+  <v-app id="cadastro-fornecedor">
+    <v-content>
+      <v-container fluid fill-height>
+        <v-layout align-center justify-center>
+          <v-flex xs12 sm8 md12>
+            <h1 style="text-align: center; color: white; margin-top: 15px">
+              Fornecedores
+            </h1>
+            <v-layout align-center justify-center>
+              <div>
+                <v-card
+                  class="pa-2"
+                  tile
+                  outlined
+                  color="#272733"
+                  style="margin-top: 20px"
+                >
+                  <v-card-text>
+                    <template>
+                      <v-data-table
+                        :headers="headers"
+                        :items="lista_de_usuarios"
+                        sort-by="calories"
+                        class="elevation-1"
                       >
-                        <v-col cols="24">
-                          <span> Nome Completo</span>
-                          <v-text-field
-                            v-model="contato.nomecon"
-                            :rules="regra_nome_completo"
-                            outlined
-                            required
-                            dense
-                          ></v-text-field>
-                        </v-col>
-                      </v-row>
-
-                      <v-row>
-                        <v-col cols="6">
-                          <span> Função </span>
-                          <v-text-field
-                            v-model="contato.func_con"
-                            :rules="regra_funcao"
-                            outlined
-                            required
-                            dense
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="6">
-                          <span> Telefone </span>
-                          <v-text-field
-                            v-mask="'(##) #####-####'"
-                            outlined
-                            required
-                            dense
-                            v-model="contato.tel_con"
-                            :rules="regra_telefone"
-                          ></v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-row justify="center" align="stretch">
-                        <v-col cols="24">
-                          <span>E-mail</span>
-                          <v-text-field
-                            outlined
-                            required
-                            dense
-                            v-model="contato.email_con"
-                            :rules="regra_email"
-                          ></v-text-field>
-                        </v-col>
-                      </v-row>
-
-                      <v-btn
-                        class="mr-4"
-                        type="submit"
-                        :disabled="!validContato"
-                        @click="validateContato"
-                        id="btn_cadastrar_contato"
-                        color="primary"
-                      >
-                        Prosseguir
-                      </v-btn>
-                    </v-container>
-                  </v-form>
-                </v-card-text>
-              </v-card>
-            </v-tab-item>
-            <v-tab-item>
-              <v-card flat>
-                <v-card-text>
-                  <!-- CADASTRO FORNECEDOR -->
-                  <v-form
-                    style="padding-top: 30px"
-                    ref="form"
-                    v-model="validFornecedor"
-                    lazy-validation
-                    @submit.prevent="cadastrar_fornecedor"
-                  >
-                    <v-container
-                      class="ma-70"
-                      style="width: 90%; border: solid 1px"
-                    >
-                      <h2 style="text-align: center">
-                        Informações do Fornecedor
-                      </h2>
-                      <v-row
-                        justify="center"
-                        align="stretch"
-                        style="margin-top: 10px"
-                      >
-                        <v-col cols="24">
-                          <span style="padding-top: 8px">
-                            Nome da Empresa
-                          </span>
-                          <v-text-field
-                            v-model="fornecedor.nomeforn"
-                            :rules="regra_nome_empresa"
-                            outlined
-                            required
-                            dense
-                          ></v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col cols="6">
-                          <span> CNPJ</span>
-                          <v-text-field
-                            v-mask="'##.###.###/####-##'"
-                            v-model="fornecedor.cnpjforn"
-                            :rules="regra_cnpj"
-                            outlined
-                            required
-                            dense
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="6">
-                          <span> Ramo de Atividade </span>
-                          <v-text-field
-                            v-model="fornecedor.ramo_forn"
-                            :rules="regra_ramo"
-                            outlined
-                            required
-                            dense
-                          ></v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col cols="6">
-                          <span> Código do Contato </span>
-                          <v-text-field
-                            v-model="fornecedor.con_cod"
-                            :rules="regra_codigo_contato"
-                            outlined
-                            required
-                            dense
-                          ></v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-btn
-                        class="mr-4"
-                        type="submit"
-                        :disabled="!validFornecedor"
-                        @click="validateFornecedor"
-                        id="btn_cadastrar_contato"
-                        color="primary"
-                      >
-                        Prosseguir
-                      </v-btn>
-                    </v-container>
-                  </v-form>
-                </v-card-text>
-              </v-card>
-            </v-tab-item>
-            <v-tab-item>
-              <v-card flat>
-                <v-card-text>
-                  <v-form
-                    style="padding-top: 30px"
-                    ref="form"
-                    v-model="validEndereco"
-                    lazy-validation
-                    @submit.prevent="cadastrar_endereco"
-                  >
-                    <v-container
-                      class="ma-70"
-                      style="width: 90%; border: solid 1px"
-                    >
-                      <h2 style="text-align: center">
-                        Informações do Endereço
-                      </h2>
-                      <v-row>
-                        <v-col cols="6">
-                          <span> CEP </span>
-                          <v-text-field
-                            v-mask="'#####-###'"
-                            v-model="endereco.cep_end"
-                            :rules="regra_cep"
-                            outlined
-                            required
-                            dense
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="6">
-                          <span> Rua </span>
-                          <v-text-field
-                            v-model="endereco.rua_end"
-                            :rules="regra_rua"
-                            outlined
-                            required
-                            dense
-                          ></v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col cols="6">
-                          <span> Bairro</span>
-                          <v-text-field
-                            v-model="endereco.bairro_end"
-                            :rules="regra_bairro"
-                            outlined
-                            required
-                            dense
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="6">
-                          <span> Cidade </span>
-                          <v-text-field
-                            v-model="endereco.cidade_end"
-                            :rules="regra_cidade"
-                            outlined
-                            required
-                            dense
-                          ></v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col cols="6">
-                          <span> Estado </span>
-                          <v-text-field
-                            v-model="endereco.estado_end"
-                            :rules="regra_estado"
-                            outlined
-                            required
-                            dense
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="6">
-                          <span> Número </span>
-                          <v-text-field
-                            outlined
-                            required
-                            dense
-                            v-model="endereco.num_end"
-                            :rules="regra_estado"
-                          ></v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col cols="6">
-                          <span> Complemento </span>
-                          <v-text-field
-                            outlined
-                            dense
-                            v-model="endereco.complemento_end"
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="6">
-                          <span> Código Fornecedor </span>
-                          <v-text-field
-                            v-model="endereco.forncod"
-                            :rules="regra_codigo_fornecedor"
-                            outlined
-                            required
-                            dense
-                          ></v-text-field>
-                        </v-col>
-                      </v-row>
-                      <v-btn
-                        class="mr-4"
-                        type="submit"
-                        :disabled="!validEndereco"
-                        @click="validateEndereco"
-                        id="btn_cadastrar_contato"
-                        color="primary"
-                      >
-                        Cadastrar
-                      </v-btn>
-                    </v-container>
-                  </v-form>
-                </v-card-text>
-              </v-card>
-            </v-tab-item>
-          </v-tabs-items>
-        </v-card>
-      </v-main>
-      <!-- TABELA CONTATO -->
-      <v-card
-        class="pa-2"
-        tile
-        outlined
-        color="#DCDCDC"
-        style="margin-top: 30px"
-      >
-        <v-card-text>
-          <v-card>
-            <v-card-title>
-              Lista de Contatos
-              <v-spacer></v-spacer>
-              <v-text-field
-                v-model="search"
-                append-icon="mdi-magnify"
-                label="Pesquisar"
-                single-line
-                hide-details
-              ></v-text-field>
-            </v-card-title>
-            <v-data-table
-              :headers="headers_contato"
-              :items="lista_de_contato"
-              :search="search"
-            ></v-data-table>
-          </v-card>
-        </v-card-text>
-      </v-card>
-      <!-- TABELA FORNECEDOR -->
-      <v-card
-        class="pa-2"
-        tile
-        outlined
-        color="#DCDCDC"
-        style="margin-top: 30px"
-      >
-        <v-card-text>
-          <v-card>
-            <v-card-title>
-              Lista de Fornecedor
-              <v-spacer></v-spacer>
-              <v-text-field
-                v-model="search"
-                append-icon="mdi-magnify"
-                label="Pesquisar"
-                single-line
-                hide-details
-              ></v-text-field>
-            </v-card-title>
-            <v-data-table
-              :headers="headers_fornecedor"
-              :items="lista_de_fornecedor"
-              :search="search"
-            ></v-data-table>
-          </v-card>
-        </v-card-text>
-      </v-card>
-      <!-- TABELA ENDEREÇO -->
-      <v-card
-        class="pa-2"
-        tile
-        outlined
-        color="#DCDCDC"
-        style="margin-top: 30px"
-      >
-        <v-card-text>
-          <v-card>
-            <v-card-title>
-              Lista de Endereços
-              <v-spacer></v-spacer>
-              <v-text-field
-                v-model="search"
-                append-icon="mdi-magnify"
-                label="Pesquisar"
-                single-line
-                hide-details
-              ></v-text-field>
-            </v-card-title>
-            <v-data-table
-              :headers="headers_endereco"
-              :items="lista_de_endereco"
-              :search="search"
-            ></v-data-table>
-          </v-card>
-        </v-card-text>
-      </v-card>
-    </v-app>
-  </div>
+                        <template v-slot:top>
+                          <v-toolbar flat>
+                            <v-toolbar-title
+                              >Lista de Fornecedores</v-toolbar-title
+                            >
+                            <v-divider class="mx-4" inset vertical></v-divider>
+                            <v-spacer></v-spacer>
+                            <v-dialog v-model="dialog" max-width="500px">
+                              <template v-slot:activator="{ on, attrs }">
+                                <v-btn
+                                  color="#C84634"
+                                  class="white--text"
+                                  dark
+                                  v-bind="attrs"
+                                  v-on="on"
+                                >
+                                  Novo Fornecedor
+                                </v-btn>
+                              </template>
+                              <v-card style="background-color: #272733">
+                                <v-card-title>
+                                  <span class="text-h5 white--text">{{
+                                    formTitle
+                                  }}</span>
+                                </v-card-title>
+                                <v-card-text>
+                                  <v-container>
+                                    <!-- CADASTRO FORNECEDOR -->
+                                    <v-form
+                                      ref="form"
+                                      v-model="validFornecedor"
+                                      lazy-validation
+                                      @submit.prevent="cadastrar_fornecedor"
+                                    >
+                                      <v-container>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >Nome da Empresa</span
+                                            >
+                                            <v-text-field
+                                              label="Nome da Empresa"
+                                              v-model="fornecedor.nomeforn"
+                                              :rules="regra_nome_empresa"
+                                              single-line
+                                              solo
+                                              required
+                                              dense
+                                              background-color="#A9A9A9"
+                                            ></v-text-field>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >CNPJ</span
+                                            >
+                                            <v-text-field
+                                              label="CNPJ"
+                                              v-mask="'##.###.###/####-##'"
+                                              v-model="fornecedor.cnpjforn"
+                                              :rules="regra_cnpj"
+                                              single-line
+                                              solo
+                                              required
+                                              dense
+                                              background-color="#A9A9A9"
+                                            ></v-text-field>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >Ramo de Atividade</span
+                                            >
+                                            <v-text-field
+                                              label="Ramo de Atividade"
+                                              v-model="fornecedor.ramo_forn"
+                                              :rules="regra_ramo"
+                                              single-line
+                                              solo
+                                              required
+                                              dense
+                                              background-color="#A9A9A9"
+                                            ></v-text-field>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row>
+                                          <v-col></v-col>
+                                          <v-col>
+                                            <v-btn
+                                              text
+                                              color="white"
+                                              @click="close"
+                                            >
+                                              Cancelar
+                                            </v-btn>
+                                          </v-col>
+                                          <v-col>
+                                            <v-btn
+                                              color="#C84634"
+                                              class="white--text mr-4"
+                                              type="submit"
+                                              :disabled="!validFornecedor"
+                                              @click="
+                                                validateFornecedor;
+                                                dialogEndereco =
+                                                  !dialogEndereco;
+                                              "
+                                            >
+                                              Prosseguir
+                                            </v-btn>
+                                          </v-col>
+                                        </v-row>
+                                      </v-container>
+                                    </v-form>
+                                  </v-container>
+                                </v-card-text>
+                              </v-card>
+                            </v-dialog>
+                            <v-dialog
+                              v-model="dialogEndereco"
+                              max-width="500px"
+                            >
+                              <v-card style="background-color: #272733">
+                                <v-card-title>
+                                  <span class="text-h5 white--text">{{
+                                    formTitle
+                                  }}</span>
+                                </v-card-title>
+                                <v-card-text>
+                                  <v-container>
+                                    <!-- CADASTRO ENDEREÇO -->
+                                    <v-form
+                                      ref="form"
+                                      v-model="validEndereco"
+                                      lazy-validation
+                                      @submit.prevent="cadastrar_endereco"
+                                    >
+                                      <v-container>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >CEP</span
+                                            >
+                                            <v-text-field
+                                              label="CEP"
+                                              v-mask="'#####-###'"
+                                              v-model="endereco.cep_end"
+                                              :rules="regra_cep"
+                                              single-line
+                                              solo
+                                              required
+                                              dense
+                                              background-color="#A9A9A9"
+                                            ></v-text-field>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >Rua</span
+                                            >
+                                            <v-text-field
+                                              label="Rua"
+                                              v-model="endereco.rua_end"
+                                              :rules="regra_rua"
+                                              single-line
+                                              solo
+                                              required
+                                              dense
+                                              background-color="#A9A9A9"
+                                            ></v-text-field>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >Bairro</span
+                                            >
+                                            <v-text-field
+                                              label="Bairro"
+                                              v-model="endereco.bairro_end"
+                                              :rules="regra_bairro"
+                                              single-line
+                                              solo
+                                              required
+                                              dense
+                                              background-color="#A9A9A9"
+                                            ></v-text-field>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >Cidade</span
+                                            >
+                                            <v-text-field
+                                              label="Cidade"
+                                              v-model="endereco.cidade_end"
+                                              :rules="regra_cidade"
+                                              single-line
+                                              solo
+                                              required
+                                              dense
+                                              background-color="#A9A9A9"
+                                            ></v-text-field>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >Estado</span
+                                            >
+                                            <v-text-field
+                                              label="Estado"
+                                              v-model="endereco.estado_end"
+                                              :rules="regra_estado"
+                                              single-line
+                                              solo
+                                              required
+                                              dense
+                                              background-color="#A9A9A9"
+                                            ></v-text-field>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >Número</span
+                                            >
+                                            <v-text-field
+                                              label="Número"
+                                              v-model="endereco.num_end"
+                                              :rules="regra_estado"
+                                              single-line
+                                              solo
+                                              required
+                                              dense
+                                              background-color="#A9A9A9"
+                                            ></v-text-field>
+                                          </v-col>
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >Complemento</span
+                                            >
+                                            <v-text-field
+                                              label="Complemento"
+                                              v-model="endereco.complemento_end"
+                                              single-line
+                                              solo
+                                              dense
+                                              background-color="#A9A9A9"
+                                            ></v-text-field>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >Código Fornecedor</span
+                                            >
+                                            <v-text-field
+                                              label="Código Fornecedor"
+                                              v-model="endereco.forncod"
+                                              :rules="regra_codigo_fornecedor"
+                                              single-line
+                                              solo
+                                              required
+                                              dense
+                                              background-color="#A9A9A9"
+                                            ></v-text-field>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row>
+                                          <v-col></v-col>
+                                          <v-col>
+                                            <v-btn
+                                              text
+                                              color="white"
+                                              @click="closeEndereco"
+                                            >
+                                              Cancelar
+                                            </v-btn>
+                                          </v-col>
+                                          <v-col>
+                                            <v-btn
+                                              color="#C84634"
+                                              class="white--text mr-4"
+                                              type="submit"
+                                              :disabled="!validEndereco"
+                                              @click="
+                                                validateEndereco;
+                                                dialogContato = !dialogContato;
+                                              "
+                                            >
+                                              Prosseguir
+                                            </v-btn>
+                                          </v-col>
+                                        </v-row>
+                                      </v-container>
+                                    </v-form>
+                                  </v-container>
+                                </v-card-text>
+                              </v-card>
+                            </v-dialog>
+                            <v-dialog v-model="dialogContato" max-width="500px">
+                              <v-card style="background-color: #272733">
+                                <v-card-title>
+                                  <span class="text-h5 white--text">{{
+                                    formTitle
+                                  }}</span>
+                                </v-card-title>
+                                <v-card-text>
+                                  <v-container>
+                                    <!-- CADASTRO CONTATO -->
+                                    <v-form
+                                      ref="form"
+                                      v-model="validContato"
+                                      lazy-validation
+                                      @submit.prevent="cadastrar_contato"
+                                    >
+                                      <v-container>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >Nome Completo</span
+                                            >
+                                            <v-text-field
+                                              label="Nome Completo"
+                                              v-model="contato.nomecon"
+                                              :rules="regra_nome_completo"
+                                              single-line
+                                              solo
+                                              required
+                                              dense
+                                              background-color="#A9A9A9"
+                                            ></v-text-field>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >Função</span
+                                            >
+                                            <v-text-field
+                                              label="Função"
+                                              v-model="contato.func_con"
+                                              :rules="regra_funcao"
+                                              single-line
+                                              solo
+                                              required
+                                              dense
+                                              background-color="#A9A9A9"
+                                            ></v-text-field>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >Telefone</span
+                                            >
+                                            <v-text-field
+                                              label="Telefone"
+                                              v-mask="'(##) #####-####'"
+                                              v-model="contato.tel_con"
+                                              :rules="regra_telefone"
+                                              single-line
+                                              solo
+                                              required
+                                              dense
+                                              background-color="#A9A9A9"
+                                            ></v-text-field>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >E-mail</span
+                                            >
+                                            <v-text-field
+                                              label="E-mail"
+                                              v-model="contato.email_con"
+                                              :rules="regra_email"
+                                              single-line
+                                              solo
+                                              required
+                                              dense
+                                              background-color="#A9A9A9"
+                                            ></v-text-field>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row>
+                                          <v-col></v-col>
+                                          <v-col>
+                                            <v-btn
+                                              text
+                                              color="white"
+                                              @click="closeContato"
+                                            >
+                                              Cancelar
+                                            </v-btn>
+                                          </v-col>
+                                          <v-col>
+                                            <v-btn
+                                              color="#C84634"
+                                              class="white--text mr-4"
+                                              type="submit"
+                                              :disabled="!validContato"
+                                              @click="validateContato;"
+                                            >
+                                              Salvar
+                                            </v-btn>
+                                          </v-col>
+                                        </v-row>
+                                      </v-container>
+                                    </v-form>
+                                  </v-container>
+                                </v-card-text>
+                              </v-card>
+                            </v-dialog>
+                            <v-dialog v-model="dialogDelete" max-width="540px">
+                              <v-card color="#272733">
+                                <v-card-title class="text-h5 white--text"
+                                  >Tem certeza de que deseja excluir este
+                                  item?</v-card-title
+                                >
+                                <v-card-actions>
+                                  <v-spacer></v-spacer>
+                                  <v-btn
+                                    text
+                                    color="white"
+                                    @click="closeDelete"
+                                  >
+                                    Cancelar
+                                  </v-btn>
+                                  <v-btn
+                                    color="#C84634"
+                                    class="white--text mr-4"
+                                    @click="deletar_usuario(usuario)"
+                                    >Sim</v-btn
+                                  >
+                                  <v-spacer></v-spacer>
+                                </v-card-actions>
+                              </v-card>
+                            </v-dialog>
+                          </v-toolbar>
+                        </template>
+                        <template v-slot:item.actions="{ item }">
+                          <v-icon class="mr-2" @click="editar_usuario(item)">
+                            mdi-pencil
+                          </v-icon>
+                          <v-icon @click="deleteItem(item)">
+                            mdi-delete
+                          </v-icon>
+                        </template>
+                      </v-data-table>
+                    </template>
+                  </v-card-text>
+                </v-card>
+              </div>
+            </v-layout>
+          </v-flex>
+        </v-layout>
+      </v-container>
+    </v-content>
+  </v-app>
 </template>
 
 
@@ -428,6 +587,12 @@ export default {
       (v) => !!v || "O e-mail é obrigatório",
       (v) => /.+@.+\..+/.test(v) || "E-mail inválido",
     ],
+
+    // Variaveis referentes aos modais que abrem na tela, se for false ele não aparece na tela, se for true ele aparece na tela
+    dialog: false,
+    dialogEndereco: false,
+    dialogContato: false,
+    dialogDelete: false,
 
     // Array com a lista de usuarios
     lista_de_contato: [],
@@ -510,6 +675,22 @@ export default {
     this.exibir_endereco();
   },
 
+  watch: {
+    // Fechando os modais
+    dialog(val) {
+      val || this.close();
+    },
+    dialogEndereco(val) {
+      val || this.closeEndereco();
+    },
+    dialogContato(val) {
+      val || this.closeContato();
+    },
+    dialogDelete(val) {
+      val || this.closeDelete();
+    },
+  },
+
   methods: {
     // Método de cadastro de contato
     cadastrar_contato() {
@@ -554,6 +735,7 @@ export default {
             "error"
           );
         });
+      this.close();
     },
     // Método de cadastro de endereço
     cadastrar_endereco() {
@@ -634,16 +816,36 @@ export default {
     validateEndereco() {
       this.$refs.form.validateEndereco();
     },
+
+    // Método que vai fechar o modal "dialog"
+    close() {
+      this.dialog = false;
+      this.usuario = {};
+    },
+
+    // Método que vai fechar o modal "dialogDelete"
+    closeDelete() {
+      this.dialogDelete = false;
+      this.usuario = {};
+    },
+
+    // Método que vai fechar o modal "dialogDelete"
+    closeEndereco() {
+      this.dialogEndereco = false;
+      this.usuario = {};
+    },
+
+    // Método que vai fechar o modal "dialogDelete"
+    closeContato() {
+      this.dialogContato = false;
+      this.usuario = {};
+    },
   },
 };
 </script>
 
 <style>
-#btn_cadastrar_contato {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: auto;
-  border: solid 1px black;
+#cadastro-fornecedor {
+  background-color: #181820;
 }
 </style>
