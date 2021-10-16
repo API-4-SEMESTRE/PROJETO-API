@@ -1,4 +1,4 @@
-<h1 align="center">NOME DO SISTEMA</h1>
+<p align="center"> <img src="./Documentação/Fotos-Readme/LogoDev.png" alt="AgendHouse" class="center" width=600/> </p>
 
 O projeto a ser desenvolvido vai ser um sistema para agendamentos de eventos na [Casa Oracle](https://blogs.oracle.com/oracle-brasil/casa-oracle-abre-as-portas-para-a-inovacao-em-sao-paulo) buscando solucionar os obstáculos da pandemia do [Covid-19](https://covid.saude.gov.br/).
 
