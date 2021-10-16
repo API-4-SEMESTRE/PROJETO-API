@@ -19,8 +19,8 @@
                   <v-card-text>
                     <template>
                       <v-data-table
-                        :headers="headers"
-                        :items="lista_de_usuarios"
+                        :headers="headers_fornecedores"
+                        :items="lista_fornecedores"
                         sort-by="calories"
                         class="elevation-1"
                       >
@@ -123,6 +123,25 @@
                                             ></v-text-field>
                                           </v-col>
                                         </v-row>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >Site</span
+                                            >
+                                            <v-text-field
+                                              label="Site"
+                                              v-model="fornecedor.siteforn"
+                                              single-line
+                                              solo
+                                              dense
+                                              background-color="#A9A9A9"
+                                            ></v-text-field>
+                                          </v-col>
+                                        </v-row>
                                         <v-row>
                                           <v-col></v-col>
                                           <v-col>
@@ -187,7 +206,7 @@
                                             >
                                             <v-text-field
                                               label="CEP"
-                                              v-mask="'#####-###'"
+                                              v-mask="'########'"
                                               v-model="endereco.cep_end"
                                               :rules="regra_cep"
                                               single-line
@@ -294,7 +313,7 @@
                                             <v-text-field
                                               label="Número"
                                               v-model="endereco.num_end"
-                                              :rules="regra_estado"
+                                              :rules="regra_numero"
                                               single-line
                                               solo
                                               required
@@ -475,6 +494,27 @@
                                             ></v-text-field>
                                           </v-col>
                                         </v-row>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >Código Fornecedor</span
+                                            >
+                                            <v-text-field
+                                              label="Código Fornecedor"
+                                              v-model="contato.fornecod"
+                                              :rules="regra_codigo_fornecedor"
+                                              single-line
+                                              solo
+                                              required
+                                              dense
+                                              background-color="#A9A9A9"
+                                            ></v-text-field>
+                                          </v-col>
+                                        </v-row>
                                         <v-row>
                                           <v-col></v-col>
                                           <v-col>
@@ -594,26 +634,15 @@ export default {
     dialogContato: false,
     dialogDelete: false,
 
-    // Array com a lista de usuarios
-    lista_de_contato: [],
     // Array com a lista de fornecedores
-    lista_de_fornecedor: [],
-    // Array com a lista de endereços
-    lista_de_endereco: [],
+    lista_fornecedores: [],
 
-    // Criando o objeto que vai ser feito o POST
-    contato: {
-      nomecon: "",
-      func_con: "",
-      tel_con: "",
-      email_con: "",
-    },
     // Criando o objeto que vai ser feito o POST
     fornecedor: {
       nomeforn: "",
       ramo_forn: "",
       cnpjforn: "",
-      con_cod: "",
+      siteforn: "",
     },
     // Criando o objeto que vai ser feito o POST
     endereco: {
@@ -623,56 +652,45 @@ export default {
       cidade_end: "",
       estado_end: "",
       forncod: "",
+      complemento_end: "",
+      num_end: "",
+    },
+    // Criando o objeto que vai ser feito o POST
+    contato: {
+      nomecon: "",
+      func_con: "",
+      tel_con: "",
+      email_con: "",
+      fornecod: "",
     },
 
     // Variavel que vai ser usada pra pesquisa da tabela
     search: "",
 
-    // Array que contem as colunas da tabela de contato
-    headers_contato: [
+    // Array que contem as colunas da tabela de fornecedores
+    headers_fornecedores: [
       {
-        text: "CÓDIGO",
+        text: "NOME EMPRESA",
         align: "start",
-        value: "concod",
+        value: "nome",
       },
-      { text: "NOME", value: "nomecon" },
-      { text: "FUNÇÃO", value: "func_con" },
-      { text: "TEL", value: "tel_con" },
-      { text: "EMAIL", value: "email_con" },
-    ],
-    // Array que contem as colunas da fornecedor
-    headers_fornecedor: [
-      {
-        text: "CÓDIGO",
-        align: "start",
-        value: "cod",
-      },
-      { text: "NOME FORNECEDOR", value: "nomeforn" },
-      { text: "RAMO", value: "ramo_forn" },
-      { text: "CNPJ", value: "cnpjforn" },
-      { text: "CÓDIGO CONTATO", value: "con_cod" },
-    ],
-    // Array que contem as colunas do endereço
-    headers_endereco: [
-      {
-        text: "CÓDIGO FORNECEDOR",
-        align: "start",
-        value: "forncod",
-      },
-      { text: "CEP", value: "cep_end" },
-      { text: "RUA", value: "rua_end" },
-      { text: "NUMERO", value: "num_end" },
-      { text: "COMPLEMENTO", value: "complemento_end" },
-      { text: "BAIRRO", value: "bairro_end" },
-      { text: "CIDADE", value: "cidade_end" },
-      { text: "ESTADO", value: "estado_end" },
+      { text: "RAMO", value: "ramo" },
+      { text: "CNPJ", value: "cnpj" },
+      { text: "RUA", value: "rua" },
+      { text: "NÚMERO", value: "numero" },
+      { text: "BAIRRO", value: "bairro" },
+      { text: "CIDADE", value: "numero" },
+      { text: "UF", value: "uf" },
+      //{ text: "COMPLEMENTO", value: "complemento" },
+      { text: "CONTATO NOME", value: "contato_nome" },
+      { text: "CONTATO FONE", value: "contato_fone" },
+      { text: "CONTATO EMAIL", value: "contato_email" },
+      { text: "ACTIONS", value: "actions", sortable: false },
     ],
   }),
 
   mounted() {
-    this.exibir_contato();
-    this.exibir_fornecedor();
-    this.exibir_endereco();
+    this.exibir_fornecedores();
   },
 
   watch: {
@@ -704,7 +722,7 @@ export default {
               " cadastrado com sucesso!!!",
             "success"
           );
-          this.exibir_contato();
+          this.exibir_fornecedores();
         })
         .catch((e) => {
           Swal.fire(
@@ -726,7 +744,7 @@ export default {
               " cadastrado com sucesso!!!",
             "success"
           );
-          this.exibir_fornecedor();
+          this.exibir_fornecedores();
         })
         .catch((e) => {
           Swal.fire(
@@ -749,7 +767,7 @@ export default {
               " cadastrado com sucesso!!!",
             "success"
           );
-          this.exibir_endereco();
+          this.exibir_fornecedores();
         })
         .catch((e) => {
           Swal.fire(
@@ -760,45 +778,15 @@ export default {
         });
     },
     // Método pra exibir os contatos
-    exibir_contato() {
-      Contato.listar_contato()
-        .then((resposta_lista_contato) => {
-          this.lista_de_contato = resposta_lista_contato.data;
-        })
-        .catch((e) => {
-          Swal.fire(
-            "Oops...",
-            "Erro ao carregar a tabela de contatos! - Erro: " +
-              e.response.data.error,
-            "error"
-          );
-        });
-    },
-    // Método pra exibir os fornecedores
-    exibir_fornecedor() {
+    exibir_fornecedores() {
       Fornecedor.listar_fornecedor()
         .then((resposta_lista_fornecedor) => {
-          this.lista_de_fornecedor = resposta_lista_fornecedor.data;
+          this.lista_fornecedores = resposta_lista_fornecedor.data;
         })
         .catch((e) => {
           Swal.fire(
             "Oops...",
             "Erro ao carregar a tabela de fornecedores! - Erro: " +
-              e.response.data.error,
-            "error"
-          );
-        });
-    },
-    // Método pra exibir os endereços
-    exibir_endereco() {
-      Endereco.listar_endereco()
-        .then((resposta_lista_endereco) => {
-          this.lista_de_endereco = resposta_lista_endereco.data;
-        })
-        .catch((e) => {
-          Swal.fire(
-            "Oops...",
-            "Erro ao carregar a tabela de endereços! - Erro: " +
               e.response.data.error,
             "error"
           );
