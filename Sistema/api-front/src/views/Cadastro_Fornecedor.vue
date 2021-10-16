@@ -45,9 +45,9 @@
                               </template>
                               <v-card style="background-color: #272733">
                                 <v-card-title>
-                                  <span class="text-h5 white--text">{{
-                                    formTitle
-                                  }}</span>
+                                  <span class="text-h5 white--text"
+                                    >Dados da Empresa</span
+                                  >
                                 </v-card-title>
                                 <v-card-text>
                                   <v-container>
@@ -181,9 +181,9 @@
                             >
                               <v-card style="background-color: #272733">
                                 <v-card-title>
-                                  <span class="text-h5 white--text">{{
-                                    formTitle
-                                  }}</span>
+                                  <span class="text-h5 white--text"
+                                    >Dados do Endereço</span
+                                  >
                                 </v-card-title>
                                 <v-card-text>
                                   <v-container>
@@ -395,9 +395,9 @@
                             <v-dialog v-model="dialogContato" max-width="500px">
                               <v-card style="background-color: #272733">
                                 <v-card-title>
-                                  <span class="text-h5 white--text">{{
-                                    formTitle
-                                  }}</span>
+                                  <span class="text-h5 white--text"
+                                    >Dados do Contato</span
+                                  >
                                 </v-card-title>
                                 <v-card-text>
                                   <v-container>
@@ -717,12 +717,11 @@ export default {
           this.contato = {};
           Swal.fire(
             "Sucesso",
-            "Contato " +
+            "Fornecedor " +
               resposta_cadastro_contato.data.nomecon +
               " cadastrado com sucesso!!!",
             "success"
           );
-          this.exibir_fornecedores();
         })
         .catch((e) => {
           Swal.fire(
@@ -731,20 +730,22 @@ export default {
             "error"
           );
         });
+      this.exibir_fornecedores();
+      this.closeContato();
     },
     // Método de cadastro de fornecedor
     cadastrar_fornecedor() {
       Fornecedor.salvar_fornecedor(this.fornecedor)
         .then((resposta_cadastro_fornecedor) => {
           this.fornecedor = {};
-          Swal.fire(
-            "Sucesso",
-            "Fornecedor " +
-              resposta_cadastro_fornecedor.data.nomeforn +
-              " cadastrado com sucesso!!!",
-            "success"
-          );
-          this.exibir_fornecedores();
+          // Swal.fire(
+          //   "Sucesso",
+          //   "Fornecedor " +
+          //     resposta_cadastro_fornecedor.data.nomeforn +
+          //     " cadastrado com sucesso!!!",
+          //   "success"
+          // );
+          resposta_cadastro_fornecedor;
         })
         .catch((e) => {
           Swal.fire(
@@ -753,6 +754,7 @@ export default {
             "error"
           );
         });
+      // this.exibir_fornecedores();
       this.close();
     },
     // Método de cadastro de endereço
@@ -760,14 +762,14 @@ export default {
       Endereco.salvar_endereco(this.endereco)
         .then((resposta_cadastro_endereco) => {
           this.endereco = {};
-          Swal.fire(
-            "Sucesso",
-            "Endereço " +
-              resposta_cadastro_endereco.data.rua_end +
-              " cadastrado com sucesso!!!",
-            "success"
-          );
-          this.exibir_fornecedores();
+          // Swal.fire(
+          //   "Sucesso",
+          //   "Endereço " +
+          //     resposta_cadastro_endereco.data.rua_end +
+          //     " cadastrado com sucesso!!!",
+          //   "success"
+          // );
+          resposta_cadastro_endereco;
         })
         .catch((e) => {
           Swal.fire(
@@ -776,6 +778,8 @@ export default {
             "error"
           );
         });
+      // this.exibir_fornecedores();
+      this.closeEndereco();
     },
     // Método pra exibir os contatos
     exibir_fornecedores() {
