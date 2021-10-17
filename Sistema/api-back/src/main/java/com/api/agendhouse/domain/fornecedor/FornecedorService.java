@@ -64,15 +64,18 @@ public class FornecedorService {
 
     public List<FornecedorDTOFilter> listFornecedores() {
         var listaFornecedores = new ArrayList<FornecedorDTOFilter>();
-        FornecedorDTOFilter listaRetorno = new FornecedorDTOFilter();
-        var fornecedores = fornecedorRepository.findAllByOrderByCodAsc();
-        for (Fornecedor fornecedor : fornecedores) {
+
+        var fornecedores = fornecedorRepository.findAll();
+        for (Fornecedor fornecedor: fornecedores) {
+            FornecedorDTOFilter listaRetorno = new FornecedorDTOFilter();
+            listaRetorno.setId_fornecedor(fornecedor.getCod());
             listaRetorno.setNome(fornecedor.getNomeforn());
             listaRetorno.setRamo(fornecedor.getRamo_forn());
             listaRetorno.setCnpj(fornecedor.getCnpjforn());
 
             var endereco = enderecoRepository.getByForncod(fornecedor.getCod());
             if (endereco != null){
+                //listaRetorno.setId_endereco(endereco.getCodeEnd);
                 listaRetorno.setRua(endereco.getRua_end());
                 listaRetorno.setNumero(endereco.getNum_end().toString());
                 listaRetorno.setBairro(endereco.getBairro_end());
@@ -83,12 +86,14 @@ public class FornecedorService {
 
             var contato = contatoRepository.getByFornecod(fornecedor.getCod());
             if (contato != null){
+                listaRetorno.setId_contato(contato.getConcod());
                 listaRetorno.setContato_nome(contato.getNomecon());
                 listaRetorno.setContato_email(contato.getEmail_con());
                 listaRetorno.setContato_fone(contato.getTel_con());
             }
             listaFornecedores.add(listaRetorno);
         }
+
         return listaFornecedores;
     }
 
