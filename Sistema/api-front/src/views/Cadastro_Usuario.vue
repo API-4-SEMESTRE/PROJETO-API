@@ -5,7 +5,7 @@
         <v-layout align-center justify-center>
           <v-flex xs12 sm8 md12>
             <h1 style="text-align: center; color: white; margin-top: 15px">
-              Cadastro de Usuário
+              Usuários
             </h1>
             <v-layout align-center justify-center>
               <div>
@@ -21,13 +21,21 @@
                       <v-data-table
                         :headers="headers"
                         :items="lista_de_usuarios"
+                        :search="search"
                         sort-by="calories"
                         class="elevation-1"
                       >
                         <template v-slot:top>
                           <v-toolbar flat>
                             <v-toolbar-title>Lista de Usuários</v-toolbar-title>
-                            <v-divider class="mx-4" inset vertical></v-divider>
+                            <v-spacer></v-spacer>
+                            <v-text-field
+                              v-model="search"
+                              append-icon="mdi-magnify"
+                              label="Search"
+                              single-line
+                              hide-details
+                            ></v-text-field>
                             <v-spacer></v-spacer>
                             <v-dialog v-model="dialog" max-width="500px">
                               <template v-slot:activator="{ on, attrs }">
@@ -160,7 +168,7 @@
                                                 color: white;
                                                 font-size: 18px;
                                               "
-                                              >Tipo de Usuário</span
+                                              >Status do Usuário</span
                                             >
                                             <v-select
                                               :items="status_usuario"
@@ -269,12 +277,15 @@ export default {
     regra_email: [
       (v) => !!v || "O e-mail é obrigatório",
       //(v) => /.+@.+\..+/.test(v) || "E-mail inválido",
-      (v) => /^[a-z0-9.]+@oracle.com$/.test(v) || "E-mail inválido",
+      //(v) => /^[a-z0-9.]+@oracle.com$/.test(v) || "E-mail inválido",
     ],
     regra_senha: [(v) => !!v || "A senha é obrigatória"],
 
     // Criando a variavel pro icone de mostrar a senha
     show1: false,
+
+    // Variavel que vai ser usada pra pesquisa da tabela
+    search: "",
 
     // Criando os arrays que vão armazenar os conteudos dos selects de Status do Usuario e Tipo de Usuario
     status_usuario: [true, false],
