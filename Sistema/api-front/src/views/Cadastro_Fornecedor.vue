@@ -21,6 +21,7 @@
                       <v-data-table
                         :headers="headers_fornecedores"
                         :items="lista_fornecedores"
+                        :search="search"
                         sort-by="calories"
                         class="elevation-1"
                       >
@@ -29,7 +30,15 @@
                             <v-toolbar-title
                               >Lista de Fornecedores</v-toolbar-title
                             >
-                            <v-divider class="mx-4" inset vertical></v-divider>
+                            <v-spacer></v-spacer>
+                            <v-text-field
+                              v-model="search"
+                              append-icon="mdi-magnify"
+                              label="Search"
+                              single-line
+                              hide-details
+                            ></v-text-field>
+                            <v-spacer></v-spacer>
                             <v-spacer></v-spacer>
                             <v-dialog v-model="dialog" max-width="500px">
                               <template v-slot:activator="{ on, attrs }">
@@ -608,7 +617,7 @@ export default {
       logradouro: "",
       bairro: "",
       localidade: "",
-      uf: ""
+      uf: "",
     },
     tabs: null,
     // Validando se os campos estão preenchidos e se são validos
@@ -679,10 +688,11 @@ export default {
     // Array que contem as colunas da tabela de fornecedores
     headers_fornecedores: [
       {
-        text: "NOME EMPRESA",
+        text: "CÓDIGO",
         align: "start",
-        value: "nome",
+        value: "id_fornecedor",
       },
+      { text: "NOME EMPRESA", value: "nome" },
       { text: "RAMO", value: "ramo" },
       { text: "CNPJ", value: "cnpj" },
       { text: "RUA", value: "rua" },
@@ -720,10 +730,11 @@ export default {
 
   methods: {
     searchCep() {
-      if(this.cep.length === 9) {
-        axios.get(`https://viacep.com.br/ws/${ this.cep }/json/`)
-            .then( response => this.data = response.data )
-            .catch( error => console.log(error) )
+      if (this.cep.length === 9) {
+        axios
+          .get(`https://viacep.com.br/ws/${this.cep}/json/`)
+          .then((response) => (this.data = response.data))
+          .catch((error) => console.log(error));
       }
     },
     // Método de cadastro de contato
@@ -770,16 +781,16 @@ export default {
             "error"
           );
         });
-      // this.exibir_fornecedores();
+      this.exibir_fornecedores();
       this.close();
     },
     // Método de cadastro de endereço
     cadastrar_endereco() {
-      this.endereco.cep_end = this.cep
-      this.endereco.rua_end = this.data.logradouro
-      this.endereco.bairro_end = this.data.bairro
-      this.endereco.cidade_end = this.data.localidade
-      this.endereco.estado_end = this.data.uf
+      this.endereco.cep_end = this.cep;
+      this.endereco.rua_end = this.data.logradouro;
+      this.endereco.bairro_end = this.data.bairro;
+      this.endereco.cidade_end = this.data.localidade;
+      this.endereco.estado_end = this.data.uf;
       Endereco.salvar_endereco(this.endereco)
         .then((resposta_cadastro_endereco) => {
           this.endereco = {};
@@ -799,7 +810,7 @@ export default {
             "error"
           );
         });
-      // this.exibir_fornecedores();
+      this.exibir_fornecedores();
       this.closeEndereco();
     },
     // Método pra exibir os contatos
