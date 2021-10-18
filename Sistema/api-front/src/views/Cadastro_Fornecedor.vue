@@ -206,9 +206,10 @@
                                             >
                                             <v-text-field
                                               label="CEP"
-                                              v-mask="'########'"
-                                              v-model="endereco.cep_end"
+                                              v-mask="'#####-###'"
+                                              v-model="cep"
                                               :rules="regra_cep"
+                                              @keyup="searchCep()"
                                               single-line
                                               solo
                                               required
@@ -228,7 +229,7 @@
                                             >
                                             <v-text-field
                                               label="Rua"
-                                              v-model="endereco.rua_end"
+                                              v-model="data.logradouro"
                                               :rules="regra_rua"
                                               single-line
                                               solo
@@ -249,7 +250,7 @@
                                             >
                                             <v-text-field
                                               label="Bairro"
-                                              v-model="endereco.bairro_end"
+                                              v-model="data.bairro"
                                               :rules="regra_bairro"
                                               single-line
                                               solo
@@ -270,7 +271,7 @@
                                             >
                                             <v-text-field
                                               label="Cidade"
-                                              v-model="endereco.cidade_end"
+                                              v-model="data.localidade"
                                               :rules="regra_cidade"
                                               single-line
                                               solo
@@ -291,7 +292,7 @@
                                             >
                                             <v-text-field
                                               label="Estado"
-                                              v-model="endereco.estado_end"
+                                              v-model="data.uf"
                                               :rules="regra_estado"
                                               single-line
                                               solo
@@ -598,9 +599,17 @@ import Contato from "../services/contato";
 import Fornecedor from "../services/fornecedor";
 import Endereco from "../services/endereco";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 export default {
   data: () => ({
+    cep: "",
+    data: {
+      logradouro: "",
+      bairro: "",
+      localidade: "",
+      uf: ""
+    },
     tabs: null,
     // Validando se os campos estão preenchidos e se são validos
     valid: true,
@@ -710,6 +719,13 @@ export default {
   },
 
   methods: {
+    searchCep() {
+      if(this.cep.length === 9) {
+        axios.get(`https://viacep.com.br/ws/${ this.cep }/json/`)
+            .then( response => this.data = response.data )
+            .catch( error => console.log(error) )
+      }
+    },
     // Método de cadastro de contato
     cadastrar_contato() {
       Contato.salvar_contato(this.contato)
@@ -759,6 +775,11 @@ export default {
     },
     // Método de cadastro de endereço
     cadastrar_endereco() {
+      this.endereco.cep_end = this.cep
+      this.endereco.rua_end = this.data.logradouro
+      this.endereco.bairro_end = this.data.bairro
+      this.endereco.cidade_end = this.data.localidade
+      this.endereco.estado_end = this.data.uf
       Endereco.salvar_endereco(this.endereco)
         .then((resposta_cadastro_endereco) => {
           this.endereco = {};

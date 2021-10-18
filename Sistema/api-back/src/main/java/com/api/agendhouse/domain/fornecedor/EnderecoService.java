@@ -20,12 +20,19 @@ public class EnderecoService {
 
     @Transactional
     public Endereco add(Endereco endereco) {
-
+        endereco.setCep_end((endereco.getCep_end().replace("-", "")));
         return enderecoRepository.save(endereco);
     }
 
     public List<Endereco> findAll() {
-        return enderecoRepository.findAllByOrderByForncodAsc();
+        var enderecos = enderecoRepository.findAllByOrderByForncodAsc();
+        for (Endereco endereco : enderecos) {
+            var rawCep = endereco.getCep_end();
+            var sub = rawCep.substring(0, 5);
+            var rest = rawCep.substring(5);
+            endereco.setCep_end(sub + "-" + rest);
+        }
+        return enderecos;
     }
 
     @Transactional
