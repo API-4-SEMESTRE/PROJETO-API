@@ -57,4 +57,12 @@ public class EnderecoService {
         }
         return true;
     }
+
+    public String cepPretty(String cep) {
+        var sub = cep.substring(0, 5);
+        var rest = cep.substring(5);
+        cep = (sub + "-" + rest);
+        return cep;
+    }
+
 }

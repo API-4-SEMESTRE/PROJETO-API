@@ -31,7 +31,6 @@ public class ContatoService {
                 var ddd = "(" + rawTel.substring(0, 2) + ") ";
                 var number = rawTel.substring(2, 7) + "-" + rawTel.substring(7);
                 contato.setTel_con(ddd + number);
-                System.out.println(contato);
             }
         }
         return contatos;
@@ -51,4 +50,14 @@ public class ContatoService {
         }
         return true;
     }
+
+    public static String telPretty(String tel) {
+        if (tel.length() > 9) {
+            var ddd = "(" + tel.substring(0, 2) + ") ";
+            var number = tel.substring(2, 7) + "-" + tel.substring(7);
+            tel = (ddd + number);
+        }
+        return tel;
+    }
+
 }

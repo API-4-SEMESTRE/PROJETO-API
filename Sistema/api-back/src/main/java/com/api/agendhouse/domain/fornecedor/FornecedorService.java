@@ -6,6 +6,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import com.api.agendhouse.domain.DTO.FornecedorDTOFilter;
+import com.api.agendhouse.domain.fornecedor.ContatoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,7 +72,7 @@ public class FornecedorService {
             listaRetorno.setId_fornecedor(fornecedor.getCod());
             listaRetorno.setNome(fornecedor.getNomeforn());
             listaRetorno.setRamo(fornecedor.getRamo_forn());
-            listaRetorno.setCnpj(fornecedor.getCnpjforn());
+            listaRetorno.setCnpj(cnpjPretty(fornecedor.getCnpjforn()));
 
             var endereco = enderecoRepository.getByForncod(fornecedor.getCod());
             if (endereco != null){
@@ -89,12 +90,24 @@ public class FornecedorService {
                 listaRetorno.setId_contato(contato.getConcod());
                 listaRetorno.setContato_nome(contato.getNomecon());
                 listaRetorno.setContato_email(contato.getEmail_con());
-                listaRetorno.setContato_fone(contato.getTel_con());
+                listaRetorno.setContato_fone(ContatoService.telPretty(contato.getTel_con()));
             }
             listaFornecedores.add(listaRetorno);
         }
 
         return listaFornecedores;
+    }
+
+    public String cnpjPretty(String cnpj) {
+        if (cnpj.length() > 13) {
+            var sub1 = cnpj.substring(0, 2);
+            var sub2 = cnpj.substring(2, 5);
+            var sub3 = cnpj.substring(5, 8);
+            var sub4 = cnpj.substring(8, 12);
+            var sub5 = cnpj.substring(12);
+            cnpj = (sub1 + "." + sub2 + "." + sub3 + "/" + sub4 + "-" + sub5);
+        }
+        return cnpj;
     }
 
 //    @Transactional
