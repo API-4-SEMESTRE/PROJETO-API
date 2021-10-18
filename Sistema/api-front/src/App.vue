@@ -85,12 +85,12 @@ export default {
     menus: [
       { conteudo: "Home", url: "/", icon: "mdi-home-variant" },
       {
-        conteudo: "Cadastro de Usuário",
+        conteudo: "Usuário",
         url: "/Cadastro_usuario",
         icon: "mdi-account-plus",
       },
       {
-        conteudo: "Cadastro de Fornecedor",
+        conteudo: "Fornecedor",
         url: "/Cadastro_fornecedor",
         icon: "mdi-package-variant",
       },
