@@ -1,6 +1,7 @@
 package com.api.agendhouse.domain.fornecedor;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -26,5 +27,8 @@ public class Contato {
     @Column(name = "CON_EMAIL")
     private String email_con;
 
-    public Contato(){}
+    @Column(name = "FOR_COD_FORN")
+    private long fornecod;
+
+
 }

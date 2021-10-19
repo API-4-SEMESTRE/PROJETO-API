@@ -9,6 +9,7 @@ import java.util.List;
 public interface FornecedorRepository extends JpaRepository<Fornecedor, Long> {
 
     List<Fornecedor> findAllByOrderByCodAsc();
+    List<Fornecedor> findAll();
 
     Fornecedor findByCnpjforn(String cnpj);
 }

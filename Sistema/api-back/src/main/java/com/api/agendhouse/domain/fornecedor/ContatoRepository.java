@@ -11,4 +11,5 @@ public interface ContatoRepository extends JpaRepository<Contato, Long> {
     List<Contato> findAllByOrderByConcodAsc();
 
     Contato findByNomecon(String nome);
+    Contato getByFornecod(Long id);
 }

@@ -36,6 +36,8 @@
         >
           <v-list nav dense>
             <v-list-item-group active-class="red darken-3">
+              <v-img src="./images/Logo_AgendHouse.png"></v-img>
+              <v-divider></v-divider>
               <v-list-item
                 v-for="(item, index) in menus"
                 :key="index"
@@ -83,12 +85,12 @@ export default {
     menus: [
       { conteudo: "Home", url: "/", icon: "mdi-home-variant" },
       {
-        conteudo: "Cadastro de Usuário",
+        conteudo: "Usuário",
         url: "/Cadastro_usuario",
         icon: "mdi-account-plus",
       },
       {
-        conteudo: "Cadastro de Fornecedor",
+        conteudo: "Fornecedor",
         url: "/Cadastro_fornecedor",
         icon: "mdi-package-variant",
       },

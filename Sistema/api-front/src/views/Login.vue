@@ -4,9 +4,9 @@
       <v-container fluid fill-height>
         <v-layout align-center justify-center>
           <v-flex xs12 sm8 md4>
-            <h1 style="text-align: center; margin-bottom: 20px; color: white">
-              AgendHouse
-            </h1>
+            <v-img
+              src="../images/Logo_AgendHouse.png"
+            ></v-img>
             <v-card class="elevation-12" id="card-login">
               <v-card-text>
                 <v-form
