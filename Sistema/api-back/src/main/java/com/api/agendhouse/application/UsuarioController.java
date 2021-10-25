@@ -3,6 +3,7 @@ package com.api.agendhouse.application;
 import com.api.agendhouse.domain.email.EmailService;
 import com.api.agendhouse.domain.usuario.Usuario;
 import com.api.agendhouse.domain.usuario.UsuarioService;
+import com.api.agendhouse.domain.usuario.UsuarioTipo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +88,15 @@ public class UsuarioController {
 
         var deletedusuario = usuarioService.delete(usuario);
         return ResponseEntity.ok(deletedusuario);
+    }
+
+    @ApiOperation(value = "Retorna uma lista com os usuarios ADMIN ou COLABORADOR")
+    @GetMapping("/findTipo")
+    public ResponseEntity<List<Usuario>> findByTipo(
+            @RequestParam UsuarioTipo tipo) {
+
+        var usuarios = usuarioService.findByTipo(tipo);
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(usuarios);
     }
 
 }

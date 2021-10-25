@@ -110,4 +110,13 @@ public class UsuarioService implements UserDetailsService {
             throw new UsernameNotFoundException("Usuário não encontrado com as credenciais fornecidas");
         }
     }
+
+    public List<Usuario> findByTipo(UsuarioTipo tipo) {
+        var usuarios = usuarioRepository.findByTipo(tipo);
+        return usuarios;
+    }
+
+    public Usuario findByCod(Long cod) {
+        return usuarioRepository.findByCod(cod);
+    }
 }

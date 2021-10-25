@@ -1,14 +1,19 @@
 package com.api.agendhouse.application;
 
+import com.api.agendhouse.domain.email.EmailService;
 import com.api.agendhouse.domain.evento.Evento;
 import com.api.agendhouse.domain.evento.EventoService;
+import com.api.agendhouse.domain.usuario.UsuarioService;
+import com.api.agendhouse.domain.usuario.UsuarioTipo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.internet.MimeMessage;
 import java.text.ParseException;
 import java.util.List;
 
@@ -18,11 +23,20 @@ import java.util.List;
 @RequestMapping("/evento")
 public class EventoController {
 
+    @Autowired
+    private JavaMailSender mailSender;
+
+    private final EmailService emailService;
+
     private final EventoService eventoService;
 
+    private final UsuarioService usuarioService;
+
     @Autowired
-    public EventoController(EventoService eventoService) {
+    public EventoController(EmailService emailService, EventoService eventoService, UsuarioService usuarioService) {
+        this.emailService = emailService;
         this.eventoService = eventoService;
+        this.usuarioService = usuarioService;
     }
 
     @ApiOperation("Adiciona um evento na plataforma.")
@@ -31,6 +45,18 @@ public class EventoController {
             @RequestBody Evento evento) throws ParseException {
 
         eventoService.add(evento);
+        var usuarioCheckTipo = usuarioService.findByCod(evento.getUsucodcria());
+        if (usuarioCheckTipo.getTipo().equals(UsuarioTipo.COLABORADOR)) {
+            var usuarios = usuarioService.findByTipo(UsuarioTipo.ADMIN);
+            var cartas = emailService.eventRequest(usuarios, evento, usuarioCheckTipo);
+            for (MimeMessage carta : cartas) {
+                mailSender.send(carta);
+            }
+        }
+        else {
+            var carta = emailService.registration(usuarioCheckTipo);
+            mailSender.send(carta);
+        }
 
         return ResponseEntity.ok(evento);
     }

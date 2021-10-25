@@ -1,5 +1,6 @@
 package com.api.agendhouse.domain.email;
 
+import com.api.agendhouse.domain.evento.Evento;
 import com.api.agendhouse.domain.usuario.Usuario;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -15,7 +16,9 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -57,6 +60,30 @@ public class EmailService {
         }
 
         return message;
+    }
+
+    public List<MimeMessage> eventRequest(List<Usuario> usuarios, Evento evento, Usuario colaborador) {
+        List<MimeMessage> messages = new ArrayList<>();
+        for (Usuario usuario : usuarios) {
+            setTo(usuario.getEmail());
+            model.put("adminNome", usuario.getNome());
+            model.put("colaboradorNome", colaborador.getNome());
+
+            MimeMessage message = mailSender.createMimeMessage();
+            try {
+                MimeMessageHelper mimeHelper = new MimeMessageHelper(message, true, "utf-8");
+                mimeHelper.setTo(to);
+                mimeHelper.setSubject("AgendHouse - Novo evento solicitado");
+                Template template = freeMarkerConfigurer.getConfiguration().getTemplate("eventSolicitation.ftl");
+                String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
+                mimeHelper.setText(html, true);
+            } catch (MessagingException | IOException | TemplateException e) {
+                e.printStackTrace();
+            }
+            messages.add(message);
+        }
+
+        return messages;
     }
 
 }

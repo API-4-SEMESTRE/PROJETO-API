@@ -14,4 +14,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
     Usuario findByCod (Long cod);
 
+    List<Usuario> findByTipo (UsuarioTipo usuarioTipo);
+
 }
