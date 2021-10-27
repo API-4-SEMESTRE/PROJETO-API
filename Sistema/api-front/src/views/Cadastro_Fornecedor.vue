@@ -5,7 +5,7 @@
         <v-layout align-center justify-center>
           <v-flex xs12 sm8 md12>
             <h1 style="text-align: center; color: white; margin-top: 15px">
-              Fornecedores
+              Cadastrar Fornecedores
             </h1>
             <v-layout align-center justify-center>
               <div>
@@ -698,13 +698,12 @@ export default {
       { text: "RUA", value: "rua" },
       { text: "NÚMERO", value: "numero" },
       { text: "BAIRRO", value: "bairro" },
-      { text: "CIDADE", value: "numero" },
+      { text: "CIDADE", value: "cidade" },
       { text: "UF", value: "uf" },
       //{ text: "COMPLEMENTO", value: "complemento" },
       { text: "CONTATO NOME", value: "contato_nome" },
       { text: "CONTATO FONE", value: "contato_fone" },
       { text: "CONTATO EMAIL", value: "contato_email" },
-      { text: "ACTIONS", value: "actions", sortable: false },
     ],
   }),
 

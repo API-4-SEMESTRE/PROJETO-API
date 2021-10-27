@@ -7,6 +7,12 @@ export default {
     },
     salvar_contato: (contato) => {
         return http.post(`contato/add`, contato)
-    }
+    },
+    atualizar_contato: (contato) => {
+        return http.put(`contato/update`, contato);
+    },
+    excluir_contato: (contato) => {
+        return http.delete(`contato/delete`, { data: contato });
+    },
 
 }
