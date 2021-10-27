@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class FornecedorService {
-    private FornecedorRepository fornecedorRepository;
-    private ContatoRepository contatoRepository;
-    private EnderecoRepository enderecoRepository;
+    private final FornecedorRepository fornecedorRepository;
+    private final ContatoRepository contatoRepository;
+    private final EnderecoRepository enderecoRepository;
 
     @Autowired
     public FornecedorService(FornecedorRepository fornecedorRepository, ContatoRepository contatoRepository, EnderecoRepository enderecoRepository) {
@@ -49,6 +49,7 @@ public class FornecedorService {
 
     @Transactional
     public Fornecedor update(Fornecedor fornecedor) {
+        fornecedor.setCnpjforn(fornecedor.getCnpjforn().replaceAll("[./-]", ""));
         return fornecedorRepository.save(fornecedor);
     }
 
