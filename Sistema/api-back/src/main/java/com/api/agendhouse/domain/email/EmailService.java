@@ -51,7 +51,7 @@ public class EmailService {
         try {
             MimeMessageHelper mimeHelper = new MimeMessageHelper(message, true, "utf-8");
             mimeHelper.setTo(to);
-            mimeHelper.setSubject("Confirmação de Cadastro - AgendHouse");
+            mimeHelper.setSubject("AgendHouse - Confirmação de Cadastro");
             Template template = freeMarkerConfigurer.getConfiguration().getTemplate("registration.ftl");
             String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
             mimeHelper.setText(html, true);
@@ -62,12 +62,17 @@ public class EmailService {
         return message;
     }
 
-    public List<MimeMessage> eventRequest(List<Usuario> usuarios, Evento evento, Usuario colaborador) {
+    public List<MimeMessage> eventRequest(List<Usuario> usuarios, Evento evento, Usuario criador) {
         List<MimeMessage> messages = new ArrayList<>();
         for (Usuario usuario : usuarios) {
             setTo(usuario.getEmail());
             model.put("adminNome", usuario.getNome());
-            model.put("colaboradorNome", colaborador.getNome());
+            model.put("cargo", criador.getTipo().toString().charAt(0) + criador.getTipo().toString().substring(1).toLowerCase());
+            model.put("pessoaNome", criador.getNome());
+            model.put("tipo", evento.getTipo().toString());
+            model.put("data", evento.getDataeven().toString());
+            model.put("horaIni", evento.getHorainicio().toString());
+            model.put("horaFim", evento.getHorafim().toString());
 
             MimeMessage message = mailSender.createMimeMessage();
             try {
