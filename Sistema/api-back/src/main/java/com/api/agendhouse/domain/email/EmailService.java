@@ -16,6 +16,8 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -66,13 +68,15 @@ public class EmailService {
         List<MimeMessage> messages = new ArrayList<>();
         for (Usuario usuario : usuarios) {
             setTo(usuario.getEmail());
+            DateFormat df = new SimpleDateFormat("dd/MM/yy");
             model.put("adminNome", usuario.getNome());
             model.put("cargo", criador.getTipo().toString().charAt(0) + criador.getTipo().toString().substring(1).toLowerCase());
             model.put("pessoaNome", criador.getNome());
             model.put("tipo", evento.getTipo().toString());
-            model.put("data", evento.getDataeven().toString());
-            model.put("horaIni", evento.getHorainicio().toString());
-            model.put("horaFim", evento.getHorafim().toString());
+            model.put("formato", evento.getFormato());
+            model.put("data", df.format(evento.getDataeven()));
+            model.put("horaIni", evento.getHorainicio().toString().substring(0, 5));
+            model.put("horaFim", evento.getHorafim().toString().substring(0, 5));
 
             MimeMessage message = mailSender.createMimeMessage();
             try {

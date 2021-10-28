@@ -15,9 +15,9 @@
     <div class="center-justify" style="text-align: justify; position: relative; width: 400px; margin: 0 auto">
         Um novo evento acabou de ser criado! Segue as informações do evento:<br><br>
         Por: ${pessoaNome} - ${cargo};<br>
-        Tipo: ${tipo};<br>
+        Tipo: ${tipo} - ${formato};<br>
         Data: ${data} - ${horaIni} às ${horaFim}.<br><br>
-        Para aprovar o evento <a href="http://localhost:8080/login">clique aqui(8080) - LINK PADRÃO ATÉ TER A PÁGINA</a><br><br>
+        Para verificar e aprovar o evento <a href="http://localhost:8080/login">clique aqui(8080) - LINK PADRÃO ATÉ TER A PÁGINA</a><br><br>
     </div>
 
     <div style="text-align: center">
