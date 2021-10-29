@@ -4,12 +4,12 @@ export default {
     listar_eventos: () => {
         return http.get(`evento/all`);
     },
-    // salvar_usuario: (usuario) => {
-    //     return http.post(`usuario/add`, usuario);
-    // },
-    // atualizar_usuario: (usuario) => {
-    //     return http.put(`usuario/update`, usuario);
-    // },
+    salvar_evento: (evento) => {
+        return http.post(`evento/add`, evento);
+    },
+    atualizar_evento: (evento) => {
+        return http.put(`evento/update`, evento);
+    },
     // excluir_usuario: (usuario) => {
     //     return http.delete(`usuario/delete`, { data: usuario });
     // },
