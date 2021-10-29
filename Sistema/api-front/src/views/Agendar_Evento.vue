@@ -29,7 +29,7 @@
                             <v-toolbar-title>Lista de Eventos</v-toolbar-title>
                             <v-divider class="mx-4" inset vertical></v-divider>
                             <v-spacer></v-spacer>
-                            <v-dialog v-model="dialog" max-width="700px">
+                            <v-dialog v-model="dialog" max-width="750px">
                               <template v-slot:activator="{ on, attrs }">
                                 <v-btn
                                   color="#C84634"
@@ -53,11 +53,11 @@
                                       ref="form"
                                       v-model="valid"
                                       lazy-validation
-                                      @submit.prevent="cadastrar_usuario"
+                                      @submit.prevent="cadastrar_evento"
                                     >
                                       <v-container>
                                         <v-row justify="center">
-                                          <v-col cols="24">
+                                          <v-col cols="3">
                                             <span
                                               style="
                                                 color: white;
@@ -75,13 +75,58 @@
                                                 flex-direction: row;
                                                 justify-content: center;
                                                 align-items: center;
-                                                margin-top: 5px;
+                                                margin-top: 20px;
                                               "
                                             >
-                                              <v-date-picker
-                                                locale="Brazil"
-                                                v-model="picker"
-                                              ></v-date-picker>
+                                              <v-menu
+                                                ref="menu"
+                                                v-model="menu"
+                                                :close-on-content-click="false"
+                                                :return-value.sync="date"
+                                                transition="scale-transition"
+                                                offset-y
+                                                min-width="290px"
+                                              >
+                                                <template
+                                                  v-slot:activator="{
+                                                    on,
+                                                    attrs,
+                                                  }"
+                                                >
+                                                  <v-text-field
+                                                    v-model="
+                                                      computedDateFormatted
+                                                    "
+                                                    prepend-inner-icon="mdi-calendar"
+                                                    readonly
+                                                    v-bind="attrs"
+                                                    v-on="on"
+                                                    outlined
+                                                    background-color="#A9A9A9"
+                                                  ></v-text-field>
+                                                </template>
+                                                <v-date-picker
+                                                  v-model="date"
+                                                  no-title
+                                                  scrollable
+                                                >
+                                                  <v-spacer></v-spacer>
+                                                  <v-btn
+                                                    text
+                                                    color="primary"
+                                                    @click="menu = false"
+                                                    >Cancel</v-btn
+                                                  >
+                                                  <v-btn
+                                                    text
+                                                    color="primary"
+                                                    @click="
+                                                      $refs.menu.save(date)
+                                                    "
+                                                    >OK</v-btn
+                                                  >
+                                                </v-date-picker>
+                                              </v-menu>
                                             </div>
                                           </v-col>
                                         </v-row>
@@ -98,16 +143,53 @@
                                               "
                                               >Hora Inicio</span
                                             >
-                                            <v-time-picker
-                                              v-model="time"
+                                            <!-- <v-time-picker
+                                              v-model="evento.horainicio"
                                               :allowed-hours="allowedHours"
                                               :allowed-minutes="allowedMinutes"
                                               class="mt-4"
                                               format="24hr"
-                                              scrollable
-                                              min="9:30"
-                                              max="22:15"
-                                            ></v-time-picker>
+                                              use-seconds
+                                            ></v-time-picker> -->
+                                            <v-menu
+                                              ref="menu"
+                                              v-model="menu2"
+                                              :close-on-content-click="false"
+                                              :nudge-right="40"
+                                              :return-value.sync="horainicio"
+                                              transition="scale-transition"
+                                              offset-y
+                                              max-width="290px"
+                                              min-width="290px"
+                                            >
+                                              <template
+                                                v-slot:activator="{ on, attrs }"
+                                              >
+                                                <v-text-field
+                                                  v-model="evento.horainicio"
+                                                  label="Picker in menu"
+                                                  prepend-icon="mdi-clock-time-four-outline"
+                                                  readonly
+                                                  v-bind="attrs"
+                                                  v-on="on"
+                                                ></v-text-field>
+                                              </template>
+                                              <v-time-picker
+                                                v-model="evento.horainicio"
+                                                :allowed-hours="allowedHours"
+                                                :allowed-minutes="
+                                                  allowedMinutes
+                                                "
+                                                class="mt-4"
+                                                format="24hr"
+                                                use-seconds
+                                                v-if="menu2"
+                                                full-width
+                                                @click:second="
+                                                  $refs.menu.save(evento.horainicio)
+                                                "
+                                              ></v-time-picker>
+                                            </v-menu>
                                           </v-col>
                                           <v-col cols="24">
                                             <span
@@ -121,16 +203,53 @@
                                               "
                                               >Hora Fim</span
                                             >
-                                            <v-time-picker
-                                              v-model="time"
+                                            <!-- <v-time-picker
+                                              v-model="evento.horafim"
                                               :allowed-hours="allowedHours"
                                               :allowed-minutes="allowedMinutes"
                                               class="mt-4"
                                               format="24hr"
-                                              scrollable
-                                              min="9:30"
-                                              max="22:15"
-                                            ></v-time-picker>
+                                              use-seconds
+                                            ></v-time-picker> -->
+                                            <v-menu
+                                              ref="menu"
+                                              v-model="menu3"
+                                              :close-on-content-click="false"
+                                              :nudge-right="40"
+                                              :return-value.sync="horafim"
+                                              transition="scale-transition"
+                                              offset-y
+                                              max-width="290px"
+                                              min-width="290px"
+                                            >
+                                              <template
+                                                v-slot:activator="{ on, attrs }"
+                                              >
+                                                <v-text-field
+                                                  v-model="evento.horafim"
+                                                  label="Picker in menu"
+                                                  prepend-icon="mdi-clock-time-four-outline"
+                                                  readonly
+                                                  v-bind="attrs"
+                                                  v-on="on"
+                                                ></v-text-field>
+                                              </template>
+                                              <v-time-picker
+                                                v-model="evento.horafim"
+                                                :allowed-hours="allowedHours"
+                                                :allowed-minutes="
+                                                  allowedMinutes
+                                                "
+                                                class="mt-4"
+                                                format="24hr"
+                                                use-seconds
+                                                v-if="menu3"
+                                                full-width
+                                                @click:second="
+                                                  $refs.menu.save(evento.horafim)
+                                                "
+                                              ></v-time-picker>
+                                            </v-menu>
                                           </v-col>
                                         </v-row>
                                         <v-row justify="center">
@@ -145,7 +264,7 @@
                                             <v-select
                                               :items="espaco"
                                               label="Espaço"
-                                              v-model="usuario.tipo"
+                                              v-model="evento"
                                               single-line
                                               solo
                                               required
@@ -169,7 +288,7 @@
                                             <v-select
                                               :items="tipo_evento"
                                               label="Tipo de Evento"
-                                              v-model="usuario.active"
+                                              v-model="evento"
                                               single-line
                                               solo
                                               required
@@ -260,16 +379,23 @@
   </v-app>
 </template>
 
-
 <script>
 import Evento from "../services/evento";
 import Swal from "sweetalert2";
 
 export default {
   data: () => ({
-    picker: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-      .toISOString()
-      .substr(0, 10),
+    date: new Date().toISOString().substr(0, 10),
+    menu: false,
+    menu2: false,
+    menu3: false,
+
+    time: null,
+    time1: null,
+
+    horainicio: "",
+    horafim: "",
+    tipo: "",
 
     // Validando se os campos do formulario estão preenchidos e se são validos
     valid: true,
@@ -292,13 +418,15 @@ export default {
     lista_de_eventos: [],
 
     // Criando o objeto que vai ser feito o POST
-    usuario: {
-      cod: "",
-      nome: "",
-      tipo: "",
-      email: "",
-      active: "",
-      senha: "",
+    evento: {
+      dataeven: "",
+      formato: "Pequeno",
+      tipo: "Palestra",
+      status: "PENDENTE",
+      usucodcria: "86",
+      usucodaprova: "85",
+      horainicio: "",
+      horafim: "",
     },
 
     // Variaveis referentes aos modais que abrem na tela, se for false ele não aparece na tela, se for true ele aparece na tela
@@ -335,6 +463,9 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? "Novo Evento" : "Editar Evento";
     },
+    computedDateFormatted() {
+      return this.formatDate(this.date);
+    },
   },
 
   watch: {
@@ -345,6 +476,9 @@ export default {
     dialogDelete(val) {
       val || this.closeDelete();
     },
+    date() {
+      this.dateFormatted = this.formatDate(this.date);
+    },
   },
 
   mounted() {
@@ -353,17 +487,18 @@ export default {
   },
 
   methods: {
-    // Método de cadastro de usuario
-    cadastrar_usuario() {
-      // Se o usuario não tiver um "cod" significa que esse usuario não existe então ele vai pra resquest de cadastro
-      if (!this.usuario.cod) {
-        Evento.salvar_usuario(this.usuario)
-          .then((resposta_cadastro_usuario) => {
-            this.usuario = {};
+    // Método de cadastro de evento
+    cadastrar_evento() {
+      // Se o evento não tiver um "codeven" significa que esse evento não existe então ele vai pra resquest de cadastro
+      if (!this.evento.codeven) {
+        this.evento.dataeven = this.dateFormatted;
+        Evento.salvar_evento(this.evento)
+          .then((resposta_cadastro_evento) => {
+            this.evento = {};
             Swal.fire(
               "Sucesso",
-              "Usuário " +
-                resposta_cadastro_usuario.data.nome +
+              "Evento " +
+                resposta_cadastro_evento.data.codeven +
                 " cadastrado com sucesso!!!",
               "success"
             );
@@ -372,21 +507,21 @@ export default {
           .catch((e) => {
             Swal.fire(
               "Oops...",
-              "Erro ao cadastrar o usuário! - Erro: " + e.response.data.error,
+              "Erro ao cadastrar o evento! - Erro: " + e.response.data.error,
               "error"
             );
           });
         this.close();
       } else {
-        // Método de atualizar usuario
-        // Se o usuario já tiver um "cod" ele já existe então ele vai pra request de atualizar
-        Evento.atualizar_usuario(this.usuario)
-          .then((resposta_atualizar_usuario) => {
-            this.usuario = {};
+        // Método de atualizar o evento
+        // Se o evento já tiver um "codeven" ele já existe então ele vai pra request de atualizar
+        Evento.atualizar_evento(this.evento)
+          .then((resposta_atualizar_evento) => {
+            this.evento = {};
             Swal.fire(
               "Sucesso",
-              "Usuário " +
-                resposta_atualizar_usuario.data.nome +
+              "Evento " +
+                resposta_atualizar_evento.data.codeven +
                 " atualizado com sucesso!!!",
               "success"
             );
@@ -395,7 +530,7 @@ export default {
           .catch((e) => {
             Swal.fire(
               "Oops...",
-              "Erro ao atualizar o usuário! - Erro: " + e.response.data.error,
+              "Erro ao atualizar o evento! - Erro: " + e.response.data.error,
               "error"
             );
           });
@@ -465,6 +600,12 @@ export default {
     closeDelete() {
       this.dialogDelete = false;
       this.usuario = {};
+    },
+    formatDate(date) {
+      if (!date) return null;
+
+      const [year, month, day] = date.split("-");
+      return `${day}/${month}/${year}`;
     },
   },
 };
