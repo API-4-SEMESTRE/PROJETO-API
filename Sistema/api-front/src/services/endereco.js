@@ -7,6 +7,12 @@ export default {
     },
     salvar_endereco: (endereco) => {
         return http.post(`endereco/add`, endereco)
-    }
+    },
+    atualizar_endereco: (endereco) => {
+        return http.put(`endereco/update`, endereco);
+    },
+    excluir_endereco: (endereco) => {
+        return http.delete(`endereco/delete`, { data: endereco });
+    },
 
 }
