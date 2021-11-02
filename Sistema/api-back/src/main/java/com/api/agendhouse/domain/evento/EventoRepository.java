@@ -17,4 +17,6 @@ public interface EventoRepository extends JpaRepository<Evento, Long> {
     @Query(value = "SELECT * FROM evento WHERE eve_hora_fim > :datahorainicio AND eve_hora_inicio < :datahorafim", nativeQuery = true)
     Evento findEventoByHorainicioAndHorafimNamedParams(@Param("datahorainicio") String datahorainicio,
                                       @Param("datahorafim") String datahorafim);
+
+    Evento findByCodeven(Long codeven);
 }
