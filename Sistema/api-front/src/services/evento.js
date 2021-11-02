@@ -10,7 +10,7 @@ export default {
     atualizar_evento: (evento) => {
         return http.put(`evento/update`, evento);
     },
-    // excluir_usuario: (usuario) => {
-    //     return http.delete(`usuario/delete`, { data: usuario });
-    // },
+    excluir_evento: (evento) => {
+        return http.delete(`evento/delete`, { data: evento });
+    },
 };
