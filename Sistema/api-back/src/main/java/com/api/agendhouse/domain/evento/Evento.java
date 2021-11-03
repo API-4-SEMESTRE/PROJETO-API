@@ -19,7 +19,7 @@ public class Evento {
     @GeneratedValue(generator = "EVE_SQ", strategy = GenerationType.SEQUENCE)
     private long codeven;
 
-    @JsonFormat(pattern = "dd/MM/yy")
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name="EVE_DATA_EVEN")
     private Date dataeven;
 
