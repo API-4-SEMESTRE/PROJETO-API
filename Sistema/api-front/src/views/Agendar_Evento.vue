@@ -210,11 +210,11 @@
                                                 color: white;
                                                 font-size: 18px;
                                               "
-                                              >Tipo de Evento</span
+                                              >Ordem de Prioridade dos Eventos</span
                                             >
                                             <v-select
                                               :items="tipo_evento"
-                                              label="Tipo de Evento"
+                                              label="Ordem de Prioridade dos Eventos"
                                               v-model="evento"
                                               single-line
                                               solo
@@ -224,7 +224,7 @@
                                               ::rules="[
                                                 (v) =>
                                                   !!v.toString() ||
-                                                  'O tipo de evento é obrigatório',
+                                                  'A ordem de prioridade dos eventos é obrigatório',
                                               ]"
                                             ></v-select>
                                           </v-col>
