@@ -25,7 +25,7 @@ public class Fornecedor {
     @Column(name = "FOR_CNPJ")
     private String cnpjforn;
 
-    @Column(name = "FOR_SITE")
+    @Column(name = "FOR_SITE_EMPRESA")
     private String siteforn;
 
 }
