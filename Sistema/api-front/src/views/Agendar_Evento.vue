@@ -210,7 +210,8 @@
                                                 color: white;
                                                 font-size: 18px;
                                               "
-                                              >Ordem de Prioridade dos Eventos</span
+                                              >Ordem de Prioridade dos
+                                              Eventos</span
                                             >
                                             <v-select
                                               :items="tipo_evento"
@@ -225,6 +226,59 @@
                                                 (v) =>
                                                   !!v.toString() ||
                                                   'A ordem de prioridade dos eventos é obrigatório',
+                                              ]"
+                                            ></v-select>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >Fornecedores</span
+                                            >
+                                            <v-select
+                                              :items="items_fornecedores"
+                                              label="Fornecedores"
+                                              :search-input="
+                                                retornaFornecedores
+                                              "
+                                              v-model="evento.fornecedores"
+                                              single-line
+                                              solo
+                                              required
+                                              dense
+                                              background-color="#A9A9A9"
+                                              :rules="[
+                                                (v) =>
+                                                  !!v ||
+                                                  'O espaço é obrigatório',
+                                              ]"
+                                            ></v-select>
+                                          </v-col>
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >Status Evento</span
+                                            >
+                                            <v-select
+                                              :items="status_evento"
+                                              label="Status do Evento"
+                                              v-model="evento.status"
+                                              single-line
+                                              solo
+                                              required
+                                              dense
+                                              background-color="#A9A9A9"
+                                              ::rules="[
+                                                (v) =>
+                                                  !!v.toString() ||
+                                                  'O status do evento é obrigatório',
                                               ]"
                                             ></v-select>
                                           </v-col>
@@ -287,6 +341,9 @@
                         </template>
                         <template v-slot:item.actions="{ item }">
                           <v-icon class="mr-2" @click="editar_evento(item)">
+                            mdi-email-plus
+                          </v-icon>
+                          <v-icon class="mr-2" @click="editar_evento(item)">
                             mdi-pencil
                           </v-icon>
                           <v-icon @click="deleteItem(item)">
@@ -310,6 +367,7 @@
 import Evento from "../services/evento";
 import Swal from "sweetalert2";
 import datetime from "vuejs-datetimepicker";
+import Fornecedor from "../services/fornecedor";
 
 export default {
   components: { datetime },
@@ -341,6 +399,8 @@ export default {
     // Criando os arrays que vão armazenar os conteudos dos selects de Status do Usuario e Tipo de Usuario
     tipo_evento: ["1 - SMB", "2 - Enterprise", "3 - Workshop", "4 - Palestra"],
     espaco: ["Openspace", "Lounge"],
+    status_evento: ["PENDENTE", "APROVADO", "REPROVADO"],
+    items_fornecedores: [],
 
     // Array aonde vai ser armazenado a lista de usuarios
     lista_de_eventos: [],
@@ -350,7 +410,7 @@ export default {
       dataeven: "",
       formato: "Pequeno",
       tipo: "Palestra",
-      status: "PENDENTE",
+      status: "",
       usucodcria: "1",
       usucodaprova: "1",
       horainicio: "",
@@ -373,8 +433,8 @@ export default {
       { text: "TIPO", value: "tipo" },
       { text: "STATUS", value: "status" },
       { text: "DATA CRIAÇÃO", value: "datacria" },
-      { text: "USUÁRIO CRIAÇÃO", value: "usucodcria" },
-      { text: "USUÁRIO APROVAÇÃO", value: "usucodaprova" },
+      // { text: "USUÁRIO CRIAÇÃO", value: "usucodcria" },
+      // { text: "USUÁRIO APROVAÇÃO", value: "usucodaprova" },
       { text: "HORA INICIO", value: "horainicio" },
       { text: "HORA FIM", value: "horafim" },
       { text: "Actions", value: "actions", sortable: false },
@@ -393,6 +453,10 @@ export default {
     },
     computedDateFormatted() {
       return this.formatDate(this.date);
+    },
+
+    retornaFornecedores: function () {
+      return this.exibir_fornecedor();
     },
   },
 
@@ -475,6 +539,26 @@ export default {
           Swal.fire(
             "Oops...",
             "Erro ao carregar a tabela de eventos! - Erro: " +
+              e.response.data.error,
+            "error"
+          );
+        });
+    },
+    // Método pra retornar os nomes dos fornecedores
+    exibir_fornecedor() {
+      Fornecedor.listar_fornecedor_all()
+        .then((resposta_lista_fornecedor) => {
+          this.items_fornecedores = resposta_lista_fornecedor.data;
+          let fornecedores = [];
+          resposta_lista_fornecedor.data.forEach((forn) =>
+            fornecedores.push(forn.nomeforn)
+          );
+          this.items_fornecedores = fornecedores;
+        })
+        .catch((e) => {
+          Swal.fire(
+            "Oops...",
+            "Erro ao retornar os nomes dos fornecedores! - Erro: " +
               e.response.data.error,
             "error"
           );
