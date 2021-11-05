@@ -341,12 +341,401 @@
                         </template>
                         <template v-slot:item.actions="{ item }">
                           <v-icon class="mr-2" @click="editar_evento(item)">
-                            mdi-email-plus
-                          </v-icon>
-                          <v-icon class="mr-2" @click="editar_evento(item)">
                             mdi-pencil
                           </v-icon>
                           <v-icon @click="deleteItem(item)">
+                            mdi-delete
+                          </v-icon>
+                        </template>
+                      </v-data-table>
+                    </template>
+                  </v-card-text>
+                </v-card>
+                <v-card
+                  class="pa-2"
+                  tile
+                  outlined
+                  color="#272733"
+                  style="margin-top: 20px"
+                >
+                  <v-card-text>
+                    <template>
+                      <v-data-table
+                        :headers="headersFornecedores"
+                        :items="lista_de_fornecedores_adicionados_evento"
+                        sort-by="calories"
+                        class="elevation-1"
+                      >
+                        <template v-slot:top>
+                          <v-toolbar flat>
+                            <v-toolbar-title
+                              >Lista de Fornecedores</v-toolbar-title
+                            >
+                            <v-divider class="mx-4" inset vertical></v-divider>
+                            <v-spacer></v-spacer>
+                            <v-dialog
+                              v-model="dialogFornecedor"
+                              max-width="500px"
+                            >
+                              <template v-slot:activator="{ on, attrs }">
+                                <v-btn
+                                  color="#C84634"
+                                  class="white--text"
+                                  dark
+                                  v-bind="attrs"
+                                  v-on="on"
+                                >
+                                  Adicionar Fornecedor
+                                </v-btn>
+                              </template>
+                              <v-card style="background-color: #272733">
+                                <v-card-title>
+                                  <span class="text-h5 white--text">{{
+                                    formTitleFornecedores
+                                  }}</span>
+                                </v-card-title>
+                                <v-card-text>
+                                  <v-container>
+                                    <v-form
+                                      ref="form"
+                                      v-model="validFornecedor"
+                                      lazy-validation
+                                      @submit.prevent="adicionar_fornecedor"
+                                    >
+                                      <v-container>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >Código evento</span
+                                            >
+                                            <v-text-field
+                                              label="Código evento"
+                                              v-model="evento.nome"
+                                              :rules="[
+                                                (v) =>
+                                                  !!v ||
+                                                  'O código do evento é obrigatório',
+                                              ]"
+                                              single-line
+                                              solo
+                                              required
+                                              dense
+                                              background-color="#A9A9A9"
+                                            ></v-text-field>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >Código Fornecedor</span
+                                            >
+                                            <v-text-field
+                                              label="Código Fornecedor"
+                                              v-model="evento.email"
+                                              :rules="[
+                                                (v) =>
+                                                  !!v ||
+                                                  'O código do fornecedor é obrigatório',
+                                              ]"
+                                              single-line
+                                              solo
+                                              required
+                                              dense
+                                              background-color="#A9A9A9"
+                                            ></v-text-field>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >Descrição</span
+                                            >
+                                            <v-textarea
+                                              auto-grow
+                                              outlined
+                                              rows="1"
+                                              row-height="15"
+                                              background-color="#A9A9A9"
+                                            ></v-textarea>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row>
+                                          <v-col></v-col>
+                                          <v-col>
+                                            <v-btn
+                                              text
+                                              color="white"
+                                              @click="closeFornecedor"
+                                            >
+                                              Cancelar
+                                            </v-btn>
+                                          </v-col>
+                                          <v-col>
+                                            <v-btn
+                                              color="#C84634"
+                                              class="white--text mr-4"
+                                              type="submit"
+                                              :disabled="!validFornecedor"
+                                              @click="validateFornecedor"
+                                            >
+                                              Salvar
+                                            </v-btn>
+                                          </v-col>
+                                        </v-row>
+                                      </v-container>
+                                    </v-form>
+                                  </v-container>
+                                </v-card-text>
+                              </v-card>
+                            </v-dialog>
+                            <v-dialog
+                              v-model="dialogDeleteFornecedor"
+                              max-width="540px"
+                            >
+                              <v-card color="#272733">
+                                <v-card-title class="text-h5 white--text"
+                                  >Tem certeza de que deseja excluir este
+                                  item?</v-card-title
+                                >
+                                <v-card-actions>
+                                  <v-spacer></v-spacer>
+                                  <v-btn
+                                    text
+                                    color="white"
+                                    @click="closeDeleteFornecedor"
+                                  >
+                                    Cancelar
+                                  </v-btn>
+                                  <v-btn
+                                    color="#C84634"
+                                    class="white--text mr-4"
+                                    @click="
+                                      deletar_fornecedor_adicionado_evento(
+                                        evento
+                                      )
+                                    "
+                                    >Sim</v-btn
+                                  >
+                                  <v-spacer></v-spacer>
+                                </v-card-actions>
+                              </v-card>
+                            </v-dialog>
+                          </v-toolbar>
+                        </template>
+                        <template v-slot:item.actions="{ item }">
+                          <v-icon
+                            class="mr-2"
+                            @click="editar_fornecedor_evento(item)"
+                          >
+                            mdi-pencil
+                          </v-icon>
+                          <v-icon @click="deleteItemFornecedorEvento(item)">
+                            mdi-delete
+                          </v-icon>
+                        </template>
+                      </v-data-table>
+                    </template>
+                  </v-card-text>
+                </v-card>
+                <v-card
+                  class="pa-2"
+                  tile
+                  outlined
+                  color="#272733"
+                  style="margin-top: 20px"
+                >
+                  <v-card-text>
+                    <template>
+                      <v-data-table
+                        :headers="headersConvidados"
+                        :items="lista_de_convidados"
+                        sort-by="calories"
+                        class="elevation-1"
+                      >
+                        <template v-slot:top>
+                          <v-toolbar flat>
+                            <v-toolbar-title
+                              >Lista de Convidados</v-toolbar-title
+                            >
+                            <v-divider class="mx-4" inset vertical></v-divider>
+                            <v-spacer></v-spacer>
+                            <v-dialog
+                              v-model="dialogConvidados"
+                              max-width="500px"
+                            >
+                              <template v-slot:activator="{ on, attrs }">
+                                <v-btn
+                                  color="#C84634"
+                                  class="white--text"
+                                  dark
+                                  v-bind="attrs"
+                                  v-on="on"
+                                >
+                                  Adicionar Convidados
+                                </v-btn>
+                              </template>
+                              <v-card style="background-color: #272733">
+                                <v-card-title>
+                                  <span class="text-h5 white--text">{{
+                                    formTitleConvidados
+                                  }}</span>
+                                </v-card-title>
+                                <v-card-text>
+                                  <v-container>
+                                    <v-form
+                                      ref="form"
+                                      v-model="validConvidados"
+                                      lazy-validation
+                                      @submit.prevent="adicionar_convidado"
+                                    >
+                                      <v-container>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >Nome Convidado</span
+                                            >
+                                            <v-text-field
+                                              label="Nome Convidado"
+                                              v-model="evento.nome"
+                                              :rules="[
+                                                (v) =>
+                                                  !!v ||
+                                                  'O nome do convidado é obrigatório',
+                                              ]"
+                                              single-line
+                                              solo
+                                              required
+                                              dense
+                                              background-color="#A9A9A9"
+                                            ></v-text-field>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >E-mail Convidado</span
+                                            >
+                                            <v-text-field
+                                              label="E-mail Convidado"
+                                              v-model="evento.email"
+                                              :rules="regra_email_convidado"
+                                              single-line
+                                              solo
+                                              required
+                                              dense
+                                              background-color="#A9A9A9"
+                                            ></v-text-field>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >CPF Convidado</span
+                                            >
+                                            <v-text-field
+                                              label="CPF Convidado"
+                                              v-model="evento.email"
+                                              :rules="[
+                                                (v) =>
+                                                  !!v ||
+                                                  'O CPF do convidado é obrigatório',
+                                              ]"
+                                              single-line
+                                              solo
+                                              required
+                                              dense
+                                              background-color="#A9A9A9"
+                                            ></v-text-field>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row>
+                                          <v-col></v-col>
+                                          <v-col>
+                                            <v-btn
+                                              text
+                                              color="white"
+                                              @click="closeConvidado"
+                                            >
+                                              Cancelar
+                                            </v-btn>
+                                          </v-col>
+                                          <v-col>
+                                            <v-btn
+                                              color="#C84634"
+                                              class="white--text mr-4"
+                                              type="submit"
+                                              :disabled="!validConvidados"
+                                              @click="validateConvidados"
+                                            >
+                                              Salvar
+                                            </v-btn>
+                                          </v-col>
+                                        </v-row>
+                                      </v-container>
+                                    </v-form>
+                                  </v-container>
+                                </v-card-text>
+                              </v-card>
+                            </v-dialog>
+                            <v-dialog
+                              v-model="dialogDeleteConvidado"
+                              max-width="540px"
+                            >
+                              <v-card color="#272733">
+                                <v-card-title class="text-h5 white--text"
+                                  >Tem certeza de que deseja excluir este
+                                  item?</v-card-title
+                                >
+                                <v-card-actions>
+                                  <v-spacer></v-spacer>
+                                  <v-btn
+                                    text
+                                    color="white"
+                                    @click="closeDeleteConvidado"
+                                  >
+                                    Cancelar
+                                  </v-btn>
+                                  <v-btn
+                                    color="#C84634"
+                                    class="white--text mr-4"
+                                    @click="deletar_convidado(convidado)"
+                                    >Sim</v-btn
+                                  >
+                                  <v-spacer></v-spacer>
+                                </v-card-actions>
+                              </v-card>
+                            </v-dialog>
+                          </v-toolbar>
+                        </template>
+                        <template v-slot:item.actions="{ item }">
+                          <v-icon class="mr-2" @click="editar_convidado(item)">
+                            mdi-pencil
+                          </v-icon>
+                          <v-icon @click="deleteItemConvidado(item)">
                             mdi-delete
                           </v-icon>
                         </template>
@@ -385,16 +774,13 @@ export default {
 
     // Validando se os campos do formulario estão preenchidos e se são validos
     valid: true,
-    regra_nome: [(v) => !!v || "O nome é obrigatório"],
-    regra_email: [
-      (v) => !!v || "O e-mail é obrigatório",
-      //(v) => /.+@.+\..+/.test(v) || "E-mail inválido",
-      (v) => /^[a-z0-9.]+@oracle.com$/.test(v) || "E-mail inválido",
+    validFornecedor: true,
+    validConvidados: true,
+    regra_email_convidado: [
+      (v) => !!v || "O e-mail do convidado é obrigatório",
+      (v) => /.+@.+\..+/.test(v) || "E-mail inválido",
+      //(v) => /^[a-z0-9.]+@oracle.com$/.test(v) || "E-mail inválido",
     ],
-    regra_senha: [(v) => !!v || "A senha é obrigatória"],
-
-    // Criando a variavel pro icone de mostrar a senha
-    show1: false,
 
     // Criando os arrays que vão armazenar os conteudos dos selects de Status do Usuario e Tipo de Usuario
     tipo_evento: ["1 - SMB", "2 - Enterprise", "3 - Workshop", "4 - Palestra"],
@@ -402,8 +788,10 @@ export default {
     status_evento: ["PENDENTE", "APROVADO", "REPROVADO"],
     items_fornecedores: [],
 
-    // Array aonde vai ser armazenado a lista de usuarios
+    // Arrays aonde vão ser armazenados os retornos GET
     lista_de_eventos: [],
+    lista_de_fornecedores_adicionados_evento: [],
+    lista_de_convidados: [],
 
     // Criando o objeto que vai ser feito o POST
     evento: {
@@ -416,10 +804,16 @@ export default {
       horainicio: "",
       horafim: "",
     },
+    fornecedor_evento: {},
+    convidado: {},
 
     // Variaveis referentes aos modais que abrem na tela, se for false ele não aparece na tela, se for true ele aparece na tela
     dialog: false,
     dialogDelete: false,
+    dialogFornecedor: false,
+    dialogDeleteFornecedor: false,
+    dialogConvidados: false,
+    dialogDeleteConvidado: false,
 
     // Array que vai armazenar as colunas da tabela
     headers: [
@@ -439,9 +833,32 @@ export default {
       { text: "HORA FIM", value: "horafim" },
       { text: "Actions", value: "actions", sortable: false },
     ],
+    headersFornecedores: [
+      {
+        text: "CÓDIGO EVENTO",
+        align: "start",
+        value: "codeven",
+      },
+      { text: "CÓDIGO FORNECEDOR", value: "dataeven" },
+      { text: "DESCRIÇÃO", value: "formato" },
+      { text: "Actions", value: "actions", sortable: false },
+    ],
+    headersConvidados: [
+      {
+        text: "CÓDIGO CONVIDADO",
+        align: "start",
+        value: "codeven",
+      },
+      { text: "NOME CONVIDADO", value: "dataeven" },
+      { text: "E-MAIL CONVIDADO", value: "formato" },
+      { text: "CPF CONVIDADO", value: "formato" },
+      { text: "Actions", value: "actions", sortable: false },
+    ],
 
     // Vairavel que é usada pra identificar se o modal é de cadastro de usuario ou de edição do usuario
     editedIndex: -1,
+    editedIndexFornecedores: -1,
+    editedIndexConvidados: -1,
   }),
 
   computed: {
@@ -451,10 +868,19 @@ export default {
     formTitle() {
       return this.editedIndex === -1 ? "Novo Evento" : "Editar Evento";
     },
+    formTitleFornecedores() {
+      return this.editedIndexFornecedores === -1
+        ? "Adicionar Fornecedores"
+        : "Editar Fornecedores";
+    },
+    formTitleConvidados() {
+      return this.editedIndexConvidados === -1
+        ? "Adicionar Convidados"
+        : "Editar Convidados";
+    },
     computedDateFormatted() {
       return this.formatDate(this.date);
     },
-
     retornaFornecedores: function () {
       return this.exibir_fornecedor();
     },
@@ -467,6 +893,18 @@ export default {
     },
     dialogDelete(val) {
       val || this.closeDelete();
+    },
+    dialogFornecedor(val) {
+      val || this.closeFornecedor();
+    },
+    dialogDeleteFornecedor(val) {
+      val || this.closeDeleteFornecedor();
+    },
+    dialogConvidados(val) {
+      val || this.closeConvidado();
+    },
+    dialogDeleteConvidado(val) {
+      val || this.closeDeleteConvidado();
     },
     date() {
       this.dateFormatted = this.formatDate(this.date);
@@ -529,6 +967,23 @@ export default {
         this.close();
       }
     },
+    // Método pra excluir os eventos
+    deletar_evento(evento) {
+      Evento.excluir_evento(evento)
+        .then((resposta_excluir_evento) => {
+          Swal.fire("Sucesso", "Evento excluido com sucesso!!!", "success");
+          resposta_excluir_evento;
+          this.exibir_evento();
+        })
+        .catch((e) => {
+          Swal.fire(
+            "Oops...",
+            "Erro ao excluir o evento! - Erro: " + e.response.data.error,
+            "error"
+          );
+        });
+      this.closeDelete();
+    },
     // Método pra exibir os eventos
     exibir_evento() {
       Evento.listar_eventos()
@@ -569,12 +1024,33 @@ export default {
     validate() {
       this.$refs.form.validate();
     },
+    validateFornecedor() {
+      this.$refs.form.validateFornecedor();
+    },
+    validateConvidados() {
+      this.$refs.form.validateConvidados();
+    },
 
-    // Método que vai recuparar os dados da tabela e armazenar no objeto usuario
+    // Método que vai recuparar os dados da tabela e armazenar no objeto evento
     editar_evento(evento) {
       this.editedIndex = this.lista_de_eventos.indexOf(evento);
       this.evento = Object.assign({}, evento);
       this.dialog = true;
+    },
+
+    // Método que vai recuparar os dados da tabela e armazenar no objeto fornecedor
+    editar_fornecedor_evento(fornecedor) {
+      this.editedIndexFornecedores =
+        this.lista_de_fornecedores_adicionados_evento.indexOf(fornecedor);
+      this.fornecedor = Object.assign({}, fornecedor);
+      this.dialogFornecedor = true;
+    },
+
+    // Método que vai recuparar os dados da tabela e armazenar no objeto convidado
+    editar_convidado(convidado) {
+      this.editedIndexConvidados = this.lista_de_convidados.indexOf(convidado);
+      this.convidado = Object.assign({}, convidado);
+      this.dialogConvidados = true;
     },
 
     // Método que vai recuparar os dados da tabela e armazenar no objeto evento
@@ -584,22 +1060,19 @@ export default {
       this.dialogDelete = true;
     },
 
-    // Método pra excluir os eventos
-    deletar_evento(evento) {
-      Evento.excluir_evento(evento)
-        .then((resposta_excluir_evento) => {
-          Swal.fire("Sucesso", "Evento excluido com sucesso!!!", "success");
-          resposta_excluir_evento;
-          this.exibir_evento();
-        })
-        .catch((e) => {
-          Swal.fire(
-            "Oops...",
-            "Erro ao excluir o evento! - Erro: " + e.response.data.error,
-            "error"
-          );
-        });
-      this.closeDelete();
+    // Método que vai recuparar os dados da tabela e armazenar no objeto fornecedor
+    deleteItemFornecedorEvento(fornecedor) {
+      this.editedIndexFornecedores =
+        this.lista_de_fornecedores_adicionados_evento.indexOf(fornecedor);
+      this.fornecedor = Object.assign({}, fornecedor);
+      this.dialogDeleteFornecedor = true;
+    },
+
+    // Método que vai recuparar os dados da tabela e armazenar no objeto convidado
+    deleteItemConvidado(convidado) {
+      this.editedIndexConvidados = this.lista_de_convidados.indexOf(convidado);
+      this.convidado = Object.assign({}, convidado);
+      this.dialogDeleteConvidado = true;
     },
 
     // Método que vai fechar o modal "dialog"
@@ -608,11 +1081,36 @@ export default {
       this.evento = {};
     },
 
+    // Método que vai fechar o modal "dialogFornecedor"
+    closeFornecedor() {
+      this.dialogFornecedor = false;
+      this.fornecedor = {};
+    },
+
+    // Método que vai fechar o modal "dialogConvidados"
+    closeConvidado() {
+      this.dialogConvidados = false;
+      this.convidado = {};
+    },
+
     // Método que vai fechar o modal "dialogDelete"
     closeDelete() {
       this.dialogDelete = false;
       this.evento = {};
     },
+
+    // Método que vai fechar o modal "dialogDeleteFornecedor"
+    closeDeleteFornecedor() {
+      this.dialogDeleteFornecedor = false;
+      this.fornecedor = {};
+    },
+
+    // Método que vai fechar o modal "dialogDeleteConvidado"
+    closeDeleteConvidado() {
+      this.dialogDeleteConvidado = false;
+      this.convidado = {};
+    },
+
     formatDate(date) {
       if (!date) return null;
 
