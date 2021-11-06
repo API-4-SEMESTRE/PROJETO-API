@@ -14,7 +14,7 @@ public class Fornecedor {
     @Id
     @Column(name = "FOR_COD_FORN")
     @GeneratedValue(generator = "for_SQ", strategy =  GenerationType.SEQUENCE)
-    private long cod;
+    private Long cod;
 
     @Column(name = "FOR_NOME_FORN")
     private String nomeforn;

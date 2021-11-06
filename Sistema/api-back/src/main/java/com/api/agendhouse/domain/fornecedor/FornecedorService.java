@@ -30,6 +30,10 @@ public class FornecedorService {
         return fornecedorRepository.save(fornecedor);
     }
 
+    public Fornecedor findByCod(Long cod) {
+        return fornecedorRepository.findByCod(cod);
+    }
+
     public List<Fornecedor> findAll() {
         var fornecedores = fornecedorRepository.findAllByOrderByCodAsc();
         for (Fornecedor fornecedor : fornecedores) {
