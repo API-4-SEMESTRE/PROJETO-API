@@ -12,7 +12,6 @@ import javax.persistence.*;
 public class FornecedorEvento {
 
     @EmbeddedId
-    @JsonIgnore
     FornecedorEventoKey id;
 
     @ManyToOne

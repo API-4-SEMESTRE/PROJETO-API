@@ -23,7 +23,6 @@ public class FornecedorEventoController {
     @PostMapping(value = "/add", consumes = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<FornecedorEvento> addFornece (
             @RequestBody FornecedorEvento FornecedorEvento) {
-        System.out.println(FornecedorEvento.toString());
         try
         {
             fornecedorEventoService.add(FornecedorEvento);
