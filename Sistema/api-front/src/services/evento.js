@@ -24,4 +24,11 @@ export default {
     atualizar_fornecedor_evento: (fornecedor_evento) => {
         return http.put(`fornecedorEvento/update`, fornecedor_evento);
     },
+    // ENDPOINT CONVIDADO EVENTO
+    listar_convidado_eventos: () => {
+        return http.get(`visitanteEvento/all`);
+    },
+    salvar_convidado_evento: (visitante_evento) => {
+        return http.post(`visitanteEvento/add`, visitante_evento);
+    },
 };
