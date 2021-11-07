@@ -104,6 +104,11 @@ export default {
         url: "/Agendar_Evento",
         icon: "mdi-calendar-multiselect",
       },
+      {
+        conteudo: "Visitante",
+        url: "/Visitante",
+        icon: "mdi-card-account-details",
+      },
     ],
   }),
   methods: {
