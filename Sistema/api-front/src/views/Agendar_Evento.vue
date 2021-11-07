@@ -180,7 +180,7 @@
                                           </v-col>
                                         </v-row>
                                         <v-row justify="center">
-                                          <v-col cols="24">
+                                          <!-- <v-col cols="24">
                                             <span
                                               style="
                                                 color: white;
@@ -203,20 +203,19 @@
                                                   'O espaço é obrigatório',
                                               ]"
                                             ></v-select>
-                                          </v-col>
+                                          </v-col> -->
                                           <v-col cols="24">
                                             <span
                                               style="
                                                 color: white;
                                                 font-size: 18px;
                                               "
-                                              >Ordem de Prioridade dos
-                                              Eventos</span
+                                              >Prioridade dos Eventos</span
                                             >
                                             <v-select
                                               :items="tipo_evento"
-                                              label="Ordem de Prioridade dos Eventos"
-                                              v-model="evento"
+                                              label="Prioridade dos Eventos"
+                                              v-model="evento.tipo"
                                               single-line
                                               solo
                                               required
@@ -225,36 +224,7 @@
                                               ::rules="[
                                                 (v) =>
                                                   !!v.toString() ||
-                                                  'A ordem de prioridade dos eventos é obrigatório',
-                                              ]"
-                                            ></v-select>
-                                          </v-col>
-                                        </v-row>
-                                        <v-row justify="center">
-                                          <v-col cols="24">
-                                            <span
-                                              style="
-                                                color: white;
-                                                font-size: 18px;
-                                              "
-                                              >Fornecedores</span
-                                            >
-                                            <v-select
-                                              :items="items_fornecedores"
-                                              label="Fornecedores"
-                                              :search-input="
-                                                retornaFornecedores
-                                              "
-                                              v-model="evento.fornecedores"
-                                              single-line
-                                              solo
-                                              required
-                                              dense
-                                              background-color="#A9A9A9"
-                                              :rules="[
-                                                (v) =>
-                                                  !!v ||
-                                                  'O espaço é obrigatório',
+                                                  'A prioridade dos eventos é obrigatório',
                                               ]"
                                             ></v-select>
                                           </v-col>
@@ -282,6 +252,52 @@
                                               ]"
                                             ></v-select>
                                           </v-col>
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >Formato</span
+                                            >
+                                            <v-text-field
+                                              label="Formato"
+                                              v-model="evento.formato"
+                                              single-line
+                                              solo
+                                              dense
+                                              background-color="#A9A9A9"
+                                            ></v-text-field>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row justify="center">
+                                          <!-- <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >Fornecedores</span
+                                            >
+                                            <v-select
+                                              :items="items_fornecedores"
+                                              label="Fornecedores"
+                                              :search-input="
+                                                retornaFornecedores
+                                              "
+                                              v-model="evento.fornecedores"
+                                              single-line
+                                              solo
+                                              required
+                                              dense
+                                              background-color="#A9A9A9"
+                                              :rules="[
+                                                (v) =>
+                                                  !!v ||
+                                                  'O espaço é obrigatório',
+                                              ]"
+                                            ></v-select>
+                                          </v-col> -->
                                         </v-row>
                                         <v-row>
                                           <v-col></v-col>
@@ -400,7 +416,9 @@
                                       ref="form"
                                       v-model="validFornecedor"
                                       lazy-validation
-                                      @submit.prevent="adicionar_fornecedor"
+                                      @submit.prevent="
+                                        adicionar_fornecedor_evento
+                                      "
                                     >
                                       <v-container>
                                         <v-row justify="center">
@@ -414,7 +432,9 @@
                                             >
                                             <v-text-field
                                               label="Código evento"
-                                              v-model="evento.nome"
+                                              v-model="
+                                                fornecedor_evento.codeven
+                                              "
                                               :rules="[
                                                 (v) =>
                                                   !!v ||
@@ -439,7 +459,9 @@
                                             >
                                             <v-text-field
                                               label="Código Fornecedor"
-                                              v-model="evento.email"
+                                              v-model="
+                                                fornecedor_evento.forncod
+                                              "
                                               :rules="[
                                                 (v) =>
                                                   !!v ||
@@ -463,6 +485,9 @@
                                               >Descrição</span
                                             >
                                             <v-textarea
+                                              v-model="
+                                                fornecedor_evento.descricao
+                                              "
                                               auto-grow
                                               outlined
                                               rows="1"
@@ -532,6 +557,163 @@
                                 </v-card-actions>
                               </v-card>
                             </v-dialog>
+                            <v-dialog
+                              v-model="dialogEditarFornecedor"
+                              max-width="500px"
+                            >
+                              <v-card style="background-color: #272733">
+                                <v-card-title>
+                                  <span class="text-h5 white--text"
+                                    >Editar Fonecedor</span
+                                  >
+                                </v-card-title>
+                                <v-card-text>
+                                  <v-container>
+                                    <v-form
+                                      ref="form"
+                                      v-model="validFornecedor"
+                                      lazy-validation
+                                      @submit.prevent="
+                                        editar_fornecedor_evento_metodo
+                                      "
+                                    >
+                                      <v-container>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >Código evento</span
+                                            >
+                                            <v-text-field
+                                              label="Código evento"
+                                              v-model="
+                                                fornecedor_evento.codeven
+                                              "
+                                              :rules="[
+                                                (v) =>
+                                                  !!v ||
+                                                  'O código do evento é obrigatório',
+                                              ]"
+                                              single-line
+                                              solo
+                                              required
+                                              dense
+                                              background-color="#A9A9A9"
+                                            ></v-text-field>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >Código Fornecedor</span
+                                            >
+                                            <v-text-field
+                                              label="Código Fornecedor"
+                                              v-model="
+                                                fornecedor_evento.forncod
+                                              "
+                                              :rules="[
+                                                (v) =>
+                                                  !!v ||
+                                                  'O código do fornecedor é obrigatório',
+                                              ]"
+                                              single-line
+                                              solo
+                                              required
+                                              dense
+                                              background-color="#A9A9A9"
+                                            ></v-text-field>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >Descrição</span
+                                            >
+                                            <v-textarea
+                                              v-model="
+                                                fornecedor_evento.descricao
+                                              "
+                                              auto-grow
+                                              outlined
+                                              rows="1"
+                                              row-height="15"
+                                              background-color="#A9A9A9"
+                                            ></v-textarea>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row>
+                                          <v-col></v-col>
+                                          <v-col>
+                                            <v-btn
+                                              text
+                                              color="white"
+                                              @click="closeEditarFornecedor"
+                                            >
+                                              Cancelar
+                                            </v-btn>
+                                          </v-col>
+                                          <v-col>
+                                            <v-btn
+                                              color="#C84634"
+                                              class="white--text mr-4"
+                                              type="submit"
+                                              :disabled="!validFornecedor"
+                                              @click="validateFornecedor"
+                                            >
+                                              Salvar
+                                            </v-btn>
+                                          </v-col>
+                                        </v-row>
+                                      </v-container>
+                                    </v-form>
+                                  </v-container>
+                                </v-card-text>
+                              </v-card>
+                            </v-dialog>
+                            <!-- <v-dialog
+                              v-model="dialogDeleteFornecedor"
+                              max-width="540px"
+                            >
+                              <v-card color="#272733">
+                                <v-card-title class="text-h5 white--text"
+                                  >Tem certeza de que deseja excluir este
+                                  item?</v-card-title
+                                >
+                                <v-card-actions>
+                                  <v-spacer></v-spacer>
+                                  <v-btn
+                                    text
+                                    color="white"
+                                    @click="closeDeleteFornecedor"
+                                  >
+                                    Cancelar
+                                  </v-btn>
+                                  <v-btn
+                                    color="#C84634"
+                                    class="white--text mr-4"
+                                    @click="
+                                      deletar_fornecedor_adicionado_evento(
+                                        evento
+                                      )
+                                    "
+                                    >Sim</v-btn
+                                  >
+                                  <v-spacer></v-spacer>
+                                </v-card-actions>
+                              </v-card>
+                            </v-dialog> -->
                           </v-toolbar>
                         </template>
                         <template v-slot:item.actions="{ item }">
@@ -756,7 +938,7 @@
 import Evento from "../services/evento";
 import Swal from "sweetalert2";
 import datetime from "vuejs-datetimepicker";
-import Fornecedor from "../services/fornecedor";
+// import Fornecedor from "../services/fornecedor";
 
 export default {
   components: { datetime },
@@ -783,7 +965,7 @@ export default {
     ],
 
     // Criando os arrays que vão armazenar os conteudos dos selects de Status do Usuario e Tipo de Usuario
-    tipo_evento: ["1 - SMB", "2 - Enterprise", "3 - Workshop", "4 - Palestra"],
+    tipo_evento: ["SMB", "Enterprise", "Workshop", "Palestra"],
     espaco: ["Openspace", "Lounge"],
     status_evento: ["PENDENTE", "APROVADO", "REPROVADO"],
     items_fornecedores: [],
@@ -796,15 +978,20 @@ export default {
     // Criando o objeto que vai ser feito o POST
     evento: {
       dataeven: "",
-      formato: "Pequeno",
-      tipo: "Palestra",
+      formato: "",
+      tipo: "",
       status: "",
       usucodcria: "1",
       usucodaprova: "1",
       horainicio: "",
       horafim: "",
     },
-    fornecedor_evento: {},
+    fornecedor_evento: {
+      codeven: "",
+      descricao: "",
+      forncod: "",
+      id: {},
+    },
     convidado: {},
 
     // Variaveis referentes aos modais que abrem na tela, se for false ele não aparece na tela, se for true ele aparece na tela
@@ -812,6 +999,7 @@ export default {
     dialogDelete: false,
     dialogFornecedor: false,
     dialogDeleteFornecedor: false,
+    dialogEditarFornecedor: false,
     dialogConvidados: false,
     dialogDeleteConvidado: false,
 
@@ -839,8 +1027,8 @@ export default {
         align: "start",
         value: "codeven",
       },
-      { text: "CÓDIGO FORNECEDOR", value: "dataeven" },
-      { text: "DESCRIÇÃO", value: "formato" },
+      { text: "CÓDIGO FORNECEDOR", value: "forncod" },
+      { text: "DESCRIÇÃO", value: "descricao" },
       { text: "Actions", value: "actions", sortable: false },
     ],
     headersConvidados: [
@@ -914,6 +1102,7 @@ export default {
   mounted() {
     // Chamando o método exibir_evento()
     this.exibir_evento();
+    this.exibir_fornecedor_evento();
   },
 
   methods: {
@@ -999,21 +1188,91 @@ export default {
           );
         });
     },
-    // Método pra retornar os nomes dos fornecedores
-    exibir_fornecedor() {
-      Fornecedor.listar_fornecedor_all()
-        .then((resposta_lista_fornecedor) => {
-          this.items_fornecedores = resposta_lista_fornecedor.data;
-          let fornecedores = [];
-          resposta_lista_fornecedor.data.forEach((forn) =>
-            fornecedores.push(forn.nomeforn)
+    // Método pra retornar somente os nomes dos fornecedores
+    // exibir_fornecedor() {
+    //   Fornecedor.listar_fornecedor_all()
+    //     .then((resposta_lista_fornecedor) => {
+    //       this.items_fornecedores = resposta_lista_fornecedor.data;
+    //       let fornecedores = [];
+    //       resposta_lista_fornecedor.data.forEach((forn) =>
+    //         fornecedores.push(forn.nomeforn)
+    //       );
+    //       this.items_fornecedores = fornecedores;
+    //     })
+    //     .catch((e) => {
+    //       Swal.fire(
+    //         "Oops...",
+    //         "Erro ao retornar os nomes dos fornecedores! - Erro: " +
+    //           e.response.data.error,
+    //         "error"
+    //       );
+    //     });
+    // },
+
+    // Método de cadastro do FORNECEDOR DO EVENTO
+    adicionar_fornecedor_evento() {
+      Evento.salvar_fornecedor_evento(this.fornecedor_evento)
+        .then((resposta_cadastro_fornecedor_evento) => {
+          this.fornecedor_evento = {};
+          Swal.fire(
+            "Sucesso",
+            "Fornecedor " +
+              resposta_cadastro_fornecedor_evento.data.forncod +
+              " adicionado com sucesso ao evento " +
+              resposta_cadastro_fornecedor_evento.data.codeven,
+            "success"
           );
-          this.items_fornecedores = fornecedores;
+          this.exibir_fornecedor_evento();
         })
         .catch((e) => {
           Swal.fire(
             "Oops...",
-            "Erro ao retornar os nomes dos fornecedores! - Erro: " +
+            "Erro ao adicionar o fornecedor ao evento! - Erro: " +
+              e.response.data.error,
+            "error"
+          );
+        });
+      this.closeFornecedor();
+    },
+
+    // EDITAR FORNECEDOR DO EVENTO
+    editar_fornecedor_evento_metodo() {
+      Evento.atualizar_fornecedor_evento(this.fornecedor_evento)
+        .then((resposta_atualizar_fornecedor_evento) => {
+          this.fornecedor_evento = {};
+          Swal.fire(
+            "Sucesso",
+            "Fornecedor " +
+              resposta_atualizar_fornecedor_evento.data.forncod +
+              " do evento " +
+              resposta_atualizar_fornecedor_evento.data.codeven +
+              " atualizado com sucesso!!!",
+            "success"
+          );
+          this.exibir_fornecedor_evento();
+        })
+        .catch((e) => {
+          Swal.fire(
+            "Oops...",
+            "Erro ao atualizar o fornecedor do evento! - Erro: " +
+              e.response.data.error,
+            "error"
+          );
+        });
+      this.closeEditarFornecedor();
+    },
+
+    // Método pra exibir os fornecedores dos eventos
+    exibir_fornecedor_evento() {
+      Evento.listar_fornecedor_eventos()
+        .then((resposta_lista_fornecedor_evento) => {
+          this.lista_de_fornecedores_adicionados_evento =
+            resposta_lista_fornecedor_evento.data;
+        })
+        .catch((e) => {
+          Swal.fire(
+            "Oops...",
+            "Erro ao carregar a tabela de fornecedores dos eventos! - Erro: " +
               e.response.data.error,
             "error"
           );
@@ -1039,11 +1298,11 @@ export default {
     },
 
     // Método que vai recuparar os dados da tabela e armazenar no objeto fornecedor
-    editar_fornecedor_evento(fornecedor) {
+    editar_fornecedor_evento(fornecedor_evento) {
       this.editedIndexFornecedores =
-        this.lista_de_fornecedores_adicionados_evento.indexOf(fornecedor);
-      this.fornecedor = Object.assign({}, fornecedor);
-      this.dialogFornecedor = true;
+        this.lista_de_fornecedores_adicionados_evento.indexOf(fornecedor_evento);
+      this.fornecedor_evento = Object.assign({}, fornecedor_evento);
+      this.dialogEditarFornecedor = true;
     },
 
     // Método que vai recuparar os dados da tabela e armazenar no objeto convidado
@@ -1085,6 +1344,12 @@ export default {
     closeFornecedor() {
       this.dialogFornecedor = false;
       this.fornecedor = {};
+    },
+
+    // Método que vai fechar o modal "dialogFornecedor"
+    closeEditarFornecedor() {
+      this.dialogEditarFornecedor = false;
+      this.fornecedor_evento = {};
     },
 
     // Método que vai fechar o modal "dialogConvidados"
