@@ -790,15 +790,17 @@
                                                 color: white;
                                                 font-size: 18px;
                                               "
-                                              >Nome Convidado</span
+                                              >Código do Convidado</span
                                             >
                                             <v-text-field
-                                              label="Nome Convidado"
-                                              v-model="evento.nome"
+                                              label="Código do Convidado"
+                                              v-model="
+                                                convidado.viscod
+                                              "
                                               :rules="[
                                                 (v) =>
                                                   !!v ||
-                                                  'O nome do convidado é obrigatório',
+                                                  'O código do convidado é obrigatório',
                                               ]"
                                               single-line
                                               solo
@@ -815,36 +817,17 @@
                                                 color: white;
                                                 font-size: 18px;
                                               "
-                                              >E-mail Convidado</span
+                                              >Código do Evento</span
                                             >
                                             <v-text-field
-                                              label="E-mail Convidado"
-                                              v-model="evento.email"
-                                              :rules="regra_email_convidado"
-                                              single-line
-                                              solo
-                                              required
-                                              dense
-                                              background-color="#A9A9A9"
-                                            ></v-text-field>
-                                          </v-col>
-                                        </v-row>
-                                        <v-row justify="center">
-                                          <v-col cols="24">
-                                            <span
-                                              style="
-                                                color: white;
-                                                font-size: 18px;
+                                              label="Código do Evento"
+                                              v-model="
+                                                convidado.codeven
                                               "
-                                              >CPF Convidado</span
-                                            >
-                                            <v-text-field
-                                              label="CPF Convidado"
-                                              v-model="evento.email"
                                               :rules="[
                                                 (v) =>
                                                   !!v ||
-                                                  'O CPF do convidado é obrigatório',
+                                                  'O código do evento é obrigatório',
                                               ]"
                                               single-line
                                               solo
@@ -992,7 +975,11 @@ export default {
       forncod: "",
       id: {},
     },
-    convidado: {},
+    convidado: {
+      codeven: "",
+      viscod: "",
+      id: {},
+    },
 
     // Variaveis referentes aos modais que abrem na tela, se for false ele não aparece na tela, se for true ele aparece na tela
     dialog: false,
@@ -1035,11 +1022,9 @@ export default {
       {
         text: "CÓDIGO CONVIDADO",
         align: "start",
-        value: "codeven",
+        value: "viscod",
       },
-      { text: "NOME CONVIDADO", value: "dataeven" },
-      { text: "E-MAIL CONVIDADO", value: "formato" },
-      { text: "CPF CONVIDADO", value: "formato" },
+      { text: "CÓDIGO EVENTO", value: "codeven" },
       { text: "Actions", value: "actions", sortable: false },
     ],
 
@@ -1103,6 +1088,7 @@ export default {
     // Chamando o método exibir_evento()
     this.exibir_evento();
     this.exibir_fornecedor_evento();
+    this.exibir_convidado();
   },
 
   methods: {
@@ -1279,6 +1265,48 @@ export default {
         });
     },
 
+    // Método de cadastro do CONVIDADO DO EVENTO
+    adicionar_convidado() {
+      Evento.salvar_convidado_evento(this.convidado)
+        .then((resposta_cadastro_convidado) => {
+          this.convidado = {};
+          Swal.fire(
+            "Sucesso",
+            "Visitante " +
+              resposta_cadastro_convidado.data.viscod +
+              " adicionado com sucesso ao evento " +
+              resposta_cadastro_convidado.data.codeven,
+            "success"
+          );
+          this.exibir_convidado();
+        })
+        .catch((e) => {
+          Swal.fire(
+            "Oops...",
+            "Erro ao adicionar o visitante ao evento! - Erro: " +
+              e.response.data.error,
+            "error"
+          );
+        });
+      this.closeConvidado();
+    },
+
+    // Método pra exibir os visitantes dos eventos
+    exibir_convidado() {
+      Evento.listar_convidado_eventos()
+        .then((resposta_lista_convidado) => {
+          this.lista_de_convidados = resposta_lista_convidado.data;
+        })
+        .catch((e) => {
+          Swal.fire(
+            "Oops...",
+            "Erro ao carregar a tabela de visitantes dos eventos! - Erro: " +
+              e.response.data.error,
+            "error"
+          );
+        });
+    },
+
     // Método que valida se os campos estão preenchidos, se não estiverem ele bloqueia o botão CADASTRAR
     validate() {
       this.$refs.form.validate();
@@ -1300,7 +1328,9 @@ export default {
     // Método que vai recuparar os dados da tabela e armazenar no objeto fornecedor
     editar_fornecedor_evento(fornecedor_evento) {
       this.editedIndexFornecedores =
-        this.lista_de_fornecedores_adicionados_evento.indexOf(fornecedor_evento);
+        this.lista_de_fornecedores_adicionados_evento.indexOf(
+          fornecedor_evento
+        );
       this.fornecedor_evento = Object.assign({}, fornecedor_evento);
       this.dialogEditarFornecedor = true;
     },
