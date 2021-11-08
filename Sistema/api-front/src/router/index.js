@@ -6,6 +6,8 @@ import Cadastro_Fornecedor from '../views/Cadastro_Fornecedor'
 import Cadastro_Usuario from '../views/Cadastro_Usuario'
 import Criar_Conta from '../views/Criar_Conta'
 import Agendar_Evento from '../views/Agendar_Evento'
+import Editar_Fornecedor from '../views/Editar_Fornecedor'
+import Visitante from '../views/Visitante'
 
 Vue.use(VueRouter);
 
@@ -54,7 +56,19 @@ const router = new VueRouter({
       name: 'Agendar_Evento',
       component: Agendar_Evento,
       meta: { requiresAuth: true }
-    }
+    },
+    {
+      path: '/Editar_Fornecedor',
+      name: 'Editar_Fornecedor',
+      component: Editar_Fornecedor,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/Visitante',
+      name: 'Visitante',
+      component: Visitante,
+      meta: { requiresAuth: true }
+    },
   ]
 })
 

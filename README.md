@@ -58,15 +58,15 @@ Além disto é bom ter um editor para trabalhar com o código como [VSCode](http
 # Clone este repositório
 $ git clone https://github.com/API-4-SEMESTRE/PROJETO-API
 
-# Descompactar o arquivo chamado "wallet_API4SEMORACLE" em alguma pasta da sua preferência. O caminho da pasta aonde foi descompactado o Wallet vai ser usado mais a frente.
+# Descompactar o arquivo chamado "Wallet_agendhousedb.zip" em alguma pasta da sua preferência. O caminho da pasta aonde foi descompactado o Wallet vai ser usado mais a frente.
 
 # Acesse a pasta "PROJETO-API/Sistema/api-back" do projeto no terminal/cmd
 
 # Abrir o arquivo "application.properties" no caminho "mvn\src\main\resources\application.properties"
 
-# Dentro do arquivo "application.properties", aonde estiver escrito "[URL]" apagar e colocar "jdbc:oracle:thin:@api4semoracle_medium?TNS_ADMIN=" + caminho da pasta aonde o Wallet foi descompactado
+# Dentro do arquivo "application.properties", aonde estiver escrito "[URL]" apagar e colocar "jdbc:oracle:thin:@agendhousedb_medium?TNS_ADMIN=" + caminho da pasta aonde o Wallet foi descompactado
 
-# Exemplo de como deve ficar: jdbc:oracle:thin:@api4semoracle_medium?TNS_ADMIN=/Users/nome/Downloads/wallet
+# Exemplo de como deve ficar: jdbc:oracle:thin:@agendhousedb_medium?TNS_ADMIN=/Users/nome/Downloads/wallet
 
 # Onde estiver "[USER]" e "[PASSORD]" deve colocar o usuário e a senha
 
@@ -190,6 +190,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
         </td>
     </tr>
     <tr>
+        <!---
         <td align="center">
             <a href="https://www.linkedin.com/in/fabricioadriel/">
                 <img style="border-radius: 50%;" src="./Documentação/Fotos-Readme/fabricio.jpeg" width="200px;" height="150px;" alt="image" />
@@ -202,6 +203,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
             <a href="https://www.linkedin.com/in/fabricioadriel/" title="Fabricio">Front-end Developer</a>
             <br />
         </td>
+        --> 
         <td align="center">
             <a href="https://linkedin.com/in/devanir-ramos-junior/">
                 <img style="border-radius: 50%;" src="./Documentação/Fotos-Readme/devanir.jpeg" width="200px;" height="150px;" alt="image" />

@@ -45,6 +45,7 @@ public class EnderecoService {
 
     @Transactional
     public Endereco update(Endereco endereco) {
+        endereco.setCep_end((endereco.getCep_end().replace("-", "")));
         return enderecoRepository.save(endereco);
     }
 

@@ -49,4 +49,8 @@ public class EventoService {
         }
         return true;
     }
+
+    public Evento findByCod(Long codeven) {
+        return eventoRepository.findByCodeven(codeven);
+    }
 }

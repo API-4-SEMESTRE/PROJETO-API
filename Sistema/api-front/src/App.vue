@@ -90,14 +90,24 @@ export default {
         icon: "mdi-account-plus",
       },
       {
-        conteudo: "Fornecedor",
+        conteudo: "Cadastrar Fornecedor",
         url: "/Cadastro_fornecedor",
-        icon: "mdi-package-variant",
+        icon: "mdi-layers-plus",
+      },
+      {
+        conteudo: "Editar Fornecedor",
+        url: "/Editar_Fornecedor",
+        icon: "mdi-layers-edit",
       },
       {
         conteudo: "Agendar Evento",
         url: "/Agendar_Evento",
         icon: "mdi-calendar-multiselect",
+      },
+      {
+        conteudo: "Visitante",
+        url: "/Visitante",
+        icon: "mdi-card-account-details",
       },
     ],
   }),

@@ -28,7 +28,7 @@ public class Usuario {
     @Column(name="USU_EMAIL")
     private String email;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "dd/MM/yy HH:mm:ss")
     @Column(name="USU_DATE_CREATE")
     private LocalDateTime date_create;
 

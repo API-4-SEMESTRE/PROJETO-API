@@ -1,11 +1,14 @@
 package com.api.agendhouse.domain.evento;
 
+import com.api.agendhouse.domain.fornecedor.Fornecedor;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 import java.sql.Time;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.*;
 
 @Entity
 @Table(name="EVENTO")
@@ -18,6 +21,7 @@ public class Evento {
     @GeneratedValue(generator = "EVE_SQ", strategy = GenerationType.SEQUENCE)
     private long codeven;
 
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name="EVE_DATA_EVEN")
     private Date dataeven;
 
@@ -32,6 +36,7 @@ public class Evento {
     @Enumerated(EnumType.STRING)
     private EventoStatus status;
 
+    @JsonFormat(pattern = "dd/MM/yy HH:mm:ss")
     @Column(name="EVE_DATA_CRIA")
     private LocalDateTime datacria;
 
@@ -41,10 +46,18 @@ public class Evento {
     @Column(name="USU_COD_APROVA")
     private long usucodaprova;
 
+    @JsonFormat(pattern = "HH:mm")
     @Column (name="EVE_HORA_INICIO")
     private Time horainicio;
 
+    @JsonFormat(pattern = "HH:mm")
     @Column (name="EVE_HORA_FIM")
     private Time horafim;
+
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(name="fornecedor_evento",
+//            joinColumns= @JoinColumn(name="eve_cod_even"),
+//            inverseJoinColumns= @JoinColumn(name="for_cod_forn"))
+//    private Set<Fornecedor> fornecedores;
 
 }

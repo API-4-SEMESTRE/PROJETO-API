@@ -1,11 +1,11 @@
 <template>
-  <v-app id="cadastro-fornecedor">
+  <v-app id="editar-fornecedor">
     <v-content>
       <v-container fluid fill-height>
         <v-layout align-center justify-center>
           <v-flex xs12 sm8 md12>
             <h1 style="text-align: center; color: white; margin-top: 15px">
-              Cadastrar Fornecedores
+              Editar Fornecedor
             </h1>
             <v-layout align-center justify-center>
               <div>
@@ -19,17 +19,15 @@
                   <v-card-text>
                     <template>
                       <v-data-table
-                        :headers="headers_fornecedores"
-                        :items="lista_fornecedores"
+                        :headers="headers_contato"
+                        :items="lista_de_contato"
                         :search="search"
                         sort-by="calories"
                         class="elevation-1"
                       >
                         <template v-slot:top>
                           <v-toolbar flat>
-                            <v-toolbar-title
-                              >Lista de Fornecedores</v-toolbar-title
-                            >
+                            <v-toolbar-title>Contatos</v-toolbar-title>
                             <v-spacer></v-spacer>
                             <v-text-field
                               v-model="search"
@@ -39,33 +37,21 @@
                               hide-details
                             ></v-text-field>
                             <v-spacer></v-spacer>
-                            <v-spacer></v-spacer>
-                            <v-dialog v-model="dialog" max-width="500px">
-                              <template v-slot:activator="{ on, attrs }">
-                                <v-btn
-                                  color="#C84634"
-                                  class="white--text"
-                                  dark
-                                  v-bind="attrs"
-                                  v-on="on"
-                                >
-                                  Novo Fornecedor
-                                </v-btn>
-                              </template>
+                            <v-dialog v-model="dialogContato" max-width="500px">
                               <v-card style="background-color: #272733">
                                 <v-card-title>
                                   <span class="text-h5 white--text"
-                                    >Dados da Empresa</span
+                                    >Editar Contato</span
                                   >
                                 </v-card-title>
                                 <v-card-text>
                                   <v-container>
-                                    <!-- CADASTRO FORNECEDOR -->
+                                    <!-- CADASTRO CONTATO -->
                                     <v-form
                                       ref="form"
-                                      v-model="validFornecedor"
+                                      v-model="validContato"
                                       lazy-validation
-                                      @submit.prevent="cadastrar_fornecedor"
+                                      @submit.prevent="cadastrar_contato"
                                     >
                                       <v-container>
                                         <v-row justify="center">
@@ -75,12 +61,12 @@
                                                 color: white;
                                                 font-size: 18px;
                                               "
-                                              >Nome da Empresa</span
+                                              >Nome Completo</span
                                             >
                                             <v-text-field
-                                              label="Nome da Empresa"
-                                              v-model="fornecedor.nomeforn"
-                                              :rules="regra_nome_empresa"
+                                              label="Nome Completo"
+                                              v-model="contato.nomecon"
+                                              :rules="regra_nome_completo"
                                               single-line
                                               solo
                                               required
@@ -96,13 +82,12 @@
                                                 color: white;
                                                 font-size: 18px;
                                               "
-                                              >CNPJ</span
+                                              >Função</span
                                             >
                                             <v-text-field
-                                              label="CNPJ"
-                                              v-mask="'##.###.###/####-##'"
-                                              v-model="fornecedor.cnpjforn"
-                                              :rules="regra_cnpj"
+                                              label="Função"
+                                              v-model="contato.func_con"
+                                              :rules="regra_funcao"
                                               single-line
                                               solo
                                               required
@@ -118,12 +103,13 @@
                                                 color: white;
                                                 font-size: 18px;
                                               "
-                                              >Ramo de Atividade</span
+                                              >Telefone</span
                                             >
                                             <v-text-field
-                                              label="Ramo de Atividade"
-                                              v-model="fornecedor.ramo_forn"
-                                              :rules="regra_ramo"
+                                              label="Telefone"
+                                              v-mask="'(##) #####-####'"
+                                              v-model="contato.tel_con"
+                                              :rules="regra_telefone"
                                               single-line
                                               solo
                                               required
@@ -139,13 +125,36 @@
                                                 color: white;
                                                 font-size: 18px;
                                               "
-                                              >Site</span
+                                              >E-mail</span
                                             >
                                             <v-text-field
-                                              label="Site"
-                                              v-model="fornecedor.siteforn"
+                                              label="E-mail"
+                                              v-model="contato.email_con"
+                                              :rules="regra_email"
                                               single-line
                                               solo
+                                              required
+                                              dense
+                                              background-color="#A9A9A9"
+                                            ></v-text-field>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row justify="center">
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >Código Fornecedor</span
+                                            >
+                                            <v-text-field
+                                              label="Código Fornecedor"
+                                              v-model="contato.fornecod"
+                                              :rules="regra_codigo_fornecedor"
+                                              single-line
+                                              solo
+                                              required
                                               dense
                                               background-color="#A9A9A9"
                                             ></v-text-field>
@@ -157,7 +166,7 @@
                                             <v-btn
                                               text
                                               color="white"
-                                              @click="close"
+                                              @click="closeContato"
                                             >
                                               Cancelar
                                             </v-btn>
@@ -167,14 +176,10 @@
                                               color="#C84634"
                                               class="white--text mr-4"
                                               type="submit"
-                                              :disabled="!validFornecedor"
-                                              @click="
-                                                validateFornecedor;
-                                                dialogEndereco =
-                                                  !dialogEndereco;
-                                              "
+                                              :disabled="!validContato"
+                                              @click="validateContato;"
                                             >
-                                              Prosseguir
+                                              Salvar
                                             </v-btn>
                                           </v-col>
                                         </v-row>
@@ -185,13 +190,85 @@
                               </v-card>
                             </v-dialog>
                             <v-dialog
+                              v-model="dialogDeleteContato"
+                              max-width="540px"
+                            >
+                              <v-card color="#272733">
+                                <v-card-title class="text-h5 white--text"
+                                  >Tem certeza de que deseja excluir este
+                                  item?</v-card-title
+                                >
+                                <v-card-actions>
+                                  <v-spacer></v-spacer>
+                                  <v-btn
+                                    text
+                                    color="white"
+                                    @click="closeDeleteContato"
+                                  >
+                                    Cancelar
+                                  </v-btn>
+                                  <v-btn
+                                    color="#C84634"
+                                    class="white--text mr-4"
+                                    @click="deletar_contato(contato)"
+                                    >Sim</v-btn
+                                  >
+                                  <v-spacer></v-spacer>
+                                </v-card-actions>
+                              </v-card>
+                            </v-dialog>
+                          </v-toolbar>
+                        </template>
+                        <template v-slot:item.actions="{ item }">
+                          <v-icon class="mr-2" @click="editar_contato(item)">
+                            mdi-pencil
+                          </v-icon>
+                          <v-icon @click="deletItemContato(item)">
+                            mdi-delete
+                          </v-icon>
+                        </template>
+                      </v-data-table>
+                    </template>
+                  </v-card-text>
+                </v-card>
+                <v-card
+                  class="pa-2"
+                  tile
+                  outlined
+                  color="#272733"
+                  style="margin-top: 20px"
+                >
+                  <v-card-text>
+                    <template>
+                      <v-data-table
+                        :headers="headers_endereco"
+                        :items="lista_de_endereco"
+                        :search="searchEndereco"
+                        sort-by="calories"
+                        class="elevation-1"
+                      >
+                        <template v-slot:top>
+                          <v-toolbar flat>
+                            <v-toolbar-title
+                              >Endereços</v-toolbar-title
+                            >
+                            <v-spacer></v-spacer>
+                            <v-text-field
+                              v-model="searchEndereco"
+                              append-icon="mdi-magnify"
+                              label="Search"
+                              single-line
+                              hide-details
+                            ></v-text-field>
+                            <v-spacer></v-spacer>
+                            <v-dialog
                               v-model="dialogEndereco"
                               max-width="500px"
                             >
                               <v-card style="background-color: #272733">
                                 <v-card-title>
                                   <span class="text-h5 white--text"
-                                    >Dados do Endereço</span
+                                    >Editar Endereço</span
                                   >
                                 </v-card-title>
                                 <v-card-text>
@@ -387,10 +464,7 @@
                                               class="white--text mr-4"
                                               type="submit"
                                               :disabled="!validEndereco"
-                                              @click="
-                                                validateEndereco;
-                                                dialogContato = !dialogContato;
-                                              "
+                                              @click="validateEndereco"
                                             >
                                               Prosseguir
                                             </v-btn>
@@ -402,21 +476,93 @@
                                 </v-card-text>
                               </v-card>
                             </v-dialog>
-                            <v-dialog v-model="dialogContato" max-width="500px">
+                            <v-dialog
+                              v-model="dialogDeleteEndereco"
+                              max-width="540px"
+                            >
+                              <v-card color="#272733">
+                                <v-card-title class="text-h5 white--text"
+                                  >Tem certeza de que deseja excluir este
+                                  item?</v-card-title
+                                >
+                                <v-card-actions>
+                                  <v-spacer></v-spacer>
+                                  <v-btn
+                                    text
+                                    color="white"
+                                    @click="closeDeleteEndereco"
+                                  >
+                                    Cancelar
+                                  </v-btn>
+                                  <v-btn
+                                    color="#C84634"
+                                    class="white--text mr-4"
+                                    @click="deletar_endereco(endereco)"
+                                    >Sim</v-btn
+                                  >
+                                  <v-spacer></v-spacer>
+                                </v-card-actions>
+                              </v-card>
+                            </v-dialog>
+                          </v-toolbar>
+                        </template>
+                        <template v-slot:item.actions="{ item }">
+                          <v-icon class="mr-2" @click="editar_endereco(item)">
+                            mdi-pencil
+                          </v-icon>
+                          <v-icon @click="deletItemEndereco(item)">
+                            mdi-delete
+                          </v-icon>
+                        </template>
+                      </v-data-table>
+                    </template>
+                  </v-card-text>
+                </v-card>
+                <v-card
+                  class="pa-2"
+                  tile
+                  outlined
+                  color="#272733"
+                  style="margin-top: 20px"
+                >
+                  <v-card-text>
+                    <template>
+                      <v-data-table
+                        :headers="headers_fornecedor"
+                        :items="lista_de_fornecedor"
+                        :search="searchFornecedor"
+                        sort-by="calories"
+                        class="elevation-1"
+                      >
+                        <template v-slot:top>
+                          <v-toolbar flat>
+                            <v-toolbar-title
+                              >Dados das Empresas</v-toolbar-title
+                            >
+                            <v-spacer></v-spacer>
+                            <v-text-field
+                              v-model="searchFornecedor"
+                              append-icon="mdi-magnify"
+                              label="Search"
+                              single-line
+                              hide-details
+                            ></v-text-field>
+                            <v-spacer></v-spacer>
+                            <v-dialog v-model="dialog" max-width="500px">
                               <v-card style="background-color: #272733">
                                 <v-card-title>
                                   <span class="text-h5 white--text"
-                                    >Dados do Contato</span
+                                    >Editar Dados da Empresa</span
                                   >
                                 </v-card-title>
                                 <v-card-text>
                                   <v-container>
-                                    <!-- CADASTRO CONTATO -->
+                                    <!-- CADASTRO FORNECEDOR -->
                                     <v-form
                                       ref="form"
-                                      v-model="validContato"
+                                      v-model="validFornecedor"
                                       lazy-validation
-                                      @submit.prevent="cadastrar_contato"
+                                      @submit.prevent="cadastrar_fornecedor"
                                     >
                                       <v-container>
                                         <v-row justify="center">
@@ -426,12 +572,12 @@
                                                 color: white;
                                                 font-size: 18px;
                                               "
-                                              >Nome Completo</span
+                                              >Nome da Empresa</span
                                             >
                                             <v-text-field
-                                              label="Nome Completo"
-                                              v-model="contato.nomecon"
-                                              :rules="regra_nome_completo"
+                                              label="Nome da Empresa"
+                                              v-model="fornecedor.nomeforn"
+                                              :rules="regra_nome_empresa"
                                               single-line
                                               solo
                                               required
@@ -447,12 +593,13 @@
                                                 color: white;
                                                 font-size: 18px;
                                               "
-                                              >Função</span
+                                              >CNPJ</span
                                             >
                                             <v-text-field
-                                              label="Função"
-                                              v-model="contato.func_con"
-                                              :rules="regra_funcao"
+                                              label="CNPJ"
+                                              v-mask="'##.###.###/####-##'"
+                                              v-model="fornecedor.cnpjforn"
+                                              :rules="regra_cnpj"
                                               single-line
                                               solo
                                               required
@@ -468,13 +615,12 @@
                                                 color: white;
                                                 font-size: 18px;
                                               "
-                                              >Telefone</span
+                                              >Ramo de Atividade</span
                                             >
                                             <v-text-field
-                                              label="Telefone"
-                                              v-mask="'(##) #####-####'"
-                                              v-model="contato.tel_con"
-                                              :rules="regra_telefone"
+                                              label="Ramo de Atividade"
+                                              v-model="fornecedor.ramo_forn"
+                                              :rules="regra_ramo"
                                               single-line
                                               solo
                                               required
@@ -490,36 +636,13 @@
                                                 color: white;
                                                 font-size: 18px;
                                               "
-                                              >E-mail</span
+                                              >Site</span
                                             >
                                             <v-text-field
-                                              label="E-mail"
-                                              v-model="contato.email_con"
-                                              :rules="regra_email"
+                                              label="Site"
+                                              v-model="fornecedor.siteforn"
                                               single-line
                                               solo
-                                              required
-                                              dense
-                                              background-color="#A9A9A9"
-                                            ></v-text-field>
-                                          </v-col>
-                                        </v-row>
-                                        <v-row justify="center">
-                                          <v-col cols="24">
-                                            <span
-                                              style="
-                                                color: white;
-                                                font-size: 18px;
-                                              "
-                                              >Código Fornecedor</span
-                                            >
-                                            <v-text-field
-                                              label="Código Fornecedor"
-                                              v-model="contato.fornecod"
-                                              :rules="regra_codigo_fornecedor"
-                                              single-line
-                                              solo
-                                              required
                                               dense
                                               background-color="#A9A9A9"
                                             ></v-text-field>
@@ -531,7 +654,7 @@
                                             <v-btn
                                               text
                                               color="white"
-                                              @click="closeContato"
+                                              @click="close"
                                             >
                                               Cancelar
                                             </v-btn>
@@ -541,10 +664,10 @@
                                               color="#C84634"
                                               class="white--text mr-4"
                                               type="submit"
-                                              :disabled="!validContato"
-                                              @click="validateContato;"
+                                              :disabled="!validFornecedor"
+                                              @click="validateFornecedor"
                                             >
-                                              Salvar
+                                              Prosseguir
                                             </v-btn>
                                           </v-col>
                                         </v-row>
@@ -554,7 +677,10 @@
                                 </v-card-text>
                               </v-card>
                             </v-dialog>
-                            <v-dialog v-model="dialogDelete" max-width="540px">
+                            <v-dialog
+                              v-model="dialogDeleteFornecedor"
+                              max-width="540px"
+                            >
                               <v-card color="#272733">
                                 <v-card-title class="text-h5 white--text"
                                   >Tem certeza de que deseja excluir este
@@ -565,14 +691,14 @@
                                   <v-btn
                                     text
                                     color="white"
-                                    @click="closeDelete"
+                                    @click="closeDeleteFornecedor"
                                   >
                                     Cancelar
                                   </v-btn>
                                   <v-btn
                                     color="#C84634"
                                     class="white--text mr-4"
-                                    @click="deletar_usuario(usuario)"
+                                    @click="deletar_fornecedor(fornecedor)"
                                     >Sim</v-btn
                                   >
                                   <v-spacer></v-spacer>
@@ -582,10 +708,10 @@
                           </v-toolbar>
                         </template>
                         <template v-slot:item.actions="{ item }">
-                          <v-icon class="mr-2" @click="editar_usuario(item)">
+                          <v-icon class="mr-2" @click="editar_fornecedor(item)">
                             mdi-pencil
                           </v-icon>
-                          <v-icon @click="deleteItem(item)">
+                          <v-icon @click="deletItemFornecedor(item)">
                             mdi-delete
                           </v-icon>
                         </template>
@@ -650,10 +776,14 @@ export default {
     dialog: false,
     dialogEndereco: false,
     dialogContato: false,
-    dialogDelete: false,
+    dialogDeleteContato: false,
+    dialogDeleteEndereco: false,
+    dialogDeleteFornecedor: false,
 
     // Array com a lista de fornecedores
-    lista_fornecedores: [],
+    lista_de_contato: [],
+    lista_de_endereco: [],
+    lista_de_fornecedor: [],
 
     // Criando o objeto que vai ser feito o POST
     fornecedor: {
@@ -684,31 +814,56 @@ export default {
 
     // Variavel que vai ser usada pra pesquisa da tabela
     search: "",
+    searchEndereco: "",
+    searchFornecedor: "",
 
     // Array que contem as colunas da tabela de fornecedores
-    headers_fornecedores: [
+    headers_contato: [
       {
         text: "CÓDIGO",
         align: "start",
-        value: "id_fornecedor",
+        value: "concod",
       },
-      { text: "NOME EMPRESA", value: "nome" },
-      { text: "RAMO", value: "ramo" },
-      { text: "CNPJ", value: "cnpj" },
-      { text: "RUA", value: "rua" },
-      { text: "NÚMERO", value: "numero" },
-      { text: "BAIRRO", value: "bairro" },
-      { text: "CIDADE", value: "cidade" },
-      { text: "UF", value: "uf" },
-      //{ text: "COMPLEMENTO", value: "complemento" },
-      { text: "CONTATO NOME", value: "contato_nome" },
-      { text: "CONTATO FONE", value: "contato_fone" },
-      { text: "CONTATO EMAIL", value: "contato_email" },
+      { text: "NOME", value: "nomecon" },
+      { text: "FUNÇÃO", value: "func_con" },
+      { text: "TELEFONE", value: "tel_con" },
+      { text: "EMAIL", value: "email_con" },
+      { text: "CÓDIGO FORNECEDOR", value: "fornecod" },
+      { text: "Actions", value: "actions", sortable: false },
+    ],
+    headers_endereco: [
+      {
+        text: "CEP",
+        align: "start",
+        value: "cep_end",
+      },
+      { text: "RUA", value: "rua_end" },
+      { text: "NÚMERO", value: "num_end" },
+      { text: "BAIRRO", value: "bairro_end" },
+      { text: "COMPLEMENTO", value: "complemento_end" },
+      { text: "CIDADE", value: "cidade_end" },
+      { text: "ESTADO", value: "estado_end" },
+      { text: "CÓDIGO FORNECEDOR", value: "forncod" },
+      { text: "Actions", value: "actions", sortable: false },
+    ],
+    headers_fornecedor: [
+      {
+        text: "CÓDIGO",
+        align: "start",
+        value: "cod",
+      },
+      { text: "NOME", value: "nomeforn" },
+      { text: "RAMO", value: "ramo_forn" },
+      { text: "CNPJ", value: "cnpjforn" },
+      { text: "SITE", value: "siteforn" },
+      { text: "Actions", value: "actions", sortable: false },
     ],
   }),
 
   mounted() {
-    this.exibir_fornecedores();
+    this.exibir_contato();
+    this.exibir_endereco();
+    this.exibir_fornecedor();
   },
 
   watch: {
@@ -722,8 +877,14 @@ export default {
     dialogContato(val) {
       val || this.closeContato();
     },
-    dialogDelete(val) {
-      val || this.closeDelete();
+    dialogDeleteContato(val) {
+      val || this.closeDeleteContato();
+    },
+    dialogDeleteEndereco(val) {
+      val || this.closeDeleteEndereco();
+    },
+    dialogDeleteFornecedor(val) {
+      val || this.closeDeleteFornecedor();
     },
   },
 
@@ -738,85 +899,194 @@ export default {
     },
     // Método de cadastro de contato
     cadastrar_contato() {
-      Contato.salvar_contato(this.contato)
-        .then((resposta_cadastro_contato) => {
-          this.contato = {};
-          Swal.fire(
-            "Sucesso",
-            "Fornecedor " +
-              resposta_cadastro_contato.data.nomecon +
-              " cadastrado com sucesso!!!",
-            "success"
-          );
-        })
-        .catch((e) => {
-          Swal.fire(
-            "Oops...",
-            "Erro ao cadastrar o contato! - Erro: " + e.response.data.error,
-            "error"
-          );
-        });
-      this.exibir_fornecedores();
-      this.closeContato();
-    },
-    // Método de cadastro de fornecedor
-    cadastrar_fornecedor() {
-      Fornecedor.salvar_fornecedor(this.fornecedor)
-        .then((resposta_cadastro_fornecedor) => {
-          this.fornecedor = {};
-          // Swal.fire(
-          //   "Sucesso",
-          //   "Fornecedor " +
-          //     resposta_cadastro_fornecedor.data.nomeforn +
-          //     " cadastrado com sucesso!!!",
-          //   "success"
-          // );
-          resposta_cadastro_fornecedor;
-        })
-        .catch((e) => {
-          Swal.fire(
-            "Oops...",
-            "Erro ao cadastrar o fornecedor! - Erro: " + e.response.data.error,
-            "error"
-          );
-        });
-      this.exibir_fornecedores();
-      this.close();
+      // Se o contato não tiver um "concod" significa que esse contato não existe então ele vai pra resquest de cadastro
+      if (!this.contato.concod) {
+        Contato.salvar_contato(this.contato)
+          .then((resposta_cadastro_contato) => {
+            this.contato = {};
+            Swal.fire(
+              "Sucesso",
+              "Contato " +
+                resposta_cadastro_contato.data.nomecon +
+                " cadastrado com sucesso!!!",
+              "success"
+            );
+            this.exibir_contato();
+          })
+          .catch((e) => {
+            Swal.fire(
+              "Oops...",
+              "Erro ao cadastrar o usuário! - Erro: " + e.response.data.error,
+              "error"
+            );
+          });
+        this.closeContato();
+      } else {
+        // Método de atualizar contato
+        // Se o contato já tiver um "concod" ele já existe então ele vai pra request de atualizar
+        Contato.atualizar_contato(this.contato)
+          .then((resposta_atualizar_contato) => {
+            this.usuario = {};
+            Swal.fire(
+              "Sucesso",
+              "Contato " +
+                resposta_atualizar_contato.data.nomecon +
+                " atualizado com sucesso!!!",
+              "success"
+            );
+            this.exibir_contato();
+          })
+          .catch((e) => {
+            Swal.fire(
+              "Oops...",
+              "Erro ao atualizar o contato! - Erro: " + e.response.data.error,
+              "error"
+            );
+          });
+        this.closeContato();
+      }
     },
     // Método de cadastro de endereço
     cadastrar_endereco() {
-      this.endereco.cep_end = this.cep;
-      this.endereco.rua_end = this.data.logradouro;
-      this.endereco.bairro_end = this.data.bairro;
-      this.endereco.cidade_end = this.data.localidade;
-      this.endereco.estado_end = this.data.uf;
-      Endereco.salvar_endereco(this.endereco)
-        .then((resposta_cadastro_endereco) => {
-          this.endereco = {};
-          // Swal.fire(
-          //   "Sucesso",
-          //   "Endereço " +
-          //     resposta_cadastro_endereco.data.rua_end +
-          //     " cadastrado com sucesso!!!",
-          //   "success"
-          // );
-          resposta_cadastro_endereco;
+      // Se o endereco não tiver um "cep_end" significa que esse endeeco não existe então ele vai pra resquest de cadastro
+      if (!this.endereco.cep_end) {
+        this.endereco.cep_end = this.cep;
+        this.endereco.rua_end = this.data.logradouro;
+        this.endereco.bairro_end = this.data.bairro;
+        this.endereco.cidade_end = this.data.localidade;
+        this.endereco.estado_end = this.data.uf;
+        Endereco.salvar_endereco(this.endereco)
+          .then((resposta_cadastro_endereco) => {
+            this.endereco = {};
+            // Swal.fire(
+            //   "Sucesso",
+            //   "Endereço " +
+            //     resposta_cadastro_endereco.data.rua_end +
+            //     " cadastrado com sucesso!!!",
+            //   "success"
+            // );
+            resposta_cadastro_endereco;
+          })
+          .catch((e) => {
+            Swal.fire(
+              "Oops...",
+              "Erro ao cadastrar o endereço! - Erro: " + e.response.data.error,
+              "error"
+            );
+          });
+        this.exibir_endereco();
+        this.closeEndereco();
+      } else {
+        // Método de atualizar endereco
+        // Se o endereco já tiver um "cep_end" ele já existe então ele vai pra request de atualizar
+        Endereco.atualizar_endereco(this.endereco)
+          .then((resposta_atualizar_endereco) => {
+            this.endereco = {};
+            Swal.fire(
+              "Sucesso",
+              "Endereço " +
+                resposta_atualizar_endereco.data.cep_end +
+                " atualizado com sucesso!!!",
+              "success"
+            );
+            this.exibir_endereco();
+          })
+          .catch((e) => {
+            Swal.fire(
+              "Oops...",
+              "Erro ao atualizar o endereço! - Erro: " + e.response.data.error,
+              "error"
+            );
+          });
+        this.closeEndereco();
+      }
+    },
+    // Método de cadastro de fornecedor
+    cadastrar_fornecedor() {
+      // Se o fornecedor não tiver um "cod" significa que esse fornecedor não existe então ele vai pra resquest de cadastro
+      if (!this.fornecedor.cod) {
+        Fornecedor.salvar_fornecedor(this.fornecedor)
+          .then((resposta_cadastro_fornecedor) => {
+            this.fornecedor = {};
+            // Swal.fire(
+            //   "Sucesso",
+            //   "Fornecedor " +
+            //     resposta_cadastro_fornecedor.data.nomeforn +
+            //     " cadastrado com sucesso!!!",
+            //   "success"
+            // );
+            resposta_cadastro_fornecedor;
+          })
+          .catch((e) => {
+            Swal.fire(
+              "Oops...",
+              "Erro ao cadastrar o fornecedor! - Erro: " +
+                e.response.data.error,
+              "error"
+            );
+          });
+        this.exibir_fornecedores();
+        this.close();
+      } else {
+        // Método de atualizar fornecedor
+        // Se o fornecedor já tiver um "cod" ele já existe então ele vai pra request de atualizar
+        Fornecedor.atualizar_fornecedor(this.fornecedor)
+          .then((resposta_atualizar_fornecedor) => {
+            this.fornecedor = {};
+            Swal.fire(
+              "Sucesso",
+              "Fornecedor " +
+                resposta_atualizar_fornecedor.data.nomeforn +
+                " atualizado com sucesso!!!",
+              "success"
+            );
+            this.exibir_fornecedor();
+          })
+          .catch((e) => {
+            Swal.fire(
+              "Oops...",
+              "Erro ao atualizar o endereço! - Erro: " + e.response.data.error,
+              "error"
+            );
+          });
+        this.close();
+      }
+    },
+    // Método pra exibir os contatos
+    exibir_contato() {
+      Contato.listar_contato()
+        .then((resposta_lista_contato) => {
+          this.lista_de_contato = resposta_lista_contato.data;
         })
         .catch((e) => {
           Swal.fire(
             "Oops...",
-            "Erro ao cadastrar o endereço! - Erro: " + e.response.data.error,
+            "Erro ao carregar a tabela de contato! - Erro: " +
+              e.response.data.error,
             "error"
           );
         });
-      this.exibir_fornecedores();
-      this.closeEndereco();
     },
-    // Método pra exibir os contatos
-    exibir_fornecedores() {
-      Fornecedor.listar_fornecedor()
+    // Método pra exibir os enderecos
+    exibir_endereco() {
+      Endereco.listar_endereco()
+        .then((resposta_lista_endereco) => {
+          this.lista_de_endereco = resposta_lista_endereco.data;
+        })
+        .catch((e) => {
+          Swal.fire(
+            "Oops...",
+            "Erro ao carregar a tabela de endereços! - Erro: " +
+              e.response.data.error,
+            "error"
+          );
+        });
+    },
+    // Método pra exibir os fornecedores
+    exibir_fornecedor() {
+      Fornecedor.listar_fornecedor_all()
         .then((resposta_lista_fornecedor) => {
-          this.lista_fornecedores = resposta_lista_fornecedor.data;
+          this.lista_de_fornecedor = resposta_lista_fornecedor.data;
         })
         .catch((e) => {
           Swal.fire(
@@ -840,16 +1110,122 @@ export default {
       this.$refs.form.validateEndereco();
     },
 
+    // Método que vai recuparar os dados da tabela e armazenar no objeto contato
+    editar_contato(contato) {
+      //this.editedIndex = this.lista_de_usuarios.indexOf(contato);
+      this.contato = Object.assign({}, contato);
+      this.dialogContato = true;
+    },
+
+    // Método que vai recuparar os dados da tabela e armazenar no objeto contato
+    editar_endereco(endereco) {
+      this.endereco = Object.assign({}, endereco);
+      // this.endereco = Object.assign({}, endereco);
+      this.dialogEndereco = true;
+    },
+
+    // Método que vai recuparar os dados da tabela e armazenar no objeto contato
+    editar_fornecedor(fornecedor) {
+      this.fornecedor = Object.assign({}, fornecedor);
+      // this.endereco = Object.assign({}, endereco);
+      this.dialog = true;
+    },
+
+    // Método que vai recuparar os dados da tabela e armazenar no objeto usuario
+    deletItemContato(contato) {
+      //   this.editedIndex = this.lista_de_usuarios.indexOf(usuario);
+      this.contato = Object.assign({}, contato);
+      this.dialogDeleteContato = true;
+    },
+
+    // Método pra excluir os contatos
+    deletar_contato(contato) {
+      Contato.excluir_contato(contato)
+        .then((resposta_excluir_contato) => {
+          Swal.fire("Sucesso", "Contato excluido com sucesso!!!", "success");
+          resposta_excluir_contato;
+          this.exibir_contato();
+        })
+        .catch((e) => {
+          Swal.fire(
+            "Oops...",
+            "Erro ao excluir o contato! - Erro: " + e.response.data.error,
+            "error"
+          );
+        });
+      this.closeDeleteContato();
+    },
+
+    // Método que vai recuparar os dados da tabela e armazenar no objeto usuario
+    deletItemEndereco(endereco) {
+      //   this.editedIndex = this.lista_de_usuarios.indexOf(usuario);
+      this.endereco = Object.assign({}, endereco);
+      this.dialogDeleteEndereco = true;
+    },
+
+    // Método pra excluir os enderecos
+    deletar_endereco(endereco) {
+      Endereco.excluir_endereco(endereco)
+        .then((resposta_excluir_endereco) => {
+          Swal.fire("Sucesso", "Endereço excluido com sucesso!!!", "success");
+          resposta_excluir_endereco;
+          this.exibir_endereco();
+        })
+        .catch((e) => {
+          Swal.fire(
+            "Oops...",
+            "Erro ao excluir o endereco! - Erro: " + e.response.data.error,
+            "error"
+          );
+        });
+      this.closeDeleteEndereco();
+    },
+
+    // Método que vai recuparar os dados da tabela e armazenar no objeto usuario
+    deletItemFornecedor(fornecedor) {
+      //   this.editedIndex = this.lista_de_usuarios.indexOf(usuario);
+      this.fornecedor = Object.assign({}, fornecedor);
+      this.dialogDeleteFornecedor = true;
+    },
+
+    // Método pra excluir os fornecedores
+    deletar_fornecedor(fornecedor) {
+      Fornecedor.excluir_fornecedor(fornecedor)
+        .then((resposta_excluir_fornecedor) => {
+          Swal.fire("Sucesso", "Fornecedor excluido com sucesso!!!", "success");
+          resposta_excluir_fornecedor;
+          this.exibir_fornecedor();
+        })
+        .catch((e) => {
+          Swal.fire(
+            "Oops...",
+            "Erro ao excluir o fornecedor! - Erro: " + e.response.data.error,
+            "error"
+          );
+        });
+      this.closeDeleteFornecedor();
+    },
+
     // Método que vai fechar o modal "dialog"
     close() {
       this.dialog = false;
       this.usuario = {};
     },
 
-    // Método que vai fechar o modal "dialogDelete"
-    closeDelete() {
-      this.dialogDelete = false;
-      this.usuario = {};
+    // Método que vai fechar o modal "dialogDeleteContato"
+    closeDeleteContato() {
+      this.dialogDeleteContato = false;
+      this.contato = {};
+    },
+    // Método que vai fechar o modal "dialogDeleteEndereco"
+    closeDeleteEndereco() {
+      this.dialogDeleteEndereco = false;
+      this.endereco = {};
+    },
+    // Método que vai fechar o modal "dialogDeleteFornecedor"
+    closeDeleteFornecedor() {
+      this.dialogDeleteFornecedor = false;
+      this.fornecedor = {};
     },
 
     // Método que vai fechar o modal "dialogDelete"
@@ -868,7 +1244,7 @@ export default {
 </script>
 
 <style>
-#cadastro-fornecedor {
+#editar-fornecedor {
   background-color: #181820;
 }
 </style>

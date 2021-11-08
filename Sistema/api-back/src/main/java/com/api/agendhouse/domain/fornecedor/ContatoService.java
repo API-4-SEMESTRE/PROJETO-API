@@ -24,7 +24,6 @@ public class ContatoService {
 
     public List<Contato> findAll() {
         var contatos = contatoRepository.findAllByOrderByConcodAsc();
-        System.out.println(contatos.toString());
         for (Contato contato : contatos) {
             if (contato.getTel_con().length() > 9) {
                 var rawTel = contato.getTel_con();
@@ -38,6 +37,8 @@ public class ContatoService {
 
     @Transactional
     public Contato update(Contato contato) {
+        var rawTel = contato.getTel_con();
+        contato.setTel_con(rawTel.replaceAll("[\\s()-]", ""));
         return contatoRepository.save(contato);
     }
 

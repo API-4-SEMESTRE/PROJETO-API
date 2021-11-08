@@ -1,16 +1,34 @@
 import { http } from "./config";
 
 export default {
+    // ENDPOINT EVENTO
     listar_eventos: () => {
         return http.get(`evento/all`);
     },
-    // salvar_usuario: (usuario) => {
-    //     return http.post(`usuario/add`, usuario);
-    // },
-    // atualizar_usuario: (usuario) => {
-    //     return http.put(`usuario/update`, usuario);
-    // },
-    // excluir_usuario: (usuario) => {
-    //     return http.delete(`usuario/delete`, { data: usuario });
-    // },
+    salvar_evento: (evento) => {
+        return http.post(`evento/add`, evento);
+    },
+    atualizar_evento: (evento) => {
+        return http.put(`evento/update`, evento);
+    },
+    excluir_evento: (evento) => {
+        return http.delete(`evento/delete`, { data: evento });
+    },
+    // ENDPOINT FORNECEDOR EVENTO
+    listar_fornecedor_eventos: () => {
+        return http.get(`fornecedorEvento/all`);
+    },
+    salvar_fornecedor_evento: (fornecedor_evento) => {
+        return http.post(`fornecedorEvento/add`, fornecedor_evento);
+    },
+    atualizar_fornecedor_evento: (fornecedor_evento) => {
+        return http.put(`fornecedorEvento/update`, fornecedor_evento);
+    },
+    // ENDPOINT CONVIDADO EVENTO
+    listar_convidado_eventos: () => {
+        return http.get(`visitanteEvento/all`);
+    },
+    salvar_convidado_evento: (visitante_evento) => {
+        return http.post(`visitanteEvento/add`, visitante_evento);
+    },
 };

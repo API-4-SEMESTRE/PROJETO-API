@@ -1,15 +1,23 @@
 package com.api.agendhouse.application;
 
+import com.api.agendhouse.domain.email.EmailService;
 import com.api.agendhouse.domain.evento.Evento;
 import com.api.agendhouse.domain.evento.EventoService;
+import com.api.agendhouse.domain.evento.EventoStatus;
+import com.api.agendhouse.domain.usuario.UsuarioService;
+import com.api.agendhouse.domain.usuario.UsuarioTipo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.internet.MimeMessage;
+import javax.websocket.server.ServerEndpoint;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin("*")
@@ -18,11 +26,20 @@ import java.util.List;
 @RequestMapping("/evento")
 public class EventoController {
 
+    @Autowired
+    private JavaMailSender mailSender;
+
+    private final EmailService emailService;
+
     private final EventoService eventoService;
 
+    private final UsuarioService usuarioService;
+
     @Autowired
-    public EventoController(EventoService eventoService) {
+    public EventoController(EmailService emailService, EventoService eventoService, UsuarioService usuarioService) {
+        this.emailService = emailService;
         this.eventoService = eventoService;
+        this.usuarioService = usuarioService;
     }
 
     @ApiOperation("Adiciona um evento na plataforma.")
@@ -30,7 +47,22 @@ public class EventoController {
     public ResponseEntity<Evento> addEvento (
             @RequestBody Evento evento) throws ParseException {
 
-        eventoService.add(evento);
+        var usuarioCheckTipo = usuarioService.findByCod(evento.getUsucodcria());
+        if (usuarioCheckTipo.getTipo().equals(UsuarioTipo.COLABORADOR)) {
+            evento.setStatus(EventoStatus.PENDENTE);
+            eventoService.add(evento);
+            var admins = usuarioService.findByTipo(UsuarioTipo.ADMIN);
+            var cartas = emailService.eventRequestC(admins, evento, usuarioCheckTipo);
+            for (MimeMessage carta : cartas) {
+                mailSender.send(carta);
+            }
+        }
+        else {
+            evento.setStatus(EventoStatus.APROVADO);
+            eventoService.add(evento);
+            var carta = emailService.eventRequestA(evento, usuarioCheckTipo);
+            mailSender.send(carta);
+        }
 
         return ResponseEntity.ok(evento);
     }
@@ -82,6 +114,24 @@ public class EventoController {
 
         var deletedEvento = eventoService.delete(evento);
         return ResponseEntity.ok(deletedEvento);
+    }
+    
+    @ApiOperation("Envia emails para convidados do evento")
+    @PostMapping("/invite")
+    public ResponseEntity<Boolean> invite(
+            @RequestParam Long codeven,
+            @RequestParam String emails) {
+
+        var evento = eventoService.findByCod(codeven);
+        var criador = usuarioService.findByCod(evento.getUsucodcria());
+        var listEmails = emails.trim().split("[\\s,;]");
+        var cartas = emailService.eventInvite(evento, criador, listEmails);
+
+        for (MimeMessage carta : cartas) {
+            mailSender.send(carta);
+        }
+
+        return ResponseEntity.ok(true);
     }
 }
 
