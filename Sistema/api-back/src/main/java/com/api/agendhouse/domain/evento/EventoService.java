@@ -37,6 +37,9 @@ public class EventoService {
 
     @Transactional
     public Evento update(Evento evento) {
+        if (eventoRepository.findByCodeven(evento.getCodeven()) == null) {
+            return null;
+        }
         return eventoRepository.save(evento);
     }
 
