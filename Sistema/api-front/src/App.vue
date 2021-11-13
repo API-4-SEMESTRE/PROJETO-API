@@ -109,6 +109,11 @@ export default {
         url: "/Visitante",
         icon: "mdi-card-account-details",
       },
+      {
+        conteudo: "Relatorios",
+        url: "/Relatorios",
+        icon: "mdi-chart-areaspline",
+      },
     ],
   }),
   methods: {
