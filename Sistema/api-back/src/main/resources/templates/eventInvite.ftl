@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Solicitação de Evento</title>
+    <title>Convite de Evento</title>
 </head>
 <body>
     <div style="text-align: center">
@@ -17,7 +17,8 @@
         Por: ${criador};<br>
         Tipo: ${tipo} - ${formato};<br>
         Data: ${data} - ${horaIni} às ${horaFim}.<br><br>
-        Marque a data no seu calendário para não esquecer!!<br><br>
+        Marque a data no seu calendário para não esquecer!!<br>
+        <b>É obrigatório a comprovação da vacina na hora de entrar.</b><br><br>
     </div>
 
     <div style="text-align: center">
