@@ -1,6 +1,7 @@
 package com.api.agendhouse.domain.email;
 
 import com.api.agendhouse.domain.evento.Evento;
+import com.api.agendhouse.domain.evento.EventoService;
 import com.api.agendhouse.domain.usuario.Usuario;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -13,8 +14,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
+import javax.mail.BodyPart;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Transport;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -213,5 +221,33 @@ public class EmailService {
         model.put("data", data);
         model.put("horaIni", horaIni);
         model.put("horaFim", horaFim);
+    }
+
+    public MimeMessage csv(String email, Date data) {
+        DateFormat df = new SimpleDateFormat("yyyy/MM");
+        model.put("data", df.format(data));
+        setTo(email);
+        MimeMessage message = mailSender.createMimeMessage();
+        try {
+            MimeMessageHelper mimeHelper = new MimeMessageHelper(message, true, "utf-8");
+            mimeHelper.setTo(to);
+            mimeHelper.setSubject("AgendHouse - Relatório Mensal");
+            Multipart multipart = new MimeMultipart();
+            BodyPart messagePart = new MimeBodyPart();
+            BodyPart attachmentPart = new MimeBodyPart();
+            Template template = freeMarkerConfigurer.getConfiguration().getTemplate("report.ftl");
+            String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
+            messagePart.setContent(html.toString(), "text/html");
+            var file = EventoService.generateFullCsv(data);
+            attachmentPart.setDataHandler(new DataHandler(new FileDataSource(file)));
+            attachmentPart.setFileName(file.getName());
+            multipart.addBodyPart(messagePart);
+            multipart.addBodyPart(attachmentPart);
+            message.setContent(multipart);
+        } catch (MessagingException | IOException | TemplateException e) {
+            e.printStackTrace();
+        }
+
+        return message;
     }
 }

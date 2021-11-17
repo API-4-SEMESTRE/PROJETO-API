@@ -9,6 +9,7 @@ import com.api.agendhouse.domain.usuario.UsuarioTipo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.MailSender;
@@ -17,10 +18,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.internet.MimeMessage;
 import javax.websocket.server.ServerEndpoint;
+import java.io.FileNotFoundException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin("*")
@@ -148,6 +151,18 @@ public class EventoController {
             mailSender.send(carta);
         }
 
+        return ResponseEntity.ok(true);
+    }
+
+    @GetMapping("/report")
+    public ResponseEntity<Boolean> csv(
+            @RequestParam @DateTimeFormat(pattern="yyyy-MM") Date data,
+            @RequestParam String email) throws FileNotFoundException {
+
+        var carta = emailService.csv(email, data);
+        mailSender.send(carta);
+        var file = EventoService.generateFullCsv(data);
+        file.delete();
         return ResponseEntity.ok(true);
     }
 }
