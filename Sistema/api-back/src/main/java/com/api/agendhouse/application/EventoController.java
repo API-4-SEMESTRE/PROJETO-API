@@ -6,8 +6,11 @@ import com.api.agendhouse.domain.evento.EventoService;
 import com.api.agendhouse.domain.evento.EventoStatus;
 import com.api.agendhouse.domain.usuario.UsuarioService;
 import com.api.agendhouse.domain.usuario.UsuarioTipo;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
@@ -22,9 +25,7 @@ import java.io.FileNotFoundException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @CrossOrigin("*")
 @RestController
@@ -155,7 +156,7 @@ public class EventoController {
     }
 
     @GetMapping("/report")
-    public ResponseEntity<Boolean> csv(
+    public ResponseEntity<Map<String, Integer>> csv(
             @RequestParam @DateTimeFormat(pattern="yyyy-MM") Date data,
             @RequestParam String email) throws FileNotFoundException {
 
@@ -163,7 +164,7 @@ public class EventoController {
         mailSender.send(carta);
         var file = EventoService.generateFullCsv(data);
         file.delete();
-        return ResponseEntity.ok(true);
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(eventoService.getValues());
     }
 }
 
