@@ -42,7 +42,7 @@
                                 ref="form"
                                 v-model="valid"
                                 lazy-validation
-                                @submit.prevent=""
+                                @submit.prevent="gerarRelatorio(data, email)"
                               >
                                 <v-container>
                                   <v-row justify="center">
@@ -50,12 +50,30 @@
                                       <template>
                                         <v-row justify="center">
                                           <v-date-picker
-                                            v-model="picker"
+                                            v-model="data"
                                             type="month"
                                             locale="brasil"
                                           ></v-date-picker>
                                         </v-row>
                                       </template>
+                                    </v-col>
+                                  </v-row>
+                                  <v-row justify="center">
+                                    <v-col cols="24">
+                                      <span
+                                        style="color: white; font-size: 18px"
+                                        >E-mail</span
+                                      >
+                                      <v-text-field
+                                        label="E-mail"
+                                        v-model="email"
+                                        :rules="regra_email"
+                                        single-line
+                                        solo
+                                        required
+                                        dense
+                                        background-color="#A9A9A9"
+                                      ></v-text-field>
                                     </v-col>
                                   </v-row>
                                   <v-row>
@@ -96,14 +114,46 @@
 </template>
 
 <script>
+import Relatorio from "../services/relatorio";
+import Swal from "sweetalert2";
+
 export default {
   components: {},
   data: () => ({
     valid: true,
     dialog: false,
-    picker: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+    picker: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+      .toISOString()
+      .substr(0, 10),
+    regra_email: [
+      (v) => !!v || "O e-mail é obrigatório",
+      (v) => /.+@.+\..+/.test(v) || "E-mail inválido",
+    ],
   }),
   methods: {
+    // Método pra gerar o relatorio
+    gerarRelatorio(data, email) {
+      console.log(this.data);
+      console.log(this.email);
+      Relatorio.gerar_relatorio(data, email)
+        .then((resposta_gera_relatorio) => {
+          Swal.fire(
+            "Sucesso",
+            "Relatório do mês " +
+              resposta_gera_relatorio.data.data +
+              " gerado com sucesso!!!",
+            "success"
+          );
+        })
+        .catch((e) => {
+          Swal.fire(
+            "Oops...",
+            "Erro ao gerar o relatório! - Erro: " +
+              e.response.data.error,
+            "error"
+          );
+        });
+    },
     validate() {
       this.$refs.form.validate();
     },
