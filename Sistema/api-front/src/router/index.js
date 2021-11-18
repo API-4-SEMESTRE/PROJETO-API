@@ -74,7 +74,7 @@ const router = new VueRouter({
       path: '/Relatorios',
       name: 'Relatorios',
       component: Relatorios,
-      // meta: { requiresAuth: true }
+      meta: { requiresAuth: true }
     },
   ]
 })
