@@ -122,37 +122,37 @@ export default {
   data: () => ({
     valid: true,
     dialog: false,
-    picker: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+    data: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
       .toISOString()
       .substr(0, 10),
     regra_email: [
       (v) => !!v || "O e-mail é obrigatório",
       (v) => /.+@.+\..+/.test(v) || "E-mail inválido",
     ],
+    email: "tairikjohnny@gmail.com",
+    lista_de_relatorios: [],
   }),
   methods: {
     // Método pra gerar o relatorio
     gerarRelatorio(data, email) {
-      console.log(this.data);
-      console.log(this.email);
       Relatorio.gerar_relatorio(data, email)
         .then((resposta_gera_relatorio) => {
+          this.lista_de_relatorios = resposta_gera_relatorio.data;
+          console.log(this.lista_de_relatorios);
           Swal.fire(
             "Sucesso",
-            "Relatório do mês " +
-              resposta_gera_relatorio.data.data +
-              " gerado com sucesso!!!",
+            "Relatório do mês gerado com sucesso!!!",
             "success"
           );
         })
         .catch((e) => {
           Swal.fire(
             "Oops...",
-            "Erro ao gerar o relatório! - Erro: " +
-              e.response.data.error,
+            "Erro ao gerar o relatório! - Erro: " + e.response.data.error,
             "error"
           );
         });
+      this.close();
     },
     validate() {
       this.$refs.form.validate();
