@@ -160,9 +160,9 @@ public class EventoController {
             @RequestParam @DateTimeFormat(pattern="yyyy-MM") Date data,
             @RequestParam String email) throws FileNotFoundException {
 
-        var carta = emailService.csv(email, data);
-        mailSender.send(carta);
         var file = EventoService.generateFullCsv(data);
+        var carta = emailService.csv(email, data, file);
+        mailSender.send(carta);
         file.delete();
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(eventoService.getValues());
     }

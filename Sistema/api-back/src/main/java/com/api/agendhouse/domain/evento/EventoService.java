@@ -20,7 +20,7 @@ public class EventoService {
     private static Integer total;
     private static Integer aprovado;
     private static Integer reprovado;
-    private static Integer pendete;
+    private static Integer pendente;
     private static Integer smb;
     private static Integer enterprise;
     private static Integer workshop;
@@ -89,57 +89,37 @@ public class EventoService {
         int year = c.get(Calendar.YEAR);
         StringBuilder sb = new StringBuilder();
         sb.append("/Mensal/,Eventos,Aprovados,Reprovados,SMB,Enterprise,Workshop,Palestra,Segunda,Terca,Quarta,Quinta,Sexta,Sabado,Domingo\nTotais:,");
-        total = 0; aprovado = 0; reprovado = 0; pendete = 0; smb = 0; enterprise = 0; workshop = 0; palestra = 0;
+        total = 0; aprovado = 0; reprovado = 0; pendente = 0; smb = 0; enterprise = 0; workshop = 0; palestra = 0;
         seg = 0; ter = 0; qua = 0; qui = 0; sex = 0; sab = 0; dom = 0;
+        List<String> counts = new ArrayList<String>();
+        List<Integer> week = new ArrayList<Integer>();
         List<Evento> eventsMatch = new ArrayList<>();
         var allEvents = eventoRepository.findAllByOrderByDataevenAsc();
         for (Evento evento : allEvents) {
             c.setTime(evento.getDataeven());
             if ((c.get(Calendar.MONTH) + 1) == month && c.get(Calendar.YEAR) == year) {
                 eventsMatch.add(evento);
-                if (evento.getStatus().equals(EventoStatus.APROVADO)) {
-                    aprovado ++;
-                }
-                else if (evento.getStatus().equals(EventoStatus.REPROVADO)) {
-                    reprovado ++;
-                }
-                if (evento.getTipo().equals(EventoTipo.SMB)) {
-                    smb ++;
-                }
-                else if (evento.getTipo().equals(EventoTipo.Enterprise)) {
-                    enterprise ++;
-                }
-                else if (evento.getTipo().equals(EventoTipo.Workshop)) {
-                    workshop ++;
-                }
-                else if (evento.getTipo().equals(EventoTipo.Palestra)) {
-                    palestra ++;
-                }
-                if (c.get(Calendar.DAY_OF_WEEK) == 1) {
-                    dom ++;
-                }
-                else if (c.get(Calendar.DAY_OF_WEEK) == 2) {
-                    seg ++;
-                }
-                else if (c.get(Calendar.DAY_OF_WEEK) == 3) {
-                    ter ++;
-                }
-                else if (c.get(Calendar.DAY_OF_WEEK) == 4) {
-                    qua ++;
-                }
-                else if (c.get(Calendar.DAY_OF_WEEK) == 5) {
-                    qui ++;
-                }
-                else if (c.get(Calendar.DAY_OF_WEEK) == 6) {
-                    sex ++;
-                }
-                else if (c.get(Calendar.DAY_OF_WEEK) == 7) {
-                    sab ++;
-                }
+                counts.add(evento.getStatus().toString());
+                counts.add(evento.getTipo().toString());
+                week.add(c.get(Calendar.DAY_OF_WEEK));
             }
         }
         total = eventsMatch.size();
-        pendete = total - (aprovado + reprovado);
+        aprovado = Collections.frequency(counts, EventoStatus.APROVADO.toString());
+        reprovado = Collections.frequency(counts, EventoStatus.REPROVADO.toString());
+        pendente = total - (aprovado + reprovado);
+        smb = Collections.frequency(counts, EventoTipo.SMB.toString());
+        enterprise = Collections.frequency(counts, EventoTipo.Enterprise.toString());
+        workshop = Collections.frequency(counts, EventoTipo.Workshop.toString());
+        palestra = Collections.frequency(counts, EventoTipo.Palestra.toString());
+        dom = Collections.frequency(week, 1);
+        seg = Collections.frequency(week, 2);
+        ter = Collections.frequency(week, 3);
+        qua = Collections.frequency(week, 4);
+        qui = Collections.frequency(week, 5);
+        sex = Collections.frequency(week, 6);
+        sab = Collections.frequency(week, 7);
+
         sb.append(String.valueOf(eventsMatch.size() + "," + aprovado + "," + reprovado + "," +
                 smb + "," + enterprise + "," + workshop + "," + palestra + ", " +
                 seg + ", " + ter + ", " + qua + ", " + qui + ", " + sex + ", " + sab + "," + dom + "\n\n"));
@@ -154,11 +134,11 @@ public class EventoService {
                     evento.getTipo().toString() + "," + evento.getFormato() + "," + criador.getTipo() + "\n"));
         }
 
-        PrintWriter excel = new PrintWriter("AgendHouse" + String.valueOf(year + "-" + month) + ".csv");
+        PrintWriter excel = new PrintWriter("AgendHouse" + String.valueOf(year + "-" + String.format("%02d", month)) + ".csv");
         excel.print(sb.toString());
         excel.close();
 
-        return new File("AgendHouse" + String.valueOf(year + "-" + month) + ".csv");
+        return new File("AgendHouse" + String.valueOf(year + "-" + String.format("%02d", month)) + ".csv");
     }
 
     public Map<String, Integer> getValues() {
@@ -166,7 +146,7 @@ public class EventoService {
         values.put("total", total);
         values.put("aprovado", aprovado);
         values.put("reprovado", reprovado);
-        values.put("pendente", pendete);
+        values.put("pendente", pendente);
         values.put("smb", smb);
         values.put("enterprise", enterprise);
         values.put("workshop", workshop);

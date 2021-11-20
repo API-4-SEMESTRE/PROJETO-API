@@ -23,6 +23,7 @@ import javax.mail.Transport;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -223,7 +224,7 @@ public class EmailService {
         model.put("horaFim", horaFim);
     }
 
-    public MimeMessage csv(String email, Date data) {
+    public MimeMessage csv(String email, Date data, File file) {
         DateFormat df = new SimpleDateFormat("yyyy/MM");
         model.put("data", df.format(data));
         setTo(email);
@@ -231,14 +232,13 @@ public class EmailService {
         try {
             MimeMessageHelper mimeHelper = new MimeMessageHelper(message, true, "utf-8");
             mimeHelper.setTo(to);
-            mimeHelper.setSubject("AgendHouse - Relatório Mensal");
+            mimeHelper.setSubject("AgendHouse - Relatório " + model.get("data"));
             Multipart multipart = new MimeMultipart();
             BodyPart messagePart = new MimeBodyPart();
             BodyPart attachmentPart = new MimeBodyPart();
             Template template = freeMarkerConfigurer.getConfiguration().getTemplate("report.ftl");
             String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
             messagePart.setContent(html.toString(), "text/html");
-            var file = EventoService.generateFullCsv(data);
             attachmentPart.setDataHandler(new DataHandler(new FileDataSource(file)));
             attachmentPart.setFileName(file.getName());
             multipart.addBodyPart(messagePart);
