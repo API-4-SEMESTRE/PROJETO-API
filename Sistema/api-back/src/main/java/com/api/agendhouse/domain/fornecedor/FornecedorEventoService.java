@@ -1,6 +1,7 @@
 package com.api.agendhouse.domain.fornecedor;
 
 import com.api.agendhouse.domain.evento.EventoService;
+import com.api.agendhouse.domain.visitante.VisitanteEventoKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,27 +32,30 @@ public class FornecedorEventoService {
         return fornecedorEventoRepository.findAllByOrderByEventoAsc();
     }
 
-    @Transactional
-    public FornecedorEvento update(FornecedorEvento fornecedorEvento) {
-        var check = fornecedorEventoRepository.findAllByOrderByEventoAsc();
-        if (check.contains(fornecedorEvento)) {
-            fornecedorEvento.setEvento(eventoService.findByCod(fornecedorEvento.getCodeven()));
-            fornecedorEvento.setFornecedor(fornecedorService.findByCod(fornecedorEvento.getForncod()));
-            delete(fornecedorEvento);
-            return fornecedorEventoRepository.save(fornecedorEvento);
-        }
-        return null;
-    }
+//    @Transactional
+//    public FornecedorEvento update(FornecedorEvento fornecedorEvento) {
+//        var check = fornecedorEventoRepository.findAllByOrderByEventoAsc();
+//        if (check.contains(fornecedorEvento)) {
+//            fornecedorEvento.setEvento(eventoService.findByCod(fornecedorEvento.getCodeven()));
+//            fornecedorEvento.setFornecedor(fornecedorService.findByCod(fornecedorEvento.getForncod()));
+//            delete(fornecedorEvento);
+//            return fornecedorEventoRepository.save(fornecedorEvento);
+//        }
+//        return null;
+//    }
 
     @Transactional
     public Boolean delete(FornecedorEvento fornecedorEvento) {
-        var list = fornecedorEventoRepository.findByCodeven(fornecedorEvento.getCodeven());
-        for (FornecedorEvento fornEven : list) {
+        try {
+            var fornevenKey = new FornecedorEventoKey();
+            fornevenKey.setCodeven(fornecedorEvento.getCodeven());
+            fornevenKey.setForncod(fornecedorEvento.getForncod());
+            fornecedorEvento.setId(fornevenKey);
             fornecedorEventoRepository.delete(fornecedorEvento);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        fornecedorEvento.setEvento(eventoService.findByCod(fornecedorEvento.getCodeven()));
-        fornecedorEvento.setFornecedor(fornecedorService.findByCod(fornecedorEvento.getForncod()));
-        fornecedorEventoRepository.delete(fornecedorEvento);
-        return Boolean.TRUE;
+        return false;
     }
 }

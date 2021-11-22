@@ -40,13 +40,13 @@ public class FornecedorEventoController {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(fornece);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<FornecedorEvento> update(
-            @RequestBody FornecedorEvento fornecedorEvento) {
-
-        var fornece = fornecedorEventoService.update(fornecedorEvento);
-        return ResponseEntity.ok(fornecedorEvento);
-    }
+//    @PutMapping("/update")
+//    public ResponseEntity<FornecedorEvento> update(
+//            @RequestBody FornecedorEvento fornecedorEvento) {
+//
+//        var fornece = fornecedorEventoService.update(fornecedorEvento);
+//        return ResponseEntity.ok(fornecedorEvento);
+//    }
 
     @DeleteMapping("/delete")
     public ResponseEntity<Boolean> delete(
