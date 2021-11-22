@@ -37,4 +37,17 @@ public class VisitanteEventoService {
         return visitanteEventoRepository.findByCodeven(codeven);
     }
 
+    public boolean delete(VisitanteEvento visevent) {
+        try {
+            var viseventKey = new VisitanteEventoKey();
+            viseventKey.setViscod(visevent.getViscod());
+            viseventKey.setCodeven(visevent.getCodeven());
+            visevent.setId(viseventKey);
+            visitanteEventoRepository.delete(visevent);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
