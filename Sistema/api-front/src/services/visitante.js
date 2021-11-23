@@ -7,10 +7,10 @@ export default {
     salvar_visitante: (visitante) => {
         return http.post(`visitante/add`, visitante);
     },
-    // atualizar_visitante: (usuario) => {
-    //     return http.put(`usuario/update`, usuario);
-    // },
-    // excluir_visitante: (usuario) => {
-    //     return http.delete(`usuario/delete`, { data: usuario });
-    // },
+    atualizar_visitante: (visitante) => {
+        return http.put(`visitante/update`, visitante);
+    },
+    excluir_visitante: (visitante) => {
+        return http.delete(`visitante/delete`, { data: visitante });
+    },
 };
