@@ -131,6 +131,32 @@
                                           </v-col>
                                         </v-row>
                                         <v-row>
+                                          <v-col cols="24">
+                                            <span
+                                              style="
+                                                color: white;
+                                                font-size: 18px;
+                                              "
+                                              >Estágio da Vacina</span
+                                            >
+                                            <v-select
+                                              :items="items_vacina"
+                                              label="Estágio da Vacina"
+                                              v-model="visitante.visvacina"
+                                              single-line
+                                              solo
+                                              required
+                                              dense
+                                              background-color="#A9A9A9"
+                                              ::rules="[
+                                                (v) =>
+                                                  !!v.toString() ||
+                                                  'O estágio da vacina é obrigatório',
+                                              ]"
+                                            ></v-select>
+                                          </v-col>
+                                        </v-row>
+                                        <v-row>
                                           <v-col></v-col>
                                           <v-col>
                                             <v-btn
@@ -230,12 +256,15 @@ export default {
     // Array aonde vai ser armazenado a lista de usuarios
     lista_de_visitantes: [],
 
+    items_vacina: ["Nenhuma Dose", "1 Dose", "100% Vacinado"],
+
     // Criando o objeto que vai ser feito o POST
     visitante: {
       viscod: "",
       visnome: "",
       visemail: "",
       viscpf: "",
+      visvacina: ""
     },
 
     // Variaveis referentes aos modais que abrem na tela, se for false ele não aparece na tela, se for true ele aparece na tela
@@ -252,6 +281,7 @@ export default {
       { text: "NOME", value: "visnome" },
       { text: "EMAIL", value: "visemail" },
       { text: "CPF", value: "viscpf" },
+      { text: "VACINA", value: "visvacina" },
       { text: "Actions", value: "actions", sortable: false },
     ],
 
