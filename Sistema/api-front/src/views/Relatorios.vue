@@ -102,15 +102,15 @@
                         </v-card>
                       </v-dialog>
                     </template>
-                  </v-card-text>
-                </v-card>
-              </div>
-            </v-layout>
-          </v-flex>
-        </v-layout>
-      </v-container>
-    </v-content>
-  </v-app>
+                  </v-card-text></v-card
+                >
+              </div></v-layout
+            ></v-flex
+          ></v-layout
+        ></v-container
+      ></v-content
+    ></v-app
+  >
 </template>
 
 <script>
@@ -118,7 +118,6 @@ import Relatorio from "../services/relatorio";
 import Swal from "sweetalert2";
 
 export default {
-  components: {},
   data: () => ({
     valid: true,
     dialog: false,
@@ -131,6 +130,7 @@ export default {
     ],
     email: "tairikjohnny@gmail.com",
     lista_de_relatorios: [],
+    labels: ["12am", "3am", "6am", "9am", "12pm", "3pm", "6pm", "9pm"],
   }),
   methods: {
     // Método pra gerar o relatorio
