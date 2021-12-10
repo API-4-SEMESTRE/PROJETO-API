@@ -50,6 +50,15 @@ public class VisitanteEventoController {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(list);
     }
 
+    @DeleteMapping("/delete")
+    @ApiOperation(value="Deleta um registro")
+    public ResponseEntity<Boolean> delete(
+            @RequestBody VisitanteEvento visevent) {
+
+        var vis = visitanteEventoService.delete(visevent);
+        return ResponseEntity.ok(vis);
+    }
+
     @GetMapping(value="/mail")
     @ApiOperation(value="Procura os visitantes de um evento e envia um email para cada")
     public ResponseEntity<List<String>> findByCodeven(

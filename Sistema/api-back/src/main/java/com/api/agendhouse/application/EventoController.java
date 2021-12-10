@@ -6,19 +6,26 @@ import com.api.agendhouse.domain.evento.EventoService;
 import com.api.agendhouse.domain.evento.EventoStatus;
 import com.api.agendhouse.domain.usuario.UsuarioService;
 import com.api.agendhouse.domain.usuario.UsuarioTipo;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.internet.MimeMessage;
 import javax.websocket.server.ServerEndpoint;
+import java.io.FileNotFoundException;
+import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @CrossOrigin("*")
 @RestController
@@ -84,12 +91,20 @@ public class EventoController {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(eventos);
     }
 
+    @ApiOperation("Busca um evento cadastrado.")
+    @GetMapping("/findByCod")
+    public ResponseEntity<Evento> findByCod(
+            @RequestParam Long codeven) {
+
+        var evento = eventoService.findByCod(codeven);
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(evento);
+    }
+
     @ApiOperation("Mostra se o horário selecionado está disponível.")
     @GetMapping("/disponiveis")
     public ResponseEntity<Boolean> disponiveis(
             @RequestParam String datahorainicio, String datahorafim) {
         var eventos = eventoService.disponivel(datahorainicio, datahorafim);
-        System.out.println(eventos);
         if (eventos == null){
             return ResponseEntity.ok(true);
         }
@@ -103,7 +118,13 @@ public class EventoController {
     public ResponseEntity<Evento> update(
             @RequestBody Evento evento) {
 
+        var oldEvento = eventoService.findByCod(evento.getCodeven());
         var updatedEvento = eventoService.update(evento);
+        if (!updatedEvento.getStatus().equals(oldEvento.getStatus())) {
+            var criador = usuarioService.findByCod(updatedEvento.getUsucodcria());
+            var carta = emailService.eventUpdate(updatedEvento, criador);
+            mailSender.send(carta);
+        }
         return ResponseEntity.ok(updatedEvento);
     }
 
@@ -115,7 +136,7 @@ public class EventoController {
         var deletedEvento = eventoService.delete(evento);
         return ResponseEntity.ok(deletedEvento);
     }
-    
+
     @ApiOperation("Envia emails para convidados do evento")
     @PostMapping("/invite")
     public ResponseEntity<Boolean> invite(
@@ -132,6 +153,18 @@ public class EventoController {
         }
 
         return ResponseEntity.ok(true);
+    }
+
+    @GetMapping("/report")
+    public ResponseEntity<Map<String, Integer>> csv(
+            @RequestParam @DateTimeFormat(pattern="yyyy-MM") Date data,
+            @RequestParam String email) throws FileNotFoundException {
+
+        var file = EventoService.generateFullCsv(data);
+        var carta = emailService.csv(email, data, file);
+        mailSender.send(carta);
+        file.delete();
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(eventoService.getValues());
     }
 }
 

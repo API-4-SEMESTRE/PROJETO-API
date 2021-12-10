@@ -1,6 +1,7 @@
 package com.api.agendhouse.domain.email;
 
 import com.api.agendhouse.domain.evento.Evento;
+import com.api.agendhouse.domain.evento.EventoService;
 import com.api.agendhouse.domain.usuario.Usuario;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -13,8 +14,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
+import javax.mail.BodyPart;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Transport;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -32,7 +41,7 @@ public class EmailService {
     private FreeMarkerConfigurer freeMarkerConfigurer;
 
     private String to;
-    Map model = new HashMap();
+    Map<String, String> model = new HashMap<>();
 
     public SimpleMailMessage sendEmail(String to, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
@@ -62,7 +71,7 @@ public class EmailService {
         return message;
     }
 
-    public List<MimeMessage> eventRequestC(List<Usuario> admins, Evento evento, Usuario criador) throws ParseException {
+    public List<MimeMessage> eventRequestC(List<Usuario> admins, Evento evento, Usuario criador) {
         List<MimeMessage> messages = new ArrayList<>();
         for (Usuario admin : admins) {
             setTo(admin.getEmail());
@@ -73,11 +82,12 @@ public class EmailService {
             model.put("adminNome", admin.getNome());
             model.put("cargo", criador.getTipo().toString().charAt(0) + criador.getTipo().toString().substring(1).toLowerCase());
             model.put("pessoaNome", criador.getNome());
-            model.put("tipo", evento.getTipo().toString());
-            model.put("formato", evento.getFormato());
-            model.put("data", df.format(c.getTime()));
-            model.put("horaIni", evento.getHorainicio().toString().substring(0, 5));
-            model.put("horaFim", evento.getHorafim().toString().substring(0, 5));
+            setMyModel(
+                    evento.getTipo().toString(),
+                    evento.getFormato(),
+                    df.format(c.getTime()),
+                    evento.getHorainicio().toString().substring(0, 5),
+                    evento.getHorafim().toString().substring(0, 5));
 
             MimeMessage message = mailSender.createMimeMessage();
             try {
@@ -117,11 +127,12 @@ public class EmailService {
         c.setTime(evento.getDataeven());
         c.add(Calendar.DATE, 1);
         model.put("nome", admin.getNome());
-        model.put("tipo", evento.getTipo().toString());
-        model.put("formato", evento.getFormato());
-        model.put("data", df.format(c.getTime()));
-        model.put("horaIni", evento.getHorainicio().toString().substring(0, 5));
-        model.put("horaFim", evento.getHorafim().toString().substring(0, 5));
+        setMyModel(
+                evento.getTipo().toString(),
+                evento.getFormato(),
+                df.format(c.getTime()),
+                evento.getHorainicio().toString().substring(0, 5),
+                evento.getHorafim().toString().substring(0, 5));
         MimeMessage message = mailSender.createMimeMessage();
         try {
             MimeMessageHelper mimeHelper = new MimeMessageHelper(message, true, "utf-8");
@@ -144,12 +155,12 @@ public class EmailService {
         c.setTime(evento.getDataeven());
         c.add(Calendar.DATE, 1);
         model.put("criador", criador.getNome());
-        model.put("tipo", evento.getTipo().toString());
-        model.put("formato", evento.getFormato());
-        model.put("data", df.format(c.getTime()));
-        model.put("horaIni", evento.getHorainicio().toString().substring(0, 5));
-        model.put("horaFim", evento.getHorafim().toString().substring(0, 5));
-
+        setMyModel(
+                evento.getTipo().toString(),
+                evento.getFormato(),
+                df.format(c.getTime()),
+                evento.getHorainicio().toString().substring(0, 5),
+                evento.getHorafim().toString().substring(0, 5));
         for (String email  : listEmails) {
             if (!email.equals("")) {
                 setTo(email);
@@ -167,8 +178,76 @@ public class EmailService {
                 messages.add(message);
             }
         }
-
-
         return messages;
+    }
+
+    public MimeMessage eventUpdate(Evento evento, Usuario criador) {
+        setTo(criador.getEmail());
+        DateFormat df = new SimpleDateFormat("dd/MM/yy");
+        Calendar c = Calendar.getInstance();
+        c.setTime(evento.getDataeven());
+        c.add(Calendar.DATE, 1);
+        model.put("criador", criador.getNome());
+        setMyModel(
+                evento.getTipo().toString(),
+                evento.getFormato(),
+                df.format(c.getTime()),
+                evento.getHorainicio().toString().substring(0, 5),
+                evento.getHorafim().toString().substring(0, 5));
+        model.put("dataCria", String.valueOf(evento.getDatacria().getDayOfMonth() + "/" +
+                evento.getDatacria().getMonthValue() + "/" +
+                evento.getDatacria().getYear() + " " +
+                evento.getDatacria().getHour() + ":" +
+                evento.getDatacria().getMinute() + ":" +
+                evento.getDatacria().getSecond()));
+        model.put("status", evento.getStatus().toString().charAt(0) + evento.getStatus().toString().substring(1).toLowerCase());
+
+        MimeMessage message = mailSender.createMimeMessage();
+        try {
+            MimeMessageHelper mimeHelper = new MimeMessageHelper(message, true, "utf-8");
+            mimeHelper.setTo(to);
+            mimeHelper.setSubject("AgendHouse - Evento " + model.get("status"));
+            Template template = freeMarkerConfigurer.getConfiguration().getTemplate("eventUpdate.ftl");
+            String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
+            mimeHelper.setText(html, true);
+        } catch (MessagingException | IOException | TemplateException e) {
+            e.printStackTrace();
+        }
+        return message;
+    }
+
+    private void setMyModel (String tipo, String formato, String data, String horaIni, String horaFim) {
+        model.put("tipo", tipo);
+        model.put("formato", formato);
+        model.put("data", data);
+        model.put("horaIni", horaIni);
+        model.put("horaFim", horaFim);
+    }
+
+    public MimeMessage csv(String email, Date data, File file) {
+        DateFormat df = new SimpleDateFormat("yyyy/MM");
+        model.put("data", df.format(data));
+        setTo(email);
+        MimeMessage message = mailSender.createMimeMessage();
+        try {
+            MimeMessageHelper mimeHelper = new MimeMessageHelper(message, true, "utf-8");
+            mimeHelper.setTo(to);
+            mimeHelper.setSubject("AgendHouse - Relatório " + model.get("data"));
+            Multipart multipart = new MimeMultipart();
+            BodyPart messagePart = new MimeBodyPart();
+            BodyPart attachmentPart = new MimeBodyPart();
+            Template template = freeMarkerConfigurer.getConfiguration().getTemplate("report.ftl");
+            String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, model);
+            messagePart.setContent(html.toString(), "text/html");
+            attachmentPart.setDataHandler(new DataHandler(new FileDataSource(file)));
+            attachmentPart.setFileName(file.getName());
+            multipart.addBodyPart(messagePart);
+            multipart.addBodyPart(attachmentPart);
+            message.setContent(multipart);
+        } catch (MessagingException | IOException | TemplateException e) {
+            e.printStackTrace();
+        }
+
+        return message;
     }
 }

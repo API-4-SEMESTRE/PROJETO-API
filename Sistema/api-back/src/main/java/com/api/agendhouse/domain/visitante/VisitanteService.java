@@ -42,4 +42,25 @@ public class VisitanteService {
     public Visitante findByCod(Long viscod) {
         return visitanteRepository.findByViscod(viscod);
     }
+
+    public Visitante update(Visitante visitante) {
+        var check = visitanteRepository.findByViscod(visitante.getViscod());
+        if (check == null) {
+            return null;
+        }
+        var rawCpf = visitante.getViscpf();
+        visitante.setViscpf(rawCpf.replaceAll("[.-]", ""));
+        visitanteRepository.save(visitante);
+        return visitante;
+    }
+
+    public Boolean delete(Visitante visitante) {
+        try {
+            visitanteRepository.delete(visitante);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

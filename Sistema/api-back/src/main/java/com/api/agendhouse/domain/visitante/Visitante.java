@@ -23,4 +23,7 @@ public class Visitante {
 
     @Column(name="VIS_CPF_VISI")
     private String viscpf;
+
+    @Column(name="VIS_VACINA")
+    private String visvacina;
 }

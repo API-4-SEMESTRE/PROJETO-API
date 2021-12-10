@@ -38,4 +38,23 @@ public class VisitanteController {
         var visitantes = visitanteService.findAll();
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(visitantes);
     }
+
+    @PutMapping("/update")
+    @ApiOperation(value="Atualiza um visitante")
+    public ResponseEntity<Visitante> updateVisitante (
+            @RequestBody Visitante visitante) {
+
+        var vis = visitanteService.update(visitante);
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(vis);
+    }
+
+    @DeleteMapping("/delete")
+    @ApiOperation(value="Deleta um visitante")
+    public ResponseEntity<Boolean> deleteVisitante (
+            @RequestBody Visitante visitante) {
+
+        var vis = visitanteService.delete(visitante);
+        return ResponseEntity.ok(vis);
+    }
+
 }

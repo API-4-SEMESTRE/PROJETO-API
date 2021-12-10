@@ -8,6 +8,7 @@ import Criar_Conta from '../views/Criar_Conta'
 import Agendar_Evento from '../views/Agendar_Evento'
 import Editar_Fornecedor from '../views/Editar_Fornecedor'
 import Visitante from '../views/Visitante'
+import Relatorios from '../views/Relatorios'
 
 Vue.use(VueRouter);
 
@@ -67,6 +68,12 @@ const router = new VueRouter({
       path: '/Visitante',
       name: 'Visitante',
       component: Visitante,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/Relatorios',
+      name: 'Relatorios',
+      component: Relatorios,
       meta: { requiresAuth: true }
     },
   ]
