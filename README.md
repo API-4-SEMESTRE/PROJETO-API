@@ -2,7 +2,7 @@
 
 O projeto a ser desenvolvido vai ser um sistema para agendamentos de eventos na [Casa Oracle](https://blogs.oracle.com/oracle-brasil/casa-oracle-abre-as-portas-para-a-inovacao-em-sao-paulo) buscando solucionar os obstáculos da pandemia do [Covid-19](https://covid.saude.gov.br/).
 
-<h2 align="center">🚧  Sistema 🚀 Em construção...  🚧</h2>
+<h2 align="center">Sistema 🚀 Finalizado</h2>
 
 <p align="center">
   <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/API-4-SEMESTRE/PROJETO-API?color=%2304D361">
